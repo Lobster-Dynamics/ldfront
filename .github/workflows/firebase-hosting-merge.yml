@@ -18,3 +18,5 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FRIDA_RESEARCH }}'
           channelId: live
           projectId: frida-research
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
