@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Login() {
   return (
-    <div className=" mx-auto bg-gray-100 min-h-screen">
+    <div className=" mx-auto bg-gray-100 h-screen overflow-hidden">
         {/* Parte de Arriba */}
       <div className="w-full h-20 flex flex-col  bg-white justify-center text-bold text-4xl  ">
         <div className="flex flex-row ml-5">
