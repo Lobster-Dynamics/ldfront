@@ -19,5 +19,3 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_FRIDA_RESEARCH }}'
           projectId: frida-research
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
