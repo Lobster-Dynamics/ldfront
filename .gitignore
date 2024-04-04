@@ -38,3 +38,6 @@ next-env.d.ts
 
 # firebase
 .firebase
+
+# Optimize images
+.next.config.mjs
