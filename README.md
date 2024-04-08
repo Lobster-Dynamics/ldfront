@@ -1,109 +1,90 @@
+# Frida Research Engine
 
+## Dependencias
+### Node.js
+La vesión mínima de Node.js requerida para este proyecto es la 18.17. Para instalar la versión más reciente de Node.js, puedes hacerlo desde el sitio oficial de [Node.js](https://nodejs.org/).
 
-## Empezando en el cammino de las LANGOSTAS
-
-Descarga los paquetes:
+### Dependencias del proyecto
+Para instalar las dependencias del proyecto y de desarrollo, puedes correr el siguiente comando en la raíz del proyecto:
 ```bash
 npm install
-
-Correlo en tu terminal de preferencia:
-
+```
+## Correr el proyecto
+Para correr el proyecto en modo de desarrollo, puedes correr el siguiente comando en la raíz del proyecto:
 ```bash
 npm run dev
+```
 
-Dentro del mismo directorio corre en tu terminal de preferencia:
+Además, dentro del mismo directorio, corre el siguiente comando para compilar los archivos TypeScript en tiempo real:
 ```bash
---tsc watch
+npx tsc --watch
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el proyecto.
+
+## Construir el proyecto
+Para construir el proyecto, puedes correr el siguiente comando en la raíz del proyecto:
+```bash
+npm run build
+```
+
+Generará una carpeta llamada 'out' en la raíz del proyecto con los archivos necesarios para correr el proyecto en modo de producción.
+
+## Correr el proyecto en modo de producción
+Para correr el proyecto en modo de producción, puedes correr el siguiente comando en la raíz del proyecto:
+```bash
+npm run start
+```
+
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el proyecto.
+
+Nota: Para correr el proyecto en modo de producción, primero debes construir el proyecto.
+
+## Hacer deploy del proyecto
+Para hacer deploy del proyecto en firebase, debes tener instalado el CLI de firebase. Puedes instalarlo con el siguiente comando:
+```bash
+npm install -g firebase-tools
+```
+
+Luego, debes loguearte en firebase con el siguiente comando:
+```bash
+firebase login
+```
+
+Habilitar la vista previa de frameworks web:
+```bash
+firebase experiments:enable webframeworks
+```
+
+Una vez logueado, debes inicializar el proyecto de firebase con el siguiente comando:
+```bash
+firebase init hosting
+```
+
+Seleccionar las siguientes opciones:
+- Please select an option: Use an existing project
+- Select a default Firebase project for this directory: frida-research (FRIDA RESEARCH)
+- Detected an existing Next.js codebase in the current directory, should we use this? Yes
+- In which region would you like to host server-side content, if applicable? us-west1 (Oregon)
+- Set up automatic builds and deploys with GitHub? No
 
 
-Abre [http://localhost:3000](http://localhost:3000) 
+Finalmente, para hacer deploy del proyecto en firebase, puedes correr el siguiente comando en la raíz del proyecto:
+```bash
+firebase deploy
+```
 
-Puedes empezar modificando dentro del directorio `/app`. La pagina se autorefresca
-
-
-##Mas información no tan relevante para mis langostinos favoritos
-
-##ASCII coqueeton
-
-────────█████─────────────█████
-────████████████───────████████████
-──████▓▓▓▓▓▓▓▓▓▓██───███▓▓▓▓▓▓▓▓▓████
-─███▓▓▓▓▓▓▓▓▓▓▓▓▓██─██▓▓▓▓▓▓▓▓▓▓▓▓▓███
-███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███
-██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██
-██▓▓▓▓▓▓▓▓▓──────────────────▓▓▓▓▓▓▓▓██
-██▓▓▓▓▓▓▓─██───████─█──█─█████─▓▓▓▓▓▓██
-██▓▓▓▓▓▓▓─██───█──█─█──█─██────▓▓▓▓▓▓██
-███▓▓▓▓▓▓─██───█──█─█──█─█████─▓▓▓▓▓▓██
-███▓▓▓▓▓▓─██───█──█─█──█─██────▓▓▓▓▓▓██
-─███▓▓▓▓▓─████─████─████─█████─▓▓▓▓███
-───███▓▓▓▓▓──────────────────▓▓▓▓▓▓███
-────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-─────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-───────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█████
-──────────████▓▓▓▓▓▓▓▓▓▓▓▓████
-─────────────███▓▓▓▓▓▓▓████
-───────────────███▓▓▓███
-─────────────────██▓██
-──────────────────███
-────────█████─────────────█████
-────████████████───────████████████
-──████▓▓▓▓▓▓▓▓▓▓██───███▓▓▓▓▓▓▓▓▓████
-─███▓▓▓▓▓▓▓▓▓▓▓▓▓██─██▓▓▓▓▓▓▓▓▓▓▓▓▓███
-███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███
-██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██
-██▓▓▓▓───────────────────────────▓▓▓▓██
-██▓▓─███──█─████─█───█─████─█████──▓▓██
-██▓▓─██─█─█─█────█───█─█────█──██──▓▓██
-██▓▓─██─█─█─████─██─██─████─████───▓▓██
-██▓▓─██─█─█─█─────███──█────█──██──▓▓██
-██▓▓─██──██─████───█───████─█──███─▓▓██
-─██▓▓▓───────────────────────────▓▓▓███
-───███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███
-────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-─────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-───────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█████
-──────────████▓▓▓▓▓▓▓▓▓▓▓▓████
-─────────────███▓▓▓▓▓▓▓████
-───────────────███▓▓▓███
-─────────────────██▓██
-──────────────────███
-────────█████─────────────█████
-────████████████───────████████████
-──████▓▓▓▓▓▓▓▓▓▓██───███▓▓▓▓▓▓▓▓▓████
-─███▓▓▓▓▓▓▓▓▓▓▓▓▓██─██▓▓▓▓▓▓▓▓▓▓▓▓▓███
-███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓███
-██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██
-██▓▓▓▓▓▓▓────────────────────▓▓▓▓▓▓▓▓██
-██▓▓▓▓▓───████▄─███─████─█████──▓▓▓▓▓██
-███▓▓▓▓───██──█──█──█────█──────▓▓▓▓███
-███▓▓▓▓───██──█──█──████─█████──▓▓▓▓███
-─███▓▓▓───██──█──█──█────────█──▓▓▓▓██
-──████▓───████▀─███─████─█████──▓████
-───███▓▓───────────────────── ▓▓▓███
-────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-─────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-───────████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-──────────████▓▓▓▓▓▓▓▓▓▓▓████
-─────────────███▓▓▓▓▓▓▓███
-───────────────███▓▓▓███
-─────────────────██▓██
-──────────────────███
-
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Langosta de la verdad
+                             ,.---._
+                   ,,,,     /       `,
+                    \\\\   /    '\_  ;
+                     |||| /\/``-.__\;'
+                     ::::/\/_
+     {{`-.__.-'(`(^^(^^^(^ 9 `.========='
+    {{{{{{ { ( ( (  (   (-----:=
+     {{.-'~~'-.(,(,,(,,,(__6_.'=========.
+                     ::::\/\
+                     |||| \/\  ,-'/,
+                    ////   \ `` _/ ;
+                   ''''     \  `  .'
+                             `---'
