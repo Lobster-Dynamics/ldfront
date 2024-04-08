@@ -12,11 +12,13 @@
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "js-cookie": "^3.0.5",
+    "lucide-react": "^0.365.0",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.1.0",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
@@ -27,6 +29,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8.4.38",
+    "prettier-plugin-tailwindcss": "^0.5.13",
     "tailwindcss": "^3.4.3",
     "typescript": "^5"
   }
