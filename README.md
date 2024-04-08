@@ -17,7 +17,7 @@ npm run dev
 
 Además, dentro del mismo directorio, corre el siguiente comando para compilar los archivos TypeScript en tiempo real:
 ```bash
-tsc --watch
+npx tsc --watch
 ```
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el proyecto.
@@ -73,3 +73,18 @@ Finalmente, para hacer deploy del proyecto en firebase, puedes correr el siguien
 ```bash
 firebase deploy
 ```
+
+# Langosta de la verdad
+                             ,.---._
+                   ,,,,     /       `,
+                    \\\\   /    '\_  ;
+                     |||| /\/``-.__\;'
+                     ::::/\/_
+     {{`-.__.-'(`(^^(^^^(^ 9 `.========='
+    {{{{{{ { ( ( (  (   (-----:=
+     {{.-'~~'-.(,(,,(,,,(__6_.'=========.
+                     ::::\/\
+                     |||| \/\  ,-'/,
+                    ////   \ `` _/ ;
+                   ''''     \  `  .'
+                             `---'
