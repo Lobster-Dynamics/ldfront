@@ -10,10 +10,12 @@ export default function Navbar() {
 			<header className="border-b border-gray-200 px-4">
 				<div className="flex h-16 items-center justify-between">
 					<div className="flex items-center gap-3">
-						<div className="flex gap-2 text-3xl">
-							<h1 className="text-purple-500">FRIDA</h1>
-							<h1 className="text-black">Research Engine</h1>
-						</div>
+						<Link href="/">
+							<div className="flex gap-2 text-3xl">
+								<h1 className="text-purple-500">FRIDA</h1>
+								<h1 className="text-black">Research Engine</h1>
+							</div>
+						</Link>
 						{user && (
 							<span
 								className="h-8 w-px bg-gray-400"
@@ -26,7 +28,8 @@ export default function Navbar() {
 						<div className="flex items-center gap-3">
 							<Link
 								href="/settings"
-								className="group transition-none focus:outline-none">
+								className="group transition-none focus:outline-none"
+							>
 								<Settings className="h-8 transition hover:text-purple-500 group-focus:text-purple-500" />
 							</Link>
 							<span
@@ -35,7 +38,8 @@ export default function Navbar() {
 							/>
 							<Link
 								href="/profile"
-								className="text-lg transition hover:text-purple-500 focus:text-purple-500 focus:outline-none">
+								className="text-lg transition hover:text-purple-500 focus:text-purple-500 focus:outline-none"
+							>
 								Cuenta
 							</Link>
 						</div>

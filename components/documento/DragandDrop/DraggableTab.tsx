@@ -13,7 +13,6 @@ const ItemTypes = {
     TAB: 'tab',
 };
 
-
 const DraggableTab: React.FC<DraggableTabProps> = ({ tab, selectTab, selectedTabId ,Icon }) => {
 
     const [{ isDragging }, dragRef] = useDrag({
@@ -23,10 +22,10 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, selectTab, selectedTab
             isDragging: !!monitor.isDragging(),
         }),
     });
-    // @ts-ignore
+
     return (
-        <div
-            ref={dragRef}
+        // @ts-ignore
+        <div ref={dragRef}
             onClick={() => selectTab(tab.id)}
             style={{ opacity: isDragging ? 0.5 : 1 }}
             className="flex flex-row cursor-pointer items-center p-2  mx-1 font-mono text-2xl"

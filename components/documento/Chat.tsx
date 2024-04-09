@@ -11,16 +11,16 @@ export default function Chat({ Chat }: ChatProps) {
 
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col">
-                {Chat.Chat.map((message) => (
+                {Chat.Chat.map((message, index) => (
                     message.role === "bot" ? (
-                        <div className="flex flex-row w-full justify-start mt-2">
+                        <div className="flex flex-row w-full justify-start mt-2" key={index}>
                             <div className="w-6/12 bg-[#dbdeff] rounded-lg mx-4 p-2">
                                 {message.Message}
                             </div>
                         </div>
                     ) : (
                     
-                        <div className="flex flex-row w-full justify-end mt-2">
+                        <div className="flex flex-row w-full justify-end mt-2" key={index}>
                             <div className="w-6/12 bg-purple-700  text-white p-2 rounded-lg mx-4">
                                 {message.Message}
                             </div>

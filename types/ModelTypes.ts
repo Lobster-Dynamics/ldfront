@@ -1,16 +1,8 @@
 export interface Chatword {
-    
-    Chat: ChatDetails[];
-
+	Chat: ChatDetails[];
 }
 
 export interface ChatDetails {
-
-    Message: string;
-    role: string;
-
+	Message: string;
+	role: string;
 }
-
-    
-
-
