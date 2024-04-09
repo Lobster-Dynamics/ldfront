@@ -1,3 +1,0 @@
-const ItemTypes = {
-    TAB: 'tab',
-  };

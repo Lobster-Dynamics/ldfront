@@ -1,4 +1,4 @@
-interface Tab {
+export interface Tab {
     id: string;
     content: string;
     component: JSX.Element;
