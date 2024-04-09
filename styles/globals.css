@@ -32,3 +32,9 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer base {
+    * {
+      transition-duration: 75ms;
+    }
+}
