@@ -1,6 +1,5 @@
-import { toggleModalBorrar } from "@/redux/slices/modalSlice";
+import { toggleModalBorrar, toggleModalAñadirConcepto } from "@/redux/slices/modalSlice";
 import { Plus, X } from "lucide-react";
-import { Lobster } from "next/font/google";
 import { useDispatch } from "react-redux";
 
 interface KeywordsProps {
@@ -9,12 +8,17 @@ interface KeywordsProps {
 
 export default function Keywords({ keywords }: KeywordsProps) {
 
+    const dispatch = useDispatch();
 	return (
 		<div className="flex flex-wrap  p-6 ">
 			{keywords.map((keyword) => (
 				<Keyword keyword={keyword} key={keyword} />
 			))}
-			<button className="my-2 rounded-3xl bg-gray-200 p-2">
+			<button className="my-2 rounded-3xl bg-gray-200 p-2"
+            onClick={() => {
+                dispatch(toggleModalAñadirConcepto())
+            }}
+            >
 				<Plus className="text-white" />
 			</button>
 		</div>

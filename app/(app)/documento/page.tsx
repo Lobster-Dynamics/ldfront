@@ -16,6 +16,7 @@ import Chat from '@/components/documento/Chat';
 import Summary from '@/components/documento/Summary';
 import Graph from '@/components/documento/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
+import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
 
 const Visualizador = () => {
     const sample = ["Computer", "Vision", "Applications", "Demand", "Breakthroughs", "Crops", "Broad"]
@@ -130,6 +131,7 @@ const Visualizador = () => {
                 </div>
             </div>
             <ModalBorrar/>
+            <ModalAdd/>
         </DndProvider>
     );
 };
