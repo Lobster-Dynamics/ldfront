@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Anek_Odia, Inter } from "next/font/google";
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
+import ReduxProvider from "@/redux/ReduxProvider";
 
 // const anek_odia = Anek_Odia({ subsets: ["latin"] });
 const anek_odia = Inter({ subsets: ["latin"] });
@@ -18,12 +19,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+            <ReduxProvider>
 			<body className={anek_odia.className}>
 				<main className="relative flex overflow-y-clip h-screen flex-col">
 					<Navbar />
 					{children}
 				</main>
 			</body>
+            </ReduxProvider>
 		</html>
 	);
 }
