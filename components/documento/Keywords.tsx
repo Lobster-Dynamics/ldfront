@@ -1,4 +1,4 @@
-import { toggleModalBorrar, toggleModalAñadirConcepto } from "@/redux/slices/modalSlice";
+import { toggleModalBorrar, toggleModalAñadirConcepto, toggleModalDefinicion } from "@/redux/slices/modalSlice";
 import { Plus, X } from "lucide-react";
 import { useDispatch } from "react-redux";
 
@@ -34,7 +34,16 @@ const Keyword = ({ keyword }: KeywordProps) => {
 	return (
 		<>
 			<div className="group my-2 mr-4 flex flex-row items-start rounded-2xl bg-gray-200 px-3 py-2 font-mono font-medium shadow-sm hover:bg-purple-200">
-				<button className="text-black">{keyword}</button>
+				<button className="text-black hover:underline" 
+				onClick={() => {
+					dispatch(toggleModalDefinicion())
+				}}
+				
+			
+				>
+					{keyword}
+				</button>
+
 				<button
                 onClick={() => {
                     dispatch(toggleModalBorrar())

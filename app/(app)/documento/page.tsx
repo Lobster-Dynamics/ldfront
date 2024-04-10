@@ -17,6 +17,8 @@ import Summary from '@/components/documento/Summary';
 import Graph from '@/components/documento/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
 import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
+import Modal from '@/components/ui/Modal';
+import ModalDefinicion from '@/components/documento/ModalDefinition';
 
 const Visualizador = () => {
     const sample = ["Computer", "Vision", "Applications", "Demand", "Breakthroughs", "Crops", "Broad"]
@@ -105,6 +107,7 @@ const Visualizador = () => {
             </div>
             <ModalBorrar/>
             <ModalAdd/>
+			<ModalDefinicion/>
         </DndProvider>
     );
 };

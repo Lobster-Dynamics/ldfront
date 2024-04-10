@@ -1,4 +1,4 @@
-import { Chatword } from "@/types/ModelTypes";
+import { Chatword, WordDefinition } from "@/types/ModelTypes";
 
 export const ItemTypes = {
     TAB: 'tab',
@@ -24,4 +24,13 @@ export const chatData: Chatword = {
     { Message: "You're welcome! Goodbye!", role: "bot" }
   ]
 };
+
+export const definitionData: WordDefinition = {
+  Definition: "adj. existing or happening in many places and/or among many people:",
+  examples: [
+    "There are reports of widespread flooding in northern France.",
+    "Malnutrition in the region is widespread - affecting up to 78 percent of children under five years old.",
+    "The campaign has received widespread support."
+  ]  
+}
 
