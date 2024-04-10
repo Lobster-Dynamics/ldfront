@@ -70,36 +70,9 @@ const Visualizador = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-col overflow-y-clip h-screen bg-white">
-
-                <div className="w-full h-20 flex  flex-col  bg-white justify-center text-bold text-4xl  ">
-                    <nav className="w-full h-20 bg-white flex items-center px-5 border-black border-b-2">
-                        <div className="flex flex-row  items-center">
-                            <h1 className="text-purple-500 text-4xl  mr-4">FRIDA</h1>
-                            <h1 className="text-black text-4xl ">Research Engine</h1>
-                        </div>
-                        <div className='flex flex-grow items-center  justify-start '>
-                            <div className="ml-2 mr-10 border-black border-l-2 h-14 align-center"/>
-                        <div className="flex flex-row border-black border-2 rounded-lg py-2 px-2 justify-start items-center">
-                            <Search className="h-6 w-6 text-black" />
-                            <input
-                                className="form-input pl-4  pr-24 text-lg rounded-lg "
-                                type="search"
-                                placeholder="Buscar en mis papers"
-                            />
-                        </div>
-                        </div>
-
-                        <div className="flex flex-grow justify-end items-center space-x-4">
-                            <Settings className="h-6 w-6 text-gray-600" />
-                            <div className="border-l-2 border-black mx-2 h-14 align-center"/>
-                            <span className="text-gray-600 text-2xl">Cuenta</span>
-                        </div>
-                    </nav>
-
-                </div>
-                <div className="w-full flex pb-20 h-screen">
-                    <div className="w-1/2  flex flex-col">
+            <div className="flex flex-col h-screen bg-white">
+                <div className='flex w-full h-full pb-10 md:pb-20'>
+                    <div className="w-1/2 flex flex-col">
                         <Container
                             tabs={tabs.left}
                             onDrop={moveTab}
@@ -108,8 +81,8 @@ const Visualizador = () => {
                             selectedTabId={selectedTabs.left}
                         />
                     </div>
-                    <div className="w-1/2 h-screen pb-20 flex flex-col">
-                        <div className='h-1/3 flex'>
+                    <div className="w-1/2 flex flex-col">
+                        <div className='h-2/5 flex'>
                             <Container
                                 tabs={tabs.rightTop}
                                 onDrop={moveTab}

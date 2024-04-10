@@ -19,7 +19,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={anek_odia.className}>
-				<main className="relative flex min-h-screen flex-col">
+				<main className="relative flex overflow-y-clip h-screen flex-col">
 					<Navbar />
 					{children}
 				</main>
