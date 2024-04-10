@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Anek_Odia, Inter } from "next/font/google";
 import "@/styles/globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 
 // const anek_odia = Anek_Odia({ subsets: ["latin"] });
 const anek_odia = Inter({ subsets: ["latin"] });
