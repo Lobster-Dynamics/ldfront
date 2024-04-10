@@ -12,7 +12,7 @@ export default function Home() {
 		if (!user) {
 			router.push("/login");
 		}
-	}, []);
+	}, [router]);
 
 	return (
 		<div className="">
