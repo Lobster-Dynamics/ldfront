@@ -11,3 +11,10 @@ export interface WordDefinition {
 	Definition: string;
 	examples: string[];
 }
+
+export interface UserAuth {
+    id: number;
+    name: string;
+    lname: string;
+    token?: string;
+}
