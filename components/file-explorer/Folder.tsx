@@ -1,5 +1,6 @@
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FolderProps {
 	name: string;
@@ -7,7 +8,7 @@ interface FolderProps {
 
 export default function Folder({ name }: FolderProps) {
 	return (
-		<div className="group flex h-fit w-44 flex-col rounded-lg p-2 pt-4 hover:bg-[#7B20C3] hover:bg-opacity-10 transition">
+		<Link className="group flex h-fit w-44 flex-col rounded-lg p-2 pt-4 bg-[#7B20C3] bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10 transition hover:cursor-pointer outline-none" href="/file-explorer">
 			<Image
 				src="/folder.png"
 				alt="folder"
@@ -19,8 +20,8 @@ export default function Folder({ name }: FolderProps) {
 			    <h1 className="overflow-hidden text-ellipsis whitespace-nowrap mt-2">
     				{name}
     			</h1>
-                <EllipsisVertical className="text-transparent group-hover:text-black transition" />
+                <EllipsisVertical className="text-transparent group-hover:text-black group-focus:text-black transition" />
 			</div>
-		</div>
+		</Link>
 	);
 }
