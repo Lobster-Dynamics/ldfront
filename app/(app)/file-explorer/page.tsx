@@ -2,7 +2,12 @@
 
 import File from "@/components/file-explorer/File";
 import Folder from "@/components/file-explorer/Folder";
+<<<<<<< Updated upstream
 import { filesData } from "@/utils/constants";
+=======
+import Sidebar from "@/components/file-explorer/Sidebar";
+import NewButton from "@/components/file-explorer/NewButton";
+>>>>>>> Stashed changes
 import { LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
 
@@ -14,9 +19,10 @@ export default function FileExplorer() {
 	return (
 		<div className="flex-grow bg-white">
 			<div className="flex h-full w-full pt-4">
-				<div className="h-full w-1/6 px-4">
+				<div className="flex flex-col justify-start place-content-between gap-3 h-full w-1/6 px-4">
 					{/* TODO: IMPLEMENTAR COMPONENTE SIDEBAR */}
-					aqui va la sidebar
+					<NewButton></NewButton>
+					<Sidebar></Sidebar>
 				</div>
 				<div className="flex w-5/6 flex-col px-4 md:px-6">
 					<div className="flex items-center justify-between">
