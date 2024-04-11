@@ -2,12 +2,9 @@
 
 import File from "@/components/file-explorer/File";
 import Folder from "@/components/file-explorer/Folder";
-<<<<<<< Updated upstream
 import { filesData } from "@/utils/constants";
-=======
 import Sidebar from "@/components/file-explorer/Sidebar";
 import NewButton from "@/components/file-explorer/NewButton";
->>>>>>> Stashed changes
 import { LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
 
