@@ -6,12 +6,17 @@ import Link from "next/link";
 interface FolderProps {
 	name: string;
 	viewMode: "list" | "grid";
-    uuid: UUID;
-    ownerName: string;
-    uploadDate: Date;
+	uuid: UUID;
+	ownerName: string;
+	uploadDate: Date;
 }
 
-export default function Folder({ name, viewMode, ownerName, uploadDate }: FolderProps) {
+export default function Folder({
+	name,
+	viewMode,
+	ownerName,
+	uploadDate,
+}: FolderProps) {
 	if (viewMode === "grid") {
 		return (
 			<Link
@@ -42,13 +47,13 @@ export default function Folder({ name, viewMode, ownerName, uploadDate }: Folder
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px]">
-						    <Image
-    							src="/folder.png"
-    							alt="folder"
-    							width={50}
-    							height={50}
-    							className="self-center m-auto"
-    						/>
+							<Image
+								src="/folder.png"
+								alt="folder"
+								width={50}
+								height={50}
+								className="m-auto self-center"
+							/>
 						</div>
 						<p className="overflow-hidden text-ellipsis whitespace-nowrap">
 							{name}
@@ -59,7 +64,7 @@ export default function Folder({ name, viewMode, ownerName, uploadDate }: Folder
 						<p>{ownerName}</p>
 					</div>
 					<div className="flex w-1/4 items-center justify-end">
-						<p>{uploadDate.toLocaleDateString('es-MX')}</p>
+						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</Link>
 			</div>
