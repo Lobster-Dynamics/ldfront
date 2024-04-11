@@ -25,38 +25,18 @@ export const chatData: Chatword = {
 	]
 };
 
-// export const filesData: Files = {
-// 	files: [
-// 		{ name: "Ciencias Sociales", type: "folder", uuid: "1-1-1-1-1" },
-// 		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-// 		{ name: "Computación", type: "folder" , uuid: "1-1-1-1-1"},
-// 		{ name: "Redes Neuronales", type: "file", extension: "pdf" , uuid: "1-1-1-1-1"},
-// 		{ name: "Historia de la Computación", type: "file", extension: "docx" , uuid: "1-1-1-1-1"},
-// 		{ name: "Inteligencia Artificial", type: "file", extension: "pptx" , uuid: "1-1-1-1-1"},
-// 		{ name: "Ciencias Sociales", type: "folder" , uuid: "1-1-1-1-1"},
-// 		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-// 		{ name: "Redes Neuronales", type: "file", extension: "pdf" , uuid: "1-1-1-1-1"},
-// 		{ name: "Historia de la Computación", type: "file", extension: "docx" , uuid: "1-1-1-1-1"},
-// 		{ name: "Inteligencia Artificial", type: "file", extension: "pptx", uuid: "1-1-1-1-1" }
-// 	]
-// };
-
 export const filesData: Files = {
 	files: [
-		{ name: "Ciencias Sociales", type: "folder", uuid: "1-1-1-1-1" },
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Computación", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Ciencias Sociales", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Ciencias Sociales", type: "folder", uuid: "1-1-1-1-1" },
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Computación", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Ciencias Sociales", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Ciencias Sociales", type: "folder", uuid: "1-1-1-1-1" },
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Computación", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Ciencias Sociales", type: "folder" , uuid: "1-1-1-1-1"},
-		{ name: "Biologia", type: "folder" , uuid: "1-1-1-1-1"},
+		{ name: "Ciencias Sociales", type: "folder", extension: null, uuid: "1-1-1-1-1", owner: "Diego Minjares", uploadDate: new Date() },
+		{ name: "Biologia", type: "folder" , extension: null, uuid: "1-1-1-1-1", owner: "Daniel Morales", uploadDate: new Date() },
+		{ name: "Computación", type: "folder" , extension: null, uuid: "1-1-1-1-1", owner: "Rodrigo Reyes", uploadDate: new Date() },
+		{ name: "Redes Neuronales", type: "file", extension: "pdf" , uuid: "1-1-1-1-1", owner: "Jair Santos", uploadDate: new Date() },
+		{ name: "Historia de la Computación", type: "file", extension: "docx" , uuid: "1-1-1-1-1", owner: "Adrián Hernández", uploadDate: new Date() },
+		{ name: "Inteligencia Artificial", type: "file", extension: "pptx" , uuid: "1-1-1-1-1", owner: "Diego Minjares", uploadDate: new Date() },
+		{ name: "Ciencias Sociales", type: "folder" , extension: null, uuid: "1-1-1-1-1", owner: "Rodrigo Reyes", uploadDate: new Date()},
+		{ name: "Biologia", type: "folder" , extension: null, uuid: "1-1-1-1-1", owner: "Daniel Morales", uploadDate: new Date()},
+		{ name: "Redes Neuronales", type: "file", extension: "pdf" , uuid: "1-1-1-1-1", owner: "Jair Santos", uploadDate: new Date() },
+		{ name: "Historia de la Computación", type: "file", extension: "docx" , uuid: "1-1-1-1-1", owner: "Adrián Hernández", uploadDate: new Date() },
+		{ name: "Inteligencia Artificial", type: "file", extension: "pptx", uuid: "1-1-1-1-1", owner: "Rodrigo Reyes", uploadDate: new Date() }
 	]
 };

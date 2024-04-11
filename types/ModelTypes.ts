@@ -16,6 +16,8 @@ export interface Files {
 export interface File {
 	name: string;
 	type: string;
-	extension?: "docx" | "pdf" | "pptx";
-	uuid: UUID
+	extension: "docx" | "pdf" | "pptx" | null;
+	uuid: UUID;
+    owner: string;
+    uploadDate: Date;
 }

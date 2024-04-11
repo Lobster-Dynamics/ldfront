@@ -12,7 +12,11 @@ export default function Sidebar() {
 	const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
 	const files: File[] = [
-		{ name: "Ciencias Sociales", type: "folder" , childs: ["Ciencias no Sociales"]},
+		{
+			name: "Ciencias Sociales",
+			type: "folder",
+			childs: ["Ciencias no Sociales"],
+		},
 		{ name: "Biologia", type: "folder" },
 		{ name: "Computación", type: "folder" },
 		{ name: "Langostas", type: "file" },
@@ -39,16 +43,32 @@ export default function Sidebar() {
 	};
 
 	return (
-		<div className="my-4 flex-grow flex-wrap min-[0px]:hidden lg:block w-full rounded-lg bg-[#F3F4F6] p-4">
+		<div className="my-4 w-full flex-grow flex-wrap rounded-lg bg-[#F3F4F6] p-4">
 			{files.map((file, i) => {
 				if (file.type === "folder")
-					return <div className="flex my-2 ml-2">
-						<button onClick={() => handleClick(i)}>
-							{openIndexes.includes(i) ? <ChevronDown className="flex-shrink-0"></ChevronDown> : <ChevronRight className="flex-shrink-0"></ChevronRight>}
-						</button>
-						<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">{file.name}</p></div> ;
+					return (
+						<div className="my-2 ml-2 flex" key={i}>
+							<button onClick={() => handleClick(i)}>
+								{openIndexes.includes(i) ? (
+									<ChevronDown className="flex-shrink-0"></ChevronDown>
+								) : (
+									<ChevronRight className="flex-shrink-0"></ChevronRight>
+								)}
+							</button>
+							<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+								{file.name}
+							</p>
+						</div>
+					);
 				else if (file.type === "file")
-					return <div className="flex my-2 ml-2"><Dot className="flex-shrink-0"></Dot><p className="overflow-hidden overflow-ellipsis whitespace-nowrap">{file.name}</p></div>;
+					return (
+						<div className="my-2 ml-2 flex" key={i}>
+							<Dot className="flex-shrink-0"></Dot>
+							<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+								{file.name}
+							</p>
+						</div>
+					);
 			})}
 		</div>
 	);
