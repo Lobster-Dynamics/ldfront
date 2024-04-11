@@ -1,7 +1,7 @@
 import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 interface FileProps {
 	name: string;
@@ -20,13 +20,33 @@ export default function File({
 	ownerName,
 	uploadDate,
 }: FileProps) {
+	const fileRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const openDocument = () => {
+			window.open(`/documento?id=${uuid}`, "_blank");
+		}
+
+		if (fileRef.current) {
+			fileRef.current.addEventListener("dblclick", openDocument);
+			fileRef.current.addEventListener("keypress", e => {
+				if (e.key === "Enter") openDocument();
+			});
+		}
+
+		return () => {
+			if (fileRef.current) {
+				fileRef.current.removeEventListener("dblclick", openDocument);
+				fileRef.current.addEventListener("keypress", e => {
+					if (e.key === "Enter") openDocument();
+				});
+			}
+		}
+	}, [])
+
 	if (viewMode === "grid") {
 		return (
-			<Link
-				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
-				href="/documento"
-				target="_blank"
-			>
+			<div className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
 				<Image
 					src={`/${extension}.png`}
 					alt="folder"
@@ -40,16 +60,12 @@ export default function File({
 					</h1>
 					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
 				</div>
-			</Link>
+			</div>
 		);
 	} else if (viewMode === "list") {
 		return (
 			<div className="h-16 border-t border-black border-opacity-30">
-				<Link
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
-					href="/documento"
-					target="_blank"
-				>
+				<div className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px]">
 							<Image
@@ -71,7 +87,7 @@ export default function File({
 					<div className="flex w-1/4 items-center justify-end">
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
-				</Link>
+				</div>
 			</div>
 		);
 	}

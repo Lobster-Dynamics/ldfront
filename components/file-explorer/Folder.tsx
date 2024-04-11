@@ -1,7 +1,6 @@
 import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 interface FolderProps {
 	name: string;
@@ -19,10 +18,7 @@ export default function Folder({
 }: FolderProps) {
 	if (viewMode === "grid") {
 		return (
-			<Link
-				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
-				href="/file-explorer"
-			>
+			<div className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} >
 				<Image
 					src="/folder.png"
 					alt="folder"
@@ -36,15 +32,12 @@ export default function Folder({
 					</p>
 					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
 				</div>
-			</Link>
+			</div>
 		);
 	} else if (viewMode === "list") {
 		return (
 			<div className="h-16 border-t border-black border-opacity-30">
-				<Link
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
-					href="/file-explorer"
-				>
+				<div className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} >
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px]">
 							<Image
@@ -66,7 +59,7 @@ export default function Folder({
 					<div className="flex w-1/4 items-center justify-end">
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
-				</Link>
+				</div>
 			</div>
 		);
 	}
