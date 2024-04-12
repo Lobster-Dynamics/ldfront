@@ -1,75 +1,75 @@
-import { ChevronRight, ChevronDown } from "lucide-react";
-import { Dot } from "lucide-react";
+import { File } from "lucide-react";
 import { useState } from "react";
+import { ReactNode } from "react";
 
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+  } from "@/components/ui/accordion"
+  
 interface File {
 	name: string;
 	type: string;
-	childs?: string[];
+	childs?: File[];
 }
 
 export default function Sidebar() {
-	const [openIndexes, setOpenIndexes] = useState<number[]>([]);
-
 	const files: File[] = [
 		{
 			name: "Ciencias Sociales",
 			type: "folder",
-			childs: ["Ciencias no Sociales"],
+			childs: [{ name: "Ciencias no Sociales", type: "folder", childs:[{name: "No se", type: "folder", childs:[{name:"El pepe", type:"file"}]}] }, 
+			{ name: "Como hacer amigos", type: "file" },],
 		},
-		{ name: "Biologia", type: "folder" },
-		{ name: "Computación", type: "folder" },
+		{ name: "Biologia", type: "folder" , childs: []},
+		{ name: "Computación", type: "folder", childs: [] },
 		{ name: "Langostas", type: "file" },
-		{ name: "Filosofía", type: "folder" },
-		{ name: "Ciencias Sociales", type: "folder" },
-		{ name: "Biologia", type: "folder" },
-		{ name: "Computación", type: "folder" },
-		{ name: "Filosofía", type: "folder" },
+		{ name: "Filosofía", type: "folder", childs: [] },
+		{ name: "Ciencias Sociales", type: "folder", childs: [] },
+		{ name: "Biologia", type: "folder", childs: [] },
+		{ name: "Computación", type: "folder", childs: [] },
+		{ name: "Filosofía", type: "folder", childs: [] },
 		{ name: "Tipos de Langostas", type: "file" },
 		{ name: "Como ser amigo de una langosta", type: "file" },
 	];
-
-	const handleClick = (index: number) => {
-		const currentIndex = openIndexes.indexOf(index);
-		const newOpenIndexes = [...openIndexes];
-
-		if (currentIndex === -1) {
-			newOpenIndexes.push(index);
-		} else {
-			newOpenIndexes.splice(currentIndex, 1);
-		}
-
-		setOpenIndexes(newOpenIndexes);
-	};
-
-	return (
-		<div className="my-4 w-full flex-grow flex-wrap rounded-lg bg-[#F3F4F6] p-4">
-			{files.map((file, i) => {
+	
+	function MakeAccordion({children}:{children?:File[];}){
+		return (
+			<Accordion type="multiple" >
+			{children?.map((file, i) => {
 				if (file.type === "folder")
 					return (
-						<div className="my-2 ml-2 flex" key={i}>
-							<button onClick={() => handleClick(i)}>
-								{openIndexes.includes(i) ? (
-									<ChevronDown className="flex-shrink-0"></ChevronDown>
-								) : (
-									<ChevronRight className="flex-shrink-0"></ChevronRight>
-								)}
-							</button>
-							<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+						<div className="ml-1 flex" key={i}>
+							<AccordionItem value={`item-${i}`}>
+								<AccordionTrigger><p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
 								{file.name}
-							</p>
+							</p></AccordionTrigger>
+							<AccordionContent>
+								<MakeAccordion children={file.childs}></MakeAccordion>
+							</AccordionContent>
+							</AccordionItem>
 						</div>
 					);
 				else if (file.type === "file")
 					return (
-						<div className="my-2 ml-2 flex" key={i}>
-							<Dot className="flex-shrink-0"></Dot>
+						<div className="ml-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10 px-2" key={i}>
+							<File className="flex-shrink-0 h-4 w-4 ml-4"></File>
 							<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
 								{file.name}
 							</p>
 						</div>
 					);
 			})}
+			</Accordion>
+		)
+	}
+	
+
+	return (
+		<div className="my-3 w-full flex-grow flex-wrap rounded-lg bg-[#F3F4F6] p-2">
+			<MakeAccordion children={files}></MakeAccordion>
 		</div>
-	);
+	)
 }
