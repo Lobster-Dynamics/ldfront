@@ -1,4 +1,4 @@
-import { Chatword, Files } from "@/types/ModelTypes";
+import { Chatword, Files, WordDefinition } from "@/types/ModelTypes";
 
 export const ItemTypes = {
 	TAB: 'tab',
@@ -40,3 +40,12 @@ export const filesData: Files = {
 		{ name: "Inteligencia Artificial", type: "file", extension: "pptx", uuid: "ba42e009-5ac9-46fa-a8d5-f25f55b00e8f", owner: "Rodrigo Reyes", uploadDate: new Date() }
 	]
 };
+
+export const definitionData: WordDefinition = {
+  Definition: "adj. existing or happening in many places and/or among many people:",
+  examples: [
+    "There are reports of widespread flooding in northern France.",
+    "Malnutrition in the region is widespread - affecting up to 78 percent of children under five years old.",
+    "The campaign has received widespread support."
+  ]  
+}
