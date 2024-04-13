@@ -11,8 +11,8 @@ export default function DicLi({ WordDef }: DicProps){
             <ul className="list-disc">
                 <li className="text-1xl font-medium">{WordDef.Definition}</li>
                 <ul className="list-square list-inside ml-8" style={{ listStyleType: 'square' }}>
-                    {WordDef.examples.map((examples) => (
-                        <li className="text-sm">{examples}</li>
+                    {WordDef.examples.map((examples, i) => (
+                        <li className="text-sm" key={i}>{examples}</li>
                     ))}
                 </ul>
             </ul>

@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -42,7 +43,7 @@ export default function File({
 				});
 			}
 		}
-	}, [])
+	}, [uuid])
 
 	if (viewMode === "grid") {
 		return (

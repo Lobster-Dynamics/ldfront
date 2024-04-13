@@ -67,7 +67,9 @@ export default function Sidebar() {
 								{file.name}
 							</p></AccordionTrigger>
 							<AccordionContent>
-								<MakeAccordion children={file.childs}></MakeAccordion>
+								<MakeAccordion>
+                                    {file.childs}
+                                </MakeAccordion>
 							</AccordionContent>
 							</AccordionItem>
 						</div>
@@ -89,7 +91,9 @@ export default function Sidebar() {
 
 	return (
 		<div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-[#F3F4F6] p-2">
-			<MakeAccordion children={files}></MakeAccordion>
+			<MakeAccordion>
+                {files}
+            </MakeAccordion>
 		</div>
 	)
 }
