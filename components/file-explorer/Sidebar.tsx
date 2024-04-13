@@ -33,6 +33,26 @@ export default function Sidebar() {
 		{ name: "Filosofía", type: "folder", childs: [] },
 		{ name: "Tipos de Langostas", type: "file" },
 		{ name: "Como ser amigo de una langosta", type: "file" },
+		{ name: "Biologia", type: "folder" , childs: []},
+		{ name: "Computación", type: "folder", childs: [] },
+		{ name: "Langostas", type: "file" },
+		{ name: "Filosofía", type: "folder", childs: [] },
+		{ name: "Ciencias Sociales", type: "folder", childs: [] },
+		{ name: "Biologia", type: "folder", childs: [] },
+		{ name: "Computación", type: "folder", childs: [] },
+		{ name: "Filosofía", type: "folder", childs: [] },
+		{ name: "Tipos de Langostas", type: "file" },
+		{ name: "Como ser amigo de una langosta", type: "file" },
+		{ name: "Biologia", type: "folder" , childs: []},
+		{ name: "Computación", type: "folder", childs: [] },
+		{ name: "Langostas", type: "file" },
+		{ name: "Filosofía", type: "folder", childs: [] },
+		{ name: "Ciencias Sociales", type: "folder", childs: [] },
+		{ name: "Biologia", type: "folder", childs: [] },
+		{ name: "Computación", type: "folder", childs: [] },
+		{ name: "Filosofía", type: "folder", childs: [] },
+		{ name: "Tipos de Langostas", type: "file" },
+		{ name: "Como ser amigo de una langosta", type: "file" },
 	];
 	
 	function MakeAccordion({children}:{children?:File[];}){
@@ -68,7 +88,7 @@ export default function Sidebar() {
 	
 
 	return (
-		<div className="my-3 w-full flex-grow flex-wrap rounded-lg bg-[#F3F4F6] p-2">
+		<div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-[#F3F4F6] p-2">
 			<MakeAccordion children={files}></MakeAccordion>
 		</div>
 	)
