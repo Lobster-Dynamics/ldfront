@@ -28,8 +28,5 @@ export interface WordDefinition {
 }
 
 export interface UserAuth {
-    id: number;
-    name: string;
-    lname: string;
-    token?: string;
+    msg: string;
 }
