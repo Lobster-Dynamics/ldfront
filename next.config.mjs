@@ -4,7 +4,10 @@ const nextConfig = {
 	images: {
 		unoptimized: true,
 	},
-	reactStrictMode: false
+	reactStrictMode: false,
+    env:{
+    BACKEND_URL: process.env.BACKEND_URL,
+  }
 };
 
 export default nextConfig;
