@@ -53,10 +53,13 @@ const Visualizador = () => {
                 prevTabs[key].some((t) => t.id === tab.id)
             );
             if (!sourceContainerId) return prevTabs;
-
+    
+            // If the source and target containers are the same, return the previous tabs without changes
+            if (sourceContainerId === targetContainerId) return prevTabs;
+    
             const sourceTabs = prevTabs[sourceContainerId].filter((t) => t.id !== tab.id);
             const targetTabs = [...prevTabs[targetContainerId], tab];
-
+    
             return {
                 ...prevTabs,
                 [sourceContainerId]: sourceTabs,
@@ -64,6 +67,7 @@ const Visualizador = () => {
             };
         });
     }, []);
+    
 
     const selectTab = useCallback((containerId: string, tabId: string) => {
         setSelectedTabs((prevSelectedTabs) => ({
