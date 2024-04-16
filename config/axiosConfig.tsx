@@ -5,8 +5,8 @@ export function axiosConfig(formdata=false){
     if(!token) return null
     const config = {
         headers: {
-        "Content-Type": formdata ? "multipart/form-data" :"application/json",
-        Authorization: `Bearer ${token}`,
+        "Content-Type": formdata ? "multipart/form-data" :"application/json"
+ /*        Authorization: `Bearer ${token}`, */
         },
     };
     return config

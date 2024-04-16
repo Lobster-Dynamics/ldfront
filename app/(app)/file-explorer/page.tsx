@@ -7,6 +7,7 @@ import Sidebar from "@/components/file-explorer/Sidebar";
 import NewButton from "@/components/file-explorer/NewButton";
 import { Calendar, LayoutGrid, List } from "lucide-react";
 import { useState } from "react";
+import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
 
 export default function FileExplorer() {
 	const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
@@ -16,9 +17,11 @@ export default function FileExplorer() {
 	return (
 		<div className="max-h-full flex-grow bg-white">
 			<div className="flex h-full w-full pt-4">
-				<div className="md hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
+				<div className="md hidden  h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
 					{/* TODO: IMPLEMENTAR COMPONENTE SIDEBAR */}
+                    <div className="relative w-full h-20 flex justify-center items-center ">
 					<NewButton />
+                    </div>
 					<Sidebar />
 				</div>
 				<div className="flex h-full w-full flex-col px-4 pb-16 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
@@ -98,6 +101,7 @@ export default function FileExplorer() {
 					</div>
 				</div>
 			</div>
+            <ModalAddFolder/>
 		</div>
 	);
 }

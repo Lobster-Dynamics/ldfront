@@ -8,6 +8,7 @@ export const modalSlice = createSlice({
         modalDefinicion: false,
         modalAñadirConcepto: false,
         modalBorrar: false,
+        modalAñadirCarpeta: false,
     },
     reducers: {
         toggleModalDefinicion: (state: { modalDefinicion: boolean; }) => {
@@ -18,11 +19,14 @@ export const modalSlice = createSlice({
         },
         toggleModalBorrar: (state: { modalBorrar: boolean; }) => {
             state.modalBorrar = !state.modalBorrar;
+        },
+        toggleModalAñadirCarpeta: (state: { modalAñadirCarpeta: boolean; }) => {
+            state.modalAñadirCarpeta = !state.modalAñadirCarpeta;
         }
     }
 })
 
-export const { toggleModalDefinicion, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { toggleModalDefinicion,toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
 
 export default modalSlice.reducer
 
