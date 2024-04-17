@@ -16,7 +16,7 @@ export interface Files {
 export interface File {
 	name: string;
 	type: string;
-	extension: "docx" | "pdf" | "pptx" | null;
+	extension: ".docx" | ".pdf" | ".pptx" | null;
 	uuid: UUID;
 	owner: string;
 	uploadDate: Date;
@@ -35,3 +35,11 @@ export interface UserAuth {
 	rootDirectoryId: UUID,
 	uid: string
 }
+
+export interface DocumentDetails {
+    extension: ".docx" | ".pdf" | ".pptx" | null;
+    id: string;
+    name: string;
+    ownerId: string;
+}
+

@@ -6,8 +6,8 @@ import { useEffect, useRef } from "react";
 
 interface FileProps {
 	name: string;
-	extension: "docx" | "pdf" | "pptx" | null;
-	uuid: UUID;
+	extension: ".docx" | ".pdf" | ".pptx" | null;
+	uuid: string;
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
@@ -22,6 +22,8 @@ export default function File({
 	uploadDate,
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
+
+     const cleanExtension = extension?.replace('.', '');
 
 	useEffect(() => {
 		const openDocument = () => {
@@ -49,7 +51,7 @@ export default function File({
 		return (
 			<div className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
 				<Image
-					src={`/${extension}.png`}
+					src={`/${cleanExtension}.png`}
 					alt="folder"
 					width={77}
 					height={100}

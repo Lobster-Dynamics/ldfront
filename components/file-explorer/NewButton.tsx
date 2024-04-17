@@ -5,8 +5,12 @@ import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 import { toggleModalAñadirCarpeta } from "@/redux/slices/modalSlice";
 import { useDispatch } from "react-redux";
+import useAuth from "@/hooks/selectors/useAuth";
 
 export default function NewButton() {
+
+    const {auth} = useAuth()
+
     const dispatch = useDispatch();
     const menuRef = useRef<HTMLDivElement>(null);
     const [menu, setMenu] = useState(false);
@@ -16,7 +20,7 @@ export default function NewButton() {
             const file = e.target.files[0];
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("userId", "1");
+            formData.append("userId",String(auth?.uid));
             console.log("Uploaded file:", file);
             const config = axiosConfig(true);
             if (!config) return;

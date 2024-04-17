@@ -29,6 +29,7 @@
     "shadcn-ui": "^0.8.0",
     "sharp": "^0.33.3",
     "sweetalert2": "^11.10.7",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },
