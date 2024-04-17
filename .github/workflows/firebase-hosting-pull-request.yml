@@ -21,3 +21,4 @@ jobs:
           projectId: frida-research
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
+          BACKEND_URL: '${{ secrets.BACKEND_URL }}'
