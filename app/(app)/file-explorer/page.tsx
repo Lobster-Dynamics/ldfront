@@ -84,7 +84,7 @@ export default function FileExplorer() {
                                         extension={document.extension}
                                         uuid={document.id}
                                         viewMode={viewMode}
-                                        ownerName={document.ownerId}
+                                        ownerName={auth?.name + " " + auth?.lastname}
                                         uploadDate={new Date()} />
                                 ))
                             )}
