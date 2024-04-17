@@ -1,10 +1,20 @@
+import { Secction } from "@/types/ModelTypes";
 import React from "react";
 
-export default function Summary() {
-    return (
-        <div className="p-10 overflow-y-auto w-full">
-            <p className="text-xl font-mono">
-                Computer vision has evolved as a promising technology with several breakthroughs in a broad variety of applications, where robust visual data analysis is of great importance to improve the decision-making process. Given the increasing global demand for food production, the use of computer vision to track, evaluate, and regulate crops has become more important in the field of precision agriculture.      </p>
+interface SummaryProps {
+    summary: Secction[];
+}   
+
+
+export default function Summary({ summary }: SummaryProps) {
+  return (
+    <div className="p-10 overflow-y-auto w-full">
+      {summary.map((section, index) => (
+        <div key={index} className="mb-4">
+          <h2 className="text-2xl font-bold font-mono">{section.title}</h2>
+          <p className="text-xl font-mono">{section.body}</p>
         </div>
-    );
+      ))}
+    </div>
+  );
 }
