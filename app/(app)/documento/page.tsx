@@ -53,17 +53,37 @@ const Visualizador = () => {
                 prevTabs[key].some((t) => t.id === tab.id)
             );
             if (!sourceContainerId) return prevTabs;
-
+    
+            // If the source and target containers are the same, return the previous tabs without changes
+            if (sourceContainerId === targetContainerId) return prevTabs;
+    
             const sourceTabs = prevTabs[sourceContainerId].filter((t) => t.id !== tab.id);
             const targetTabs = [...prevTabs[targetContainerId], tab];
-
+    
+            // Select the first tab in the source container
+            if (sourceTabs.length > 0) {
+                setSelectedTabs((prevSelectedTabs) => ({
+                    ...prevSelectedTabs,
+                    [sourceContainerId]: sourceTabs[0].id,
+                }));
+            }
+    
+            // Select the moved tab in the target container
+            setSelectedTabs((prevSelectedTabs) => ({
+                ...prevSelectedTabs,
+                [targetContainerId]: tab.id,
+            }));
+    
             return {
                 ...prevTabs,
                 [sourceContainerId]: sourceTabs,
                 [targetContainerId]: targetTabs,
             };
         });
-    }, []);
+    }, [setSelectedTabs]);
+    
+    
+    
 
     const selectTab = useCallback((containerId: string, tabId: string) => {
         setSelectedTabs((prevSelectedTabs) => ({

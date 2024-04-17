@@ -12,35 +12,32 @@ import { useRouter } from "next/navigation";
 
 export default function Login() {
 
-    const [user, setUser] = useState("")
-    const [password, setPassword] = useState("")
-    const dispatch = useDispatch()
-    const router = useRouter()
+	const [user, setUser] = useState("")
+	const [password, setPassword] = useState("")
+	const dispatch = useDispatch()
+	const router = useRouter()
 
-    const handleLogin = async (e: any) => {
-        e.preventDefault()
-        try {
-            const { data } = await axiosClient.post("/user/login_email", { "email": user, "password": password })
+	const handleLogin = async (e: any) => {
+		e.preventDefault()
+		try {
+			const { data } = await axiosClient.post("/user/login_email", { "email": user, "password": password })
 
-            jsCookie.set("token", data.token, {
-                expires: new Date().setMonth(new Date().getMonth() + 1),
-            });
+			jsCookie.set("token", data.token, {
+				expires: new Date().setMonth(new Date().getMonth() + 1),
+			});
 
-            dispatch(setAuth(data));
+			dispatch(setAuth(data));
 
-            router.push("/file-explorer")
+			router.push("/file-explorer")
+		} catch (err: any) {
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Credenciales incorrectas',
+			})
+		}
+	}
 
-
-        } catch (err: any) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Credenciales incorrectas',
-            })
-        }
-
-
-    }
 
         return (
         <AuthWrapper>
@@ -81,4 +78,3 @@ export default function Login() {
         </AuthWrapper>
     );
 }
-

@@ -2,9 +2,11 @@ import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { Settings } from "lucide-react";
 
-export default function Navbar() {
-	const user = "null";
+interface NavbarProps {
+	isAuth: boolean
+}
 
+export default function Navbar({ isAuth }: NavbarProps) {
 	return (
 		<div className="sticky inset-x-0 top-0 z-50 h-16 bg-white">
 			<header className="border-b border-gray-200 px-4">
@@ -16,15 +18,15 @@ export default function Navbar() {
 								<h1 className="text-black">Research Engine</h1>
 							</div>
 						</Link>
-						{user && (
+						{!isAuth && (
 							<span
 								className="h-8 w-px bg-gray-400"
 								aria-hidden="true"
 							/>
 						)}
-						{user && <SearchBar />}
+						{!isAuth && <SearchBar />}
 					</div>
-					{user && (
+					{!isAuth && (
 						<div className="flex items-center gap-3">
 							<Link
 								href="/settings"

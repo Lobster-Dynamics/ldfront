@@ -26,7 +26,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { toggleModalDefinicion,toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
 
 export default modalSlice.reducer
 

@@ -11,7 +11,7 @@ import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
 
 export default function FileExplorer() {
 	const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-
+	
 	// TODO: Request a cloud function para obtener los archivos/folders
 
 	return (

@@ -18,8 +18,8 @@ export interface File {
 	type: string;
 	extension: "docx" | "pdf" | "pptx" | null;
 	uuid: UUID;
-  owner: string;
-  uploadDate: Date;
+	owner: string;
+	uploadDate: Date;
 }
 
 export interface WordDefinition {
@@ -28,5 +28,10 @@ export interface WordDefinition {
 }
 
 export interface UserAuth {
-    msg: string;
+    token: string;
+	name: string;
+	lastname: string;
+	email: string,
+	rootDirectoryId: UUID,
+	uid: string
 }
