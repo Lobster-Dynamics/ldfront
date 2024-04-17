@@ -4,7 +4,7 @@ import AuthWrapper from "@/components/AuthWrapper";
 import InitialContainer from "@/components/InitialContainer";
 import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie"
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";

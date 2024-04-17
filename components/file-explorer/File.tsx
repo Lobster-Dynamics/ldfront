@@ -72,7 +72,7 @@ export default function File({
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px]">
 							<Image
-								src={`/${extension}.png`}
+								src={`/${cleanExtension}.png`}
 								alt="file icon"
 								width={40}
 								height={40}
