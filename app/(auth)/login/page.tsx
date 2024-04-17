@@ -1,46 +1,80 @@
 "use client";
 
 import AuthWrapper from "@/components/AuthWrapper";
-import Image from "next/image";
+import InitialContainer from "@/components/InitialContainer";
+import axiosClient from "@/config/axiosClient";
+import jsCookie from "js-cookie"
+import { ChangeEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { setAuth } from "@/redux/slices/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-	return (
-		<AuthWrapper>
-		    <div className="z-10 flex w-2/5 flex-col items-center rounded-xl  border-8 border-black bg-white p-10">
-    			<Image
-    				src="/logoFrida.png"
-    				alt="logoFrida"
-    				width="350"
-    				height="50"
-    				className="w-2/5"
-    			/>
-    			<h1 className="mt-10 text-3xl text-slate-800">Bienvenido</h1>
-    			<hr className="my-4 h-0.5    w-full border-0 bg-slate-500" />
-    			<input
-    				type="text"
-    				placeholder="Usuario"
-    				className="w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
-    			/>
-    			<input
-    				type="text"
-    				placeholder="Contraseña"
-    				className="mt-5 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
-    			/>
-    			<div className="mt-5 w-full text-start">
-    				<p className="justify-start text-xl font-bold text-purple-700 underline">
-    					¿Olvidaste tu contraseña?
-    				</p>
-    			</div>
-    			<button className="mt-5 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white">
-    				Continuar
-    			</button>
-    			<div className="mt-4 flex w-full flex-row text-start">
-    				<p className=" text-xl">¿No tienes una cuenta?</p>
-    				<p className="ml-2 text-xl font-bold text-purple-700 underline">
-    					Registrarse
-    				</p>
-    			</div>
-    		</div>
-		</AuthWrapper>
-	);
+
+	const [user, setUser] = useState("")
+	const [password, setPassword] = useState("")
+	const dispatch = useDispatch()
+	const router = useRouter()
+
+	const handleLogin = async (e: any) => {
+		e.preventDefault()
+		try {
+			const { data } = await axiosClient.post("/user/login_email", { "email": user, "password": password })
+
+			jsCookie.set("token", data.token, {
+				expires: new Date().setMonth(new Date().getMonth() + 1),
+			});
+
+			dispatch(setAuth(data));
+
+			router.push("/file-explorer")
+		} catch (err: any) {
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Credenciales incorrectas',
+			})
+		}
+	}
+
+
+        return (
+        <AuthWrapper>
+            <InitialContainer title="Iniciar sesión">
+                <hr className="my-4 h-0.5 w-full border-0 bg-slate-500" />
+                <input
+                    type="text"
+                    placeholder="Usuario"
+                    className="w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                />
+                <input
+                    type="password"
+                    placeholder="Contraseña"
+                    className="mt-5 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <div className="mt-5 w-full text-start">
+                    <p className="justify-start text-xl font-bold text-purple-700 underline">
+                        ¿Olvidaste tu contraseña?
+                    </p>
+                </div>
+                <button onClick={handleLogin} className="mt-5 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white">
+
+                    Continuar
+                </button>
+                <div className="mt-4 flex w-full flex-row text-start">
+                    <p className="text-xl">¿No tienes una cuenta?</p>
+                    <p className="ml-2 text-xl font-bold text-purple-700 underline hover:cursor-pointer"
+                        onClick={() => (window.location.href = "/create")}
+                    >
+                        Registrarse
+                    </p>
+                </div>
+            </InitialContainer>
+        </AuthWrapper>
+    );
 }
