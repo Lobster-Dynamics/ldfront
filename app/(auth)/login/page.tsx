@@ -69,7 +69,7 @@ export default function Login() {
                 <div className="mt-4 flex w-full flex-row text-start">
                     <p className="text-xl">¿No tienes una cuenta?</p>
                     <p className="ml-2 text-xl font-bold text-purple-700 underline hover:cursor-pointer"
-                        onClick={() => (window.location.href = "/create")}
+                        onClick={() => (window.location.href = "/create-account")}
                     >
                         Registrarse
                     </p>
