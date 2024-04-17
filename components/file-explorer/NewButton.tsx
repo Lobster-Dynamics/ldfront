@@ -16,7 +16,7 @@ export default function NewButton() {
             const file = e.target.files[0];
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("userId", "KdGlm2uih9Zd73dby63kOIygztE5");
+            formData.append("userId", "1");
             console.log("Uploaded file:", file);
             const config = axiosConfig(true);
             if (!config) return;
