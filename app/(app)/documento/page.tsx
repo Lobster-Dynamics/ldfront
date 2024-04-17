@@ -45,19 +45,20 @@ const Visualizador = () => {
                 {
                     id: 'left-1',
                     content: 'Documento',
-                    component: document ?  <Paper title={document.name} parse={document.parsed_llm_input} /> : <h1>Cargando...</h1>,
+                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input} /> : <h1>Cargando...</h1>,
                     Icon: <ScrollText />
                 },
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
                 { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} />, Icon: <MessageSquare /> },
-                { id: 'right-top-2', content: 'Resumen', component: <Summary />, Icon: <BookOpen /> },
+                { id: 'right-top-2', content: 'Resumen', component: document ?  <Summary summary={document?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
 
             ],
             rightBottom: [
                 { id: 'right-bottom-1', content: 'Word Cloud', component: <Wordcloud />, Icon: <Cloud /> },
-               
+                { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+
             ],
         });
     }, [document]);

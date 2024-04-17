@@ -1,9 +1,10 @@
 import { toggleModalBorrar, toggleModalAñadirConcepto, toggleModalDefinicion } from "@/redux/slices/modalSlice";
 import { Plus, X } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { KeyConcept } from "@/types/ModelTypes";
 
 interface KeywordsProps {
-	keywords: string[];
+	keywords: KeyConcept[];
 }
 
 export default function Keywords({ keywords }: KeywordsProps) {
@@ -12,7 +13,7 @@ export default function Keywords({ keywords }: KeywordsProps) {
 	return (
 		<div className="flex flex-wrap  p-6 ">
 			{keywords.map((keyword) => (
-				<Keyword keyword={keyword} key={keyword} />
+				<Keyword keyword={keyword.name} key={keyword.id} />
 			))}
 			<button className="my-2 rounded-3xl bg-gray-200 p-2"
             onClick={() => {
