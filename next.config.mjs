@@ -5,9 +5,18 @@ const nextConfig = {
 		unoptimized: true,
 	},
 	reactStrictMode: false,
-    env:{
-    BACKEND_URL: process.env.BACKEND_URL,
-  }
+	env: {
+		BACKEND_URL: process.env.BACKEND_URL,
+	},
+	redirects: async () => {
+		return [
+			{
+				source: "/",
+				destination: "/file-explorer",
+				permanent: true
+			}
+		]
+	}
 };
 
 export default nextConfig;
