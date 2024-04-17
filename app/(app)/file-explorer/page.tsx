@@ -16,11 +16,7 @@ import useAuth from "@/hooks/selectors/useAuth";
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
     const { auth } = useAuth()
-    if (auth === null) {
-        return null
-    }
 
-    // TODO: Request a cloud function para obtener los archivos/folders
     const { data: documents } = useSWR<DocumentDetails[]>(`/document/get_documents/${auth?.uid}`, fetcher)
 
     return (
@@ -101,7 +97,7 @@ export default function FileExplorer() {
                                             name={file.name}
                                             uuid={file.uuid}
                                             viewMode={viewMode}
-                                            ownerName={auth.name}
+                                            ownerName={file.owner}
                                             uploadDate={file.uploadDate}
                                         />
                                     );

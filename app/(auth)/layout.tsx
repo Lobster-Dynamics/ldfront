@@ -11,7 +11,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-export default function layout({ children }: Props) {
+export default function Layout({ children }: Props) {
     const { auth, cargando } = useSelector((state: RootState) => state.auth);
 
     const dispatch = useDispatch<any>();
@@ -19,7 +19,7 @@ export default function layout({ children }: Props) {
 
     useEffect(() => {
         dispatch(loadAuth());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         if (auth?.uid && !cargando) {
