@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "@/components/navbar/Navbar";
+import PageLoader from "@/components/PageLoader/PageLoader";
 import { RootState } from "@/redux/store";
 import { loadAuth } from "@/redux/thunks/authThunk";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,10 @@ export default function Layout({ children }: Props) {
             router.push("/login");
         }
     }, [cargando, auth, router]);
+
+    if (cargando || !auth?.uid) {
+        return <PageLoader />;
+    }
 
     return (
         <>
