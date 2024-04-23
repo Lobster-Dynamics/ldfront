@@ -2,7 +2,8 @@ import { current } from "@reduxjs/toolkit";
 import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import SubMenu from "./SubMenu";
 
 interface FileProps {
 	name: string;
@@ -13,6 +14,12 @@ interface FileProps {
 	uploadDate: Date;
 }
 
+const initialContextMenu = {
+	show: false,
+	x: 0,
+	y: 0,
+};
+
 export default function File({
 	name,
 	extension,
@@ -22,34 +29,60 @@ export default function File({
 	uploadDate,
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
-
-     const cleanExtension = extension?.replace('.', '');
+	const [contextMenu, setContextMenu] = useState(initialContextMenu);
+	const cleanExtension = extension?.replace(".", "");
 
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${uuid}`, "_blank");
-		}
+		};
+
+		const openContextMenu = (
+			e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+		) => {
+			e.preventDefault();
+			const { pageX, pageY } = e;
+			setContextMenu({ show: true, x: pageX, y: pageY });
+		};
+		const closeContextMenu = (
+			e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+		) => {
+			e.preventDefault();
+			setContextMenu({ show: false, x: 0, y: 0 });
+		};
 
 		if (fileRef.current) {
+			fileRef.current.addEventListener("contextmenu", openContextMenu);
+			fileRef.current.addEventListener("click", closeContextMenu);
 			fileRef.current.addEventListener("dblclick", openDocument);
-			fileRef.current.addEventListener("keypress", e => {
+			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
 			});
 		}
 
 		return () => {
+			
 			if (fileRef.current) {
+				fileRef.current.removeEventListener("click", closeContextMenu);
+				fileRef.current.removeEventListener(
+					"contextmenu",
+					openContextMenu,
+				);
 				fileRef.current.removeEventListener("dblclick", openDocument);
-				fileRef.current.addEventListener("keypress", e => {
+				fileRef.current.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
 				});
 			}
-		}
-	}, [uuid])
+		};
+	}, [uuid]);
 
 	if (viewMode === "grid") {
 		return (
-			<div className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
+			<div
+				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+				tabIndex={0}
+				ref={fileRef}
+			>
 				<Image
 					src={`/${cleanExtension}.png`}
 					alt="folder"
@@ -63,12 +96,19 @@ export default function File({
 					</h1>
 					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
 				</div>
+				{contextMenu.show && (
+					<SubMenu show={contextMenu.show} x={contextMenu.x} y={contextMenu.y} />
+				)}
 			</div>
 		);
 	} else if (viewMode === "list") {
 		return (
 			<div className="h-16 border-t border-black border-opacity-30">
-				<div className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
+				<div
+					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+					tabIndex={0}
+					ref={fileRef}
+				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px]">
 							<Image
@@ -91,6 +131,9 @@ export default function File({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
+				{contextMenu.show && (
+					<SubMenu x={contextMenu.x} y={contextMenu.y} />
+				)}
 			</div>
 		);
 	}
