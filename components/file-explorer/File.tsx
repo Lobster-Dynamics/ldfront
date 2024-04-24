@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
+import { setEngine } from "crypto";
 
 interface FileProps {
 	name: string;
@@ -28,27 +29,31 @@ export default function File({
 	uploadDate,
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
-
 
 	useOnClickOutside(fileRef, () =>
 		setContextMenu({ show: false, x: 0, y: 0 }),
 	);
 
+	const openContextMenuButton = () => {
+		if (buttonRef.current) {
+			const rect = buttonRef.current.getBoundingClientRect();
+			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
+		}
+	};
 
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${uuid}`, "_blank");
 		};
 
-
 		const openContextMenu = (e: any) => {
 			e.preventDefault();
 			const { pageX, pageY } = e;
 			setContextMenu({ show: true, x: pageX, y: pageY });
 		};
-
 
 		if (fileRef.current) {
 			fileRef.current.addEventListener("contextmenu", (e) =>
@@ -92,10 +97,15 @@ export default function File({
 					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
 					</p>
-					<EllipsisVertical
-						className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
-						size={20}
-					/>
+					<button
+						onClick={openContextMenuButton}
+						ref={buttonRef}
+					>
+						<EllipsisVertical
+							className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
+							size={20}
+						/>
+					</button>
 				</div>
 				{contextMenu.show && (
 					<SubMenu

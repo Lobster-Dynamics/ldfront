@@ -72,16 +72,28 @@ export default function SubMenu({
 	return (
 		<div
 			className={cn(
-				"items-left border-gray  absolute z-20 justify-start rounded-sm border bg-white py-2 opacity-0 transition",
+				"items-left border-gray absolute z-20 w-28 justify-start rounded-sm border bg-white  opacity-0 transition",
 				{ "opacity-100": show },
 			)}
 			style={{ top: `${y}px`, left: `${x}px` }}
 		>
+			<button className="w-full items-start justify-start py-2 px-2 text-start hover:bg-purple-200">
+				Abrir
+			</button>
+			<hr />
+			<button className="w-full items-start justify-start py-2 px-2 text-start hover:bg-purple-200">
+				Compartir
+			</button>
+			<hr />
 			<button
-				className="flex w-full items-start justify-start px-2 text-start hover:bg-purple-200"
+				className="w-full items-start justify-start py-2 px-2 text-start hover:bg-purple-200"
 				onClick={handleFileDelete}
 			>
 				Eliminar
+			</button>
+			<hr />
+			<button className="w-full items-start justify-start py-2 px-2 text-start hover:bg-purple-200">
+				Renombrar
 			</button>
 		</div>
 	);
