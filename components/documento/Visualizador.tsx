@@ -25,7 +25,6 @@ const Visualizador = () => {
     const searchParams = useSearchParams();
     const id = searchParams?.get("id") ?? "0";
     const { data: document } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
-    console.log(document)
     const [tabs, setTabs] = useState<{ [key: string]: Tab[] }>({
         left: [],
         rightTop: [],

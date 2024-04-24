@@ -1,6 +1,6 @@
 import { UserAuth } from "@/types/ModelTypes";
 import { createSlice } from "@reduxjs/toolkit";
-import { loadAuth } from "../thunks/authThunk";
+import { loadAuth, refreshToken } from "../thunks/authThunk";
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -19,11 +19,14 @@ export const authSlice = createSlice({
             state.cargando = true;
         }),
         builder.addCase(loadAuth.fulfilled, (state, action) => {
-            state.auth = action.payload;
+            state.auth = { ...action.payload, refreshToken: state.auth?.refreshToken };
             state.cargando = false;
         }),
         builder.addCase(loadAuth.rejected, (state, action) => {
             state.cargando = false;
+        }),
+        builder.addCase(refreshToken.fulfilled, (state, action) => {
+            state.auth = { ...state.auth, token: action.payload.token, refreshToken: action.payload.refreshToken } as UserAuth;
         })
     },
 });

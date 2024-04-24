@@ -1,5 +1,3 @@
-import { current } from "@reduxjs/toolkit";
-import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -23,16 +21,16 @@ export default function File({
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
 
-     const cleanExtension = extension?.replace('.', '');
+	const cleanExtension = extension?.replace(".", "");
 
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${uuid}`, "_blank");
-		}
+		};
 
 		if (fileRef.current) {
 			fileRef.current.addEventListener("dblclick", openDocument);
-			fileRef.current.addEventListener("keypress", e => {
+			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
 			});
 		}
@@ -40,16 +38,20 @@ export default function File({
 		return () => {
 			if (fileRef.current) {
 				fileRef.current.removeEventListener("dblclick", openDocument);
-				fileRef.current.addEventListener("keypress", e => {
+				fileRef.current.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
 				});
 			}
-		}
-	}, [uuid])
+		};
+	}, [uuid]);
 
 	if (viewMode === "grid") {
 		return (
-			<div className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
+			<div
+				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+				tabIndex={0}
+				ref={fileRef}
+			>
 				<Image
 					src={`/${cleanExtension}.png`}
 					alt="folder"
@@ -57,20 +59,27 @@ export default function File({
 					height={100}
 					className="self-center"
 				/>
-				<div className="flex items-end justify-between">
-					<h1 className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+				<div className="flex items-end justify-between ">
+					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
-					</h1>
-					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
+					</p>
+					<EllipsisVertical
+						className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
+						size={20}
+					/>
 				</div>
 			</div>
 		);
 	} else if (viewMode === "list") {
 		return (
 			<div className="h-16 border-t border-black border-opacity-30">
-				<div className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10" tabIndex={0} ref={fileRef}>
+				<div
+					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+					tabIndex={0}
+					ref={fileRef}
+				>
 					<div className="flex w-2/4 items-center gap-2">
-						<div className="w-[50px]">
+						<div className="w-[50px] flex-shrink-0">
 							<Image
 								src={`/${cleanExtension}.png`}
 								alt="file icon"
