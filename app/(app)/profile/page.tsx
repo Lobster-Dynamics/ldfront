@@ -9,12 +9,10 @@ export default function Profile() {
 
 	const handleShowPassword = () => {
 		setShowPassword(!showPassword);
-		console.log("showPassword", showPassword);
 	};
 
 	const handleShowRepeatPassword = () => {
 		setShowRepeatPassword(!showRepeatPassword);
-		console.log("showRepeatPassword", showRepeatPassword);
 	};
 
 	return (
@@ -66,7 +64,6 @@ export default function Profile() {
 							</label>
 							<input
 								type={showPassword ? "text" : "password"}
-								value="miContraseña1234"
 								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
 							/>
 							{showPassword ? (
@@ -87,7 +84,6 @@ export default function Profile() {
 							</label>
 							<input
 								type={showRepeatPassword ? "text" : "password"}
-								value="miContraseña1234"
 								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
 							/>
 							{showRepeatPassword ? (
