@@ -42,23 +42,16 @@ export default function File({
 			window.open(`/documento?id=${uuid}`, "_blank");
 		};
 
-		const openContextMenu = (
-			e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-		) => {
+		const openContextMenu = (e: any) => {
 			e.preventDefault();
 			const { pageX, pageY } = e;
 			setContextMenu({ show: true, x: pageX, y: pageY });
 		};
-		const closeContextMenu = (
-			e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-		) => {
-			e.preventDefault();
-			setContextMenu({ show: false, x: 0, y: 0 });
-		};
 
 		if (fileRef.current) {
-			fileRef.current.addEventListener("contextmenu", openContextMenu);
-			// fileRef.current.addEventListener("click", closeContextMenu);
+			fileRef.current.addEventListener("contextmenu", (e) =>
+				openContextMenu(e),
+			);
 			fileRef.current.addEventListener("dblclick", openDocument);
 			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
@@ -68,9 +61,8 @@ export default function File({
 		return () => {
 			if (fileRef.current) {
 				// fileRef.current.removeEventListener("click", closeContextMenu);
-				fileRef.current.removeEventListener(
-					"contextmenu",
-					openContextMenu,
+				fileRef.current.removeEventListener("contextmenu", (e) =>
+					openContextMenu(e),
 				);
 				fileRef.current.removeEventListener("dblclick", openDocument);
 				fileRef.current.addEventListener("keypress", (e) => {
