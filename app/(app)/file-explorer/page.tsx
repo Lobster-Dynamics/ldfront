@@ -8,7 +8,6 @@ import NewButton from "@/components/file-explorer/NewButton";
 import { Calendar, LayoutGrid, List } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
-import SubMenu from "@/components/file-explorer/SubMenu";
 import { DocumentDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";

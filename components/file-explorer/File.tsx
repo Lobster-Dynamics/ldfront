@@ -33,7 +33,9 @@ export default function File({
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
-	useOnClickOutside(fileRef, () => setContextMenu({show: false, x: 0, y: 0}));
+	useOnClickOutside(fileRef, () =>
+		setContextMenu({ show: false, x: 0, y: 0 }),
+	);
 
 	useEffect(() => {
 		const openDocument = () => {
@@ -56,7 +58,7 @@ export default function File({
 
 		if (fileRef.current) {
 			fileRef.current.addEventListener("contextmenu", openContextMenu);
-			fileRef.current.addEventListener("click", closeContextMenu);
+			// fileRef.current.addEventListener("click", closeContextMenu);
 			fileRef.current.addEventListener("dblclick", openDocument);
 			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
@@ -65,7 +67,7 @@ export default function File({
 
 		return () => {
 			if (fileRef.current) {
-				fileRef.current.removeEventListener("click", closeContextMenu);
+				// fileRef.current.removeEventListener("click", closeContextMenu);
 				fileRef.current.removeEventListener(
 					"contextmenu",
 					openContextMenu,
@@ -103,6 +105,8 @@ export default function File({
 						show={contextMenu.show}
 						x={contextMenu.x}
 						y={contextMenu.y}
+						uuid={uuid}
+						setContextMenu={setContextMenu}
 					/>
 				)}
 			</div>
@@ -138,7 +142,13 @@ export default function File({
 					</div>
 				</div>
 				{contextMenu.show && (
-					<SubMenu x={contextMenu.x} y={contextMenu.y} />
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+						uuid={uuid}
+						setContextMenu={setContextMenu}
+					/>
 				)}
 			</div>
 		);
