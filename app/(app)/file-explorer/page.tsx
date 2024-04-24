@@ -6,19 +6,20 @@ import { filesData } from "@/utils/constants";
 import Sidebar from "@/components/file-explorer/Sidebar";
 import NewButton from "@/components/file-explorer/NewButton";
 import { Calendar, LayoutGrid, List } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
 import { DocumentDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
 
+
+
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
     const { auth } = useAuth()
-
     const { data: documents } = useSWR<DocumentDetails[]>(`/document/get_documents/${auth?.uid}`, fetcher)
-
+   
     return (
         <div className="max-h-full flex-grow bg-white">
             <div className="flex h-full w-full pt-4">
@@ -118,6 +119,8 @@ export default function FileExplorer() {
                 </div>
             </div>
             <ModalAddFolder />
+            
+            
         </div>
     );
 }
