@@ -23,8 +23,7 @@ export default function FileExplorer() {
     return (
         <div className="max-h-full flex-grow bg-white">
             <div className="flex h-full w-full pt-4">
-                <div className="md hidden  h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
-                    {/* TODO: IMPLEMENTAR COMPONENTE SIDEBAR */}
+                <div className="hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
                     <div className="relative w-full h-20 flex justify-center items-center ">
                         <NewButton />
                     </div>
@@ -62,8 +61,8 @@ export default function FileExplorer() {
                             style={{
                                 gridTemplateColumns:
                                     viewMode === "grid"
-                                        ? "repeat(auto-fit,minmax(11rem, 1fr))"
-                                        : "1fr",
+                                        ? "repeat(auto-fit,minmax(12rem, 1fr))"
+                                        : "minmax(0, 1fr)",
                                 gap: viewMode === "grid" ? "1rem" : "0.5rem",
                             }}
                         >

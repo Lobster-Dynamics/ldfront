@@ -1,5 +1,3 @@
-import { current } from "@reduxjs/toolkit";
-import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -33,20 +31,24 @@ export default function File({
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
+
 	useOnClickOutside(fileRef, () =>
 		setContextMenu({ show: false, x: 0, y: 0 }),
 	);
+
 
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${uuid}`, "_blank");
 		};
 
+
 		const openContextMenu = (e: any) => {
 			e.preventDefault();
 			const { pageX, pageY } = e;
 			setContextMenu({ show: true, x: pageX, y: pageY });
 		};
+
 
 		if (fileRef.current) {
 			fileRef.current.addEventListener("contextmenu", (e) =>
@@ -86,11 +88,14 @@ export default function File({
 					height={100}
 					className="self-center"
 				/>
-				<div className="flex items-end justify-between">
-					<h1 className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap">
+				<div className="flex items-end justify-between ">
+					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
-					</h1>
-					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
+					</p>
+					<EllipsisVertical
+						className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
+						size={20}
+					/>
 				</div>
 				{contextMenu.show && (
 					<SubMenu
@@ -112,7 +117,7 @@ export default function File({
 					ref={fileRef}
 				>
 					<div className="flex w-2/4 items-center gap-2">
-						<div className="w-[50px]">
+						<div className="w-[50px] flex-shrink-0">
 							<Image
 								src={`/${cleanExtension}.png`}
 								alt="file icon"
