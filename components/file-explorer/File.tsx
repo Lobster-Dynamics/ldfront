@@ -4,6 +4,7 @@ import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
+import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
 
 interface FileProps {
 	name: string;
@@ -31,6 +32,8 @@ export default function File({
 	const fileRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
+
+	useOnClickOutside(fileRef, () => setContextMenu({show: false, x: 0, y: 0}));
 
 	useEffect(() => {
 		const openDocument = () => {
@@ -61,7 +64,6 @@ export default function File({
 		}
 
 		return () => {
-			
 			if (fileRef.current) {
 				fileRef.current.removeEventListener("click", closeContextMenu);
 				fileRef.current.removeEventListener(
@@ -97,7 +99,11 @@ export default function File({
 					<EllipsisVertical className="text-transparent transition group-hover:text-black group-focus:text-black" />
 				</div>
 				{contextMenu.show && (
-					<SubMenu show={contextMenu.show} x={contextMenu.x} y={contextMenu.y} />
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+					/>
 				)}
 			</div>
 		);
