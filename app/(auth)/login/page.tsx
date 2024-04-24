@@ -4,7 +4,7 @@ import AuthWrapper from "@/components/AuthWrapper";
 import InitialContainer from "@/components/InitialContainer";
 import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie"
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";
@@ -24,6 +24,12 @@ export default function Login() {
 
 			jsCookie.set("token", data.token, {
 				expires: new Date().setMonth(new Date().getMonth() + 1),
+                secure: true
+			});
+
+			jsCookie.set("refreshToken", data.refreshToken, {
+				expires: new Date().setMonth(new Date().getMonth() + 1),
+                secure: true
 			});
 
 			dispatch(setAuth(data));
