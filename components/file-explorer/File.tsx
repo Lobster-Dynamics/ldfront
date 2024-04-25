@@ -30,6 +30,8 @@ export default function File({
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
+	const submenuRef = useRef<HTMLDivElement>(null);
+
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
@@ -55,6 +57,13 @@ export default function File({
 			setContextMenu({ show: true, x: pageX, y: pageY });
 		};
 
+		const closeContextMenu = (e: any) => {
+			e.preventDefault();
+			setContextMenu({ show: false, x: 0, y: 0 });
+		};
+
+
+
 		if (fileRef.current) {
 			fileRef.current.addEventListener("contextmenu", (e) =>
 				openContextMenu(e),
@@ -67,7 +76,6 @@ export default function File({
 
 		return () => {
 			if (fileRef.current) {
-				// fileRef.current.removeEventListener("click", closeContextMenu);
 				fileRef.current.removeEventListener("contextmenu", (e) =>
 					openContextMenu(e),
 				);
@@ -114,6 +122,7 @@ export default function File({
 						y={contextMenu.y}
 						uuid={uuid}
 						setContextMenu={setContextMenu}
+						ref={submenuRef}
 					/>
 				)}
 			</div>
@@ -155,6 +164,7 @@ export default function File({
 						y={contextMenu.y}
 						uuid={uuid}
 						setContextMenu={setContextMenu}
+						ref={submenuRef}
 					/>
 				)}
 			</div>
