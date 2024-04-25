@@ -1,9 +1,14 @@
 "use client";
 
+import { logOut } from "@/redux/slices/authSlice";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import jsCookie from "js-cookie";
 
 export default function Profile() {
+	const dispatch = useDispatch();
+
 	const [showPassword, setShowPassword] = useState(false);
 	const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
@@ -15,14 +20,20 @@ export default function Profile() {
 		setShowRepeatPassword(!showRepeatPassword);
 	};
 
+	const handleLogout = () => {
+		dispatch(logOut());
+		jsCookie.remove("token");
+		jsCookie.remove("refreshToken");
+	};
+
 	return (
 		<div className="flex-grow bg-white pt-10">
 			<div className="mx-auto w-full max-w-screen-lg px-2.5 md:px-28">
 				<div className="flex items-center justify-between">
 					<p className="text-2xl">Cuenta</p>
-					<p className="text-[#E55E86]">Cerrar sesión</p>
+					<button className="hover:text-[#E55E86] hover:bg-accent p-2 transition rounded-md" onClick={handleLogout}>Cerrar sesión</button>
 				</div>
-				<div className="mt-4 bg-[#F3F4F6] p-10 rounded-lg">
+				<div className="mt-4 rounded-lg bg-[#F3F4F6] p-10">
 					<div className="flex justify-between gap-16">
 						<div className="flex w-full flex-col">
 							<label htmlFor="name" className="text-[#5C5868]">
@@ -99,7 +110,9 @@ export default function Profile() {
 							)}
 						</div>
 					</div>
-					<button className="block mx-auto mt-8 bg-[#9D5BD2] text-white py-2 px-8 rounded-lg">Guardar cambios</button>
+					<button className="mx-auto mt-8 block rounded-lg bg-[#9D5BD2] px-8 py-2 text-white">
+						Guardar cambios
+					</button>
 				</div>
 			</div>
 		</div>
