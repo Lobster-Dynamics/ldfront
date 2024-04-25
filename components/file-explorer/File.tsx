@@ -1,6 +1,8 @@
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import SubMenu from "./SubMenu";
+import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
 
 interface FileProps {
 	name: string;
@@ -11,6 +13,12 @@ interface FileProps {
 	uploadDate: Date;
 }
 
+const initialContextMenu = {
+	show: false,
+	x: 0,
+	y: 0,
+};
+
 export default function File({
 	name,
 	extension,
@@ -20,15 +28,32 @@ export default function File({
 	uploadDate,
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
-
+	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
+
+
+	useOnClickOutside(fileRef, () =>
+		setContextMenu({ show: false, x: 0, y: 0 }),
+	);
+
 
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${uuid}`, "_blank");
 		};
 
+
+		const openContextMenu = (e: any) => {
+			e.preventDefault();
+			const { pageX, pageY } = e;
+			setContextMenu({ show: true, x: pageX, y: pageY });
+		};
+
+
 		if (fileRef.current) {
+			fileRef.current.addEventListener("contextmenu", (e) =>
+				openContextMenu(e),
+			);
 			fileRef.current.addEventListener("dblclick", openDocument);
 			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
@@ -37,6 +62,10 @@ export default function File({
 
 		return () => {
 			if (fileRef.current) {
+				// fileRef.current.removeEventListener("click", closeContextMenu);
+				fileRef.current.removeEventListener("contextmenu", (e) =>
+					openContextMenu(e),
+				);
 				fileRef.current.removeEventListener("dblclick", openDocument);
 				fileRef.current.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
@@ -68,6 +97,15 @@ export default function File({
 						size={20}
 					/>
 				</div>
+				{contextMenu.show && (
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+						uuid={uuid}
+						setContextMenu={setContextMenu}
+					/>
+				)}
 			</div>
 		);
 	} else if (viewMode === "list") {
@@ -100,6 +138,15 @@ export default function File({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
+				{contextMenu.show && (
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+						uuid={uuid}
+						setContextMenu={setContextMenu}
+					/>
+				)}
 			</div>
 		);
 	}
