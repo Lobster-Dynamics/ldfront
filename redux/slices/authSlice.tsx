@@ -13,6 +13,9 @@ export const authSlice = createSlice({
             state.auth = action.payload
             state.cargando = false
         },
+        logOut: (state) => {
+            state.auth = null;
+        }
     },
     extraReducers(builder) {
         builder.addCase(loadAuth.pending, (state, action) => {
@@ -31,6 +34,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, logOut } = authSlice.actions;
 
 export default authSlice.reducer;

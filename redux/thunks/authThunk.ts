@@ -8,7 +8,7 @@ export const loadAuth = createAsyncThunk(
 	async () => {
 		try {
 			const config = axiosConfig();
-			if (!config) return;
+			if (!config || !jsCookie.get("token")) return;
 
 			const { data } = await axiosClient("/user/load_profile", config);
             

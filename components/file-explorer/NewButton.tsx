@@ -55,7 +55,7 @@ export default function NewButton() {
     return (
         <div>
             <button onClick={() => setMenu(true)} className="self-center items-center flex">
-                <label className="cursor-pointer border-2 border-black self-center items-center flex h-14 rounded-lg bg-[#F3F4F6] hover:bg-[#7B20C3] hover:bg-opacity-20 transition p-4">
+                <label className="cursor-pointer border-2 border-black self-center items-center flex h-14 rounded-lg bg-[#F3F4F6] hover:bg-purpleFrida-700 hover:bg-opacity-10 transition p-4">
                     <Plus size={30} />
                     <p className="min-[0px]:hidden lg:block lg:text-md xl:text-2xl">
                         Nuevo
@@ -64,7 +64,7 @@ export default function NewButton() {
             </button>
             {menu && (
                 <div ref={menuRef} className="-mr-20 absolute right-0 top-1/2 z-10  bg-white border border-gray-300 rounded-lg">
-                    <label className="block mb-2 hover:bg-purple-200 text-2xl w-full text-start py-2 px-4" >
+                    <label className="block mb-2 hover:bg-blueFrida-500 text-2xl w-full text-start py-2 px-4" >
                         Archivo
                         <input
                             type="file"
@@ -73,7 +73,7 @@ export default function NewButton() {
                             onChange={handleFileUpload}
                         />
                     </label>
-                    <button className="block text-2xl hover:bg-purple-200 py-2 px-4 text-start" onClick={() => {
+                    <button className="block text-2xl hover:bg-blueFrida-500 py-2 px-4 text-start" onClick={() => {
 
                         setMenu(false)
                         dispatch(toggleModalAñadirCarpeta())

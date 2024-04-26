@@ -14,7 +14,7 @@ export default function Navbar({ isAuth }: NavbarProps) {
 					<div className="flex items-center md:gap-3 lg:flex-grow">
 						<Link href="/">
 							<div className="flex gap-2 text-2xl lg:text-3xl">
-								<h1 className="text-purple-500">FRIDA</h1>
+								<h1 className="text-purpleFrida-300">FRIDA</h1>
 								<h1 className="text-black">Research Engine</h1>
 							</div>
 						</Link>
@@ -32,7 +32,7 @@ export default function Navbar({ isAuth }: NavbarProps) {
 								href="/settings"
 								className="group transition-none focus:outline-none"
 							>
-								<Settings className="h-8 transition hover:text-purple-500 group-focus:text-purple-500" />
+								<Settings className="h-8 transition hover:text-purpleFrida-300 group-focus:text-purpleFrida-300" />
 							</Link>
 							<span
 								className="h-8 w-px bg-gray-400"
@@ -40,7 +40,7 @@ export default function Navbar({ isAuth }: NavbarProps) {
 							/>
 							<Link
 								href="/profile"
-								className="text-lg transition hover:text-purple-500 focus:text-purple-500 focus:outline-none"
+								className="text-lg transition hover:text-purpleFrida-300 focus:text-purpleFrida-300 focus:outline-none"
 							>
 								Cuenta
 							</Link>

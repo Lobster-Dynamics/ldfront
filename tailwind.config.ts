@@ -52,6 +52,19 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        purpleFrida: {
+            300: "#AC73D9",
+            500: "#8700BF",
+            700: "#7B20C3"
+        },
+        blueFrida: {
+            300: "#DBDEFF",
+            500: "#AEB1F8",
+            700: "#6568BB"
+        },
+        redFrida: {
+            400: "#E55E86"
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
