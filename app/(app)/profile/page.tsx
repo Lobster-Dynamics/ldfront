@@ -1,7 +1,7 @@
 "use client";
 
 import { logOut } from "@/redux/slices/authSlice";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LogOut } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import jsCookie from "js-cookie";
@@ -31,51 +31,48 @@ export default function Profile() {
 			<div className="mx-auto w-full max-w-screen-lg px-2.5 md:px-28">
 				<div className="flex items-center justify-between">
 					<p className="text-2xl">Cuenta</p>
-					<button className="hover:text-[#E55E86] hover:bg-accent p-2 transition rounded-md" onClick={handleLogout}>Cerrar sesión</button>
+					<button className="group transition-none focus:outline-none">
+						<LogOut
+							className="hover:text-redFrida-400 group-focus:text-redFrida-400 h-8 transition"
+							onClick={handleLogout}
+						/>
+					</button>
 				</div>
-				<div className="mt-4 rounded-lg bg-[#F3F4F6] p-10">
+				<div className="mt-4 rounded-lg bg-gray-100 p-10">
 					<div className="flex justify-between gap-16">
 						<div className="flex w-full flex-col">
-							<label htmlFor="name" className="text-[#5C5868]">
-								Nombre
-							</label>
+							<label htmlFor="name">Nombre</label>
 							<input
 								type="text"
 								placeholder="Rodrigo"
-								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 							/>
 						</div>
 						<div className="flex w-full flex-col">
-							<label htmlFor="surname" className="text-[#5C5868]">
-								Apellido
-							</label>
+							<label htmlFor="surname">Apellido</label>
 							<input
 								type="text"
 								placeholder="Reyes"
-								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 							/>
 						</div>
 					</div>
 					<div className="my-4 w-1/2 pr-8">
 						<div className="flex w-full flex-col">
-							<label htmlFor="surname" className="text-[#5C5868]">
-								Correo
-							</label>
+							<label htmlFor="surname">Correo</label>
 							<input
 								type="email"
 								placeholder="rodrigoreyes@mail.com"
-								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 							/>
 						</div>
 					</div>
 					<div className="flex justify-between gap-16">
 						<div className="relative flex w-full flex-col">
-							<label htmlFor="name" className="text-[#5C5868]">
-								Contraseña
-							</label>
+							<label htmlFor="name">Contraseña</label>
 							<input
 								type={showPassword ? "text" : "password"}
-								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 							/>
 							{showPassword ? (
 								<Eye
@@ -90,12 +87,10 @@ export default function Profile() {
 							)}
 						</div>
 						<div className="relative flex w-full flex-col">
-							<label htmlFor="surname" className="text-[#5C5868]">
-								Repetir contraseña
-							</label>
+							<label htmlFor="surname">Repetir contraseña</label>
 							<input
 								type={showRepeatPassword ? "text" : "password"}
-								className="mt-2 rounded-lg bg-[#E3E1E1] p-2 placeholder:text-black"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 							/>
 							{showRepeatPassword ? (
 								<Eye
@@ -110,7 +105,7 @@ export default function Profile() {
 							)}
 						</div>
 					</div>
-					<button className="mx-auto mt-8 block rounded-lg bg-[#9D5BD2] px-8 py-2 text-white">
+					<button className="bg-purpleFrida-300 hover:bg-purpleFrida-500 focus:bg-purpleFrida-500 mx-auto mt-8 block rounded-lg px-8 py-2 text-white transition">
 						Guardar cambios
 					</button>
 				</div>

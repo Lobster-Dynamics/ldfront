@@ -54,7 +54,7 @@ export default function FileExplorer() {
                         {/* TODO: Obtener PATH real */}
                         Mi Unidad &gt; Ciencias Sociales
                     </div>
-                    <div className="my-4 h-screen overflow-y-auto rounded-lg bg-[#F3F4F6] p-4 text-[#5C5868]">
+                    <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
                         <div
                             className="grid"
                             style={{

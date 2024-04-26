@@ -127,7 +127,7 @@ const Step1 = ({
                 onChange={(e) => setLastname(e.target.value)}
 			/>
 			<button
-				className="mt-10 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white"
+				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
 				onClick={() => setStep(1)}
 			>
 				Continuar
@@ -171,7 +171,7 @@ const Step2 = ({
 				/>
 			</div>
 			<button
-				className="mt-10 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white"
+				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
 				onClick={handleCreateAccount}
 			>
 				Registrar

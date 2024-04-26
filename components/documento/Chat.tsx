@@ -20,13 +20,13 @@ export default function Chat({ Chat }: ChatProps) {
                 {Chat.Chat.map((message, index) => (
                     message.role === "bot" ? (
                         <div className="flex flex-row w-full justify-start mt-2" key={index}>
-                            <div className="bg-[#dbdeff] text-lg font-mono rounded-lg mx-4 p-3">
+                            <div className="bg-blueFrida-300 text-lg font-mono rounded-lg mx-4 p-3">
                                 {message.Message}
                             </div>
                         </div>
                     ) : (
                         <div className="flex flex-row w-full justify-end mt-2" key={index}>
-                            <div className="bg-purple-700 text-lg font-mono text-white p-3 rounded-lg mx-4">
+                            <div className="bg-purpleFrida-700 text-lg font-mono text-white p-3 rounded-lg mx-4">
                                 {message.Message}
                             </div>
                         </div>
@@ -34,13 +34,14 @@ export default function Chat({ Chat }: ChatProps) {
                 ))}
                 <div ref={bottomRef} />
             </div>
-            <div className="bg-[#dadbdd] p-1 h-10 w-full mt-4 flex flex-row justify-between">
+            <div className="relative mt-1">
+                <Send className="absolute bottom-0 right-3 top-0 m-auto h-8" />
                 <input
                     type="text"
-                    className="w-10/12 p-2 bg-[#dadbdd]"
+                    placeholder="Preguntar a Frida..."
+                    className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition focus:border-purpleFrida-300 focus:outline-none"
                 />
-                <Send className="mr-2 mt-1 text-2xl" />
-            </div>
+		    </div>
         </div>
     );
 }
