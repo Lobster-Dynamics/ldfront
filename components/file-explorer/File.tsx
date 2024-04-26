@@ -123,6 +123,7 @@ export default function File({
 						uuid={uuid}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
+						extension={extension}
 					/>
 				)}
 			</div>
@@ -165,6 +166,7 @@ export default function File({
 						uuid={uuid}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
+						extension={extension}
 					/>
 				)}
 			</div>
