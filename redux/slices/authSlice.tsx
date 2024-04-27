@@ -22,7 +22,7 @@ export const authSlice = createSlice({
             state.cargando = true;
         }),
         builder.addCase(loadAuth.fulfilled, (state, action) => {
-            state.auth = { ...action.payload, refreshToken: state.auth?.refreshToken };
+            state.auth = action.payload;
             state.cargando = false;
         }),
         builder.addCase(loadAuth.rejected, (state, action) => {
