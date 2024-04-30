@@ -11,6 +11,7 @@ import { setAuth } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
 import { loadUserAuthData } from "@/lib/utils";
+import { errorHandler } from "@/utils/errorHandler";
 
 export default function Login() {
 
@@ -40,6 +41,7 @@ export default function Login() {
 			router.push("/file-explorer")
 		} catch (err: any) {
             toast.error(err.response.data.message)
+            errorHandler(err)
 				}
 	}
 

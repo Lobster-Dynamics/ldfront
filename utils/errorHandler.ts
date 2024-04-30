@@ -47,7 +47,7 @@ if(error?.code === "ERR_BAD_REQUEST"){
             ErrorAlert("No autorizado", error?.response?.data?.msg ?? "No sos admin","warning")
 
         case 403: 
-            ErrorAlert("Sin permiso", error?.response?.data?.msg ?? "No tienes permiso para acceder a este recurso ","warning")
+            ErrorAlert("Sin permiso", error?.response?.data?.msg ?? "No tienes permiso para acceder a este recurso, tu token ha caducado ","warning")
 
         case 404:
             ErrorAlert("No encontrado", error?.response?.data?.msg ?? "No se encontro el recurso solicitado ","warning")
