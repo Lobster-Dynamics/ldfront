@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
+import { loadUserAuthData } from "@/lib/utils";
 
 export default function Login() {
 
@@ -22,18 +23,19 @@ export default function Login() {
 		e.preventDefault()
 		try {
 			const { data } = await axiosClient.post("/user/login_email", { "email": user, "password": password })
+            const userData = loadUserAuthData(data);
 
-			jsCookie.set("token", data.token, {
+			jsCookie.set("token", userData.token, {
 				expires: new Date().setMonth(new Date().getMonth() + 1),
                 secure: true
 			});
 
-			jsCookie.set("refreshToken", data.refreshToken, {
+			jsCookie.set("refreshToken", userData.refreshToken, {
 				expires: new Date().setMonth(new Date().getMonth() + 1),
                 secure: true
 			});
 
-			dispatch(setAuth(data));
+			dispatch(setAuth(userData));
 
 			router.push("/file-explorer")
 		} catch (err: any) {
