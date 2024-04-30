@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 export default function Login() {
 
@@ -36,12 +37,8 @@ export default function Login() {
 
 			router.push("/file-explorer")
 		} catch (err: any) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Credenciales incorrectas',
-			})
-		}
+            toast.error(err.response.data.message)
+				}
 	}
 
 
@@ -52,14 +49,14 @@ export default function Login() {
                 <input
                     type="text"
                     placeholder="Usuario"
-                    className="w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+                    className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
                     value={user}
                     onChange={(e) => setUser(e.target.value)}
                 />
                 <input
                     type="password"
                     placeholder="Contraseña"
-                    className="mt-5 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+                    className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
