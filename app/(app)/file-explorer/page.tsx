@@ -2,24 +2,36 @@
 
 import File from "@/components/file-explorer/File";
 import Folder from "@/components/file-explorer/Folder";
-import { filesData } from "@/utils/constants";
 import Sidebar from "@/components/file-explorer/Sidebar";
 import NewButton from "@/components/file-explorer/NewButton";
 import { Calendar, LayoutGrid, List } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
-import { DocumentDetails } from "@/types/ModelTypes";
+import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
-
-
+import { loadDirectoryData } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
     const { auth } = useAuth()
-    const { data: documents } = useSWR<DocumentDetails[]>(`/document/get_documents/${auth?.uid}`, fetcher)
-   
+
+    const searchParams = useSearchParams();
+    const directory_id = searchParams?.get("id") ?? auth?.rootDirectoryId;
+    console.log(directory_id)
+
+    const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directory_id}`, fetcher)
+    const [directory, setDirectory] = useState<DirectoryDetails | null>(null)
+
+
+    useEffect(() => {
+        if (directoryUnparsed) {
+            setDirectory(loadDirectoryData(directoryUnparsed))
+        }
+    }, [directoryUnparsed])
+
     return (
         <div className="max-h-full flex-grow bg-white">
             <div className="flex h-full w-full pt-4">
@@ -32,7 +44,7 @@ export default function FileExplorer() {
                 <div className="flex h-full w-full flex-col px-4 pb-16 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
                     {/* CONTENEDOR DE DOCUMENTOS */}
                     <div className="flex items-center justify-between">
-                        <h1 className="text-3xl">Archivos</h1>
+                        <h1 className="text-3xl">{directory?.name}</h1>
                         <div className="flex gap-3">
                             <button onClick={() => setViewMode("list")}>
                                 <List
@@ -53,7 +65,7 @@ export default function FileExplorer() {
                     </div>
                     <div className="text-xl text-[#5C5868]">
                         {/* TODO: Obtener PATH real */}
-                        Mi Unidad &gt; Ciencias Sociales
+                        {directory?.path}
                     </div>
                     <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
                         <div
@@ -76,44 +88,35 @@ export default function FileExplorer() {
                                     </div>
                                 </div>
                             )}
-                            {documents && documents.length > 0 && (
-                                documents.map((document, i) => (
-                                    <File
-                                        key={i}
-                                        name={document.name}
-                                        extension={document.extension}
-                                        uuid={document.id}
-                                        viewMode={viewMode}
-                                        ownerName={auth?.name + " " + auth?.lastname}
-                                        uploadDate={new Date()} />
-                                ))
+                            {directory && directory.items.length > 0 && (
+                                directory.items.map((file, i) => {
+                                    {
+                                        if (file.type === "DIRECTORY")
+                                            return (
+                                                <Folder
+                                                    key={i}
+                                                    name={file.name}
+                                                    id={file.id}
+                                                    viewMode={viewMode}
+                                                    ownerName={file.ownerName}
+                                                    uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                                />
+                                            );
+                                        else if (file.type === "DOCUMENT")
+                                            return (
+                                                <File
+                                                    key={i}
+                                                    name={file.name}
+                                                    extension={file.extension}
+                                                    id={file.id}
+                                                    viewMode={viewMode}
+                                                    ownerName={file.ownerName}
+                                                    uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                                />
+                                            );
+                                    }
+                                })
                             )}
-
-                            {filesData.files.map((file, i) => {
-                                if (file.type === "folder")
-                                    return (
-                                        <Folder
-                                            key={i}
-                                            name={file.name}
-                                            uuid={file.uuid}
-                                            viewMode={viewMode}
-                                            ownerName={file.owner}
-                                            uploadDate={file.uploadDate}
-                                        />
-                                    );
-                                else if (file.type === "file")
-                                    return (
-                                        <File
-                                            key={i}
-                                            name={file.name}
-                                            extension={file.extension}
-                                            uuid={file.uuid}
-                                            viewMode={viewMode}
-                                            ownerName={file.owner}
-                                            uploadDate={file.uploadDate}
-                                        />
-                                    );
-                            })}
                         </div>
                     </div>
                 </div>

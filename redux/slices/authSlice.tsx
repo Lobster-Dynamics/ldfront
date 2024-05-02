@@ -22,7 +22,7 @@ export const authSlice = createSlice({
             state.cargando = true;
         }),
         builder.addCase(loadAuth.fulfilled, (state, action) => {
-            state.auth = action.payload;
+            state.auth = action.payload as UserAuth;
             state.cargando = false;
         }),
         builder.addCase(loadAuth.rejected, (state, action) => {
