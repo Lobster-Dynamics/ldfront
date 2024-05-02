@@ -2,7 +2,7 @@ import React from 'react';
 import ReactWordcloud from 'react-wordcloud';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
-import { Word } from 'react-wordcloud';
+import { Word, Options } from 'react-wordcloud';
 
 interface WordCloudProps {
   uuid: string;
@@ -33,7 +33,7 @@ export default function Wordcloud({ uuid }: WordCloudProps) {
     }
   });
 
-  const options = {
+  const options: Options = {
     colors: ["#AC73D9", "#8700BF", "#7B20C3", "#DBDEFF", "#AEB1F8", "#6568BB"],
     enableTooltip: true,
     deterministic: false,
@@ -45,7 +45,12 @@ export default function Wordcloud({ uuid }: WordCloudProps) {
     rotations: 3,
     rotationAngles: [0, 75],
     scale: "sqrt",
-    transitionDuration: 1000
+    transitionDuration: 1000,
+    enableOptimizations: false,
+    spiral: 'archimedean',
+    svgAttributes: undefined,
+    textAttributes: undefined,
+    tooltipOptions: undefined
   };
 
   // Render the ReactWordcloud with the validated data
