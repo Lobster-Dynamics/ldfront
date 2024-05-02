@@ -2,7 +2,9 @@ import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import SubMenu from "./SubMenu";
+import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
 
 interface FolderProps {
 	id: UUID;
@@ -12,16 +14,25 @@ interface FolderProps {
 	uploadDate: Date;
 }
 
+const initialContextMenu = {
+	show: false,
+	x: 0,
+	y: 0,
+};
+
 export default function Folder({
 	id,
 	name,
+	uuid,
 	viewMode,
 	ownerName,
 	uploadDate,
 }: FolderProps) {
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
-
+  const buttonRef = useRef<HTMLButtonElement>(null);
+	const submenuRef = useRef<HTMLDivElement>(null);
+	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
 	useEffect(() => {
 		const handleFolderClick = () => {
@@ -45,6 +56,44 @@ export default function Folder({
 		};
 	}, []);
 
+	const openContextMenuButton = () => {
+		if (buttonRef.current) {
+			const rect = buttonRef.current.getBoundingClientRect();
+			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
+		}
+	};
+
+	useOnClickOutside(fileRef, () =>
+		setContextMenu({ show: false, x: 0, y: 0 }),
+	);
+
+	useEffect(() => {
+		const openContextMenu = (e: any) => {
+			e.preventDefault();
+			const { pageX, pageY } = e;
+			setContextMenu({ show: true, x: pageX, y: pageY });
+		};
+
+		const closeContextMenu = (e: any) => {
+			e.preventDefault();
+			setContextMenu({ show: false, x: 0, y: 0 });
+		};
+
+		if (directoryRef.current) {
+			directoryRef.current.addEventListener("contextmenu", (e) =>
+				openContextMenu(e),
+			);
+		}
+
+		return () => {
+			if (directoryRef.current) {
+				directoryRef.current.removeEventListener("contextmenu", (e) =>
+					openContextMenu(e),
+				);
+			}
+		};
+	}, [uuid]);
+
 	if (viewMode === "grid") {
 		return (
 			<div
@@ -63,11 +112,24 @@ export default function Folder({
 					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
 					</p>
-					<EllipsisVertical
-						className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
-						size={20}
-					/>
+					<button onClick={openContextMenuButton} ref={buttonRef}>
+						<EllipsisVertical
+							className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
+							size={20}
+						/>
+					</button>
 				</div>
+				{contextMenu.show && (
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+						uuid={id}
+						setContextMenu={setContextMenu}
+						ref={submenuRef}
+						extension={null}
+					/>
+				)}
 			</div>
 		);
 	} else if (viewMode === "list") {
@@ -99,6 +161,17 @@ export default function Folder({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
+				{contextMenu.show && (
+					<SubMenu
+						show={contextMenu.show}
+						x={contextMenu.x}
+						y={contextMenu.y}
+						uuid={id}
+						setContextMenu={setContextMenu}
+						ref={submenuRef}
+						extension={null}
+					/>
+				)}
 			</div>
 		);
 	}
