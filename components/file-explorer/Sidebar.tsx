@@ -1,6 +1,4 @@
 import { File } from "lucide-react";
-import { useState } from "react";
-import { ReactNode } from "react";
 
 import {
 	Accordion,
@@ -76,7 +74,7 @@ export default function Sidebar() {
 					);
 				else if (file.type === "file")
 					return (
-						<div className="ml-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10 px-2" key={i}>
+						<div className="ml-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10 px-2" key={i}>
 							<File className="flex-shrink-0 h-4 w-4 ml-4"></File>
 							<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
 								{file.name}
@@ -90,7 +88,7 @@ export default function Sidebar() {
 	
 
 	return (
-		<div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-[#F3F4F6] p-2">
+		<div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-gray-100 p-2">
 			<MakeAccordion>
                 {files}
             </MakeAccordion>

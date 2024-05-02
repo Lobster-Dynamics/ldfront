@@ -8,30 +8,31 @@ export const loadAuth = createAsyncThunk(
 	async () => {
 		try {
 			const config = axiosConfig();
-			if (!config) return;
+			if (!config || !jsCookie.get("token")) return;
 
 			const { data } = await axiosClient("/user/load_profile", config);
-            
-			return data;
+
+			return {
+				...data,
+				token: jsCookie.get("token"),
+				refreshToken: jsCookie.get("refreshToken"),
+			};
 		} catch (error: any) {
 			// TODO: Actualizar manejo de errores
 		}
 	},
 );
 
-export const refreshToken = createAsyncThunk(
-    "/auth/refreshToken",
-    async () => {
-        try {
-            const { data } = await axiosClient.post("/user/refresh-token", {
-                refreshToken: jsCookie.get("refreshToken"),
-            });
-            jsCookie.set("token", data.token);
-            jsCookie.set("refreshToken", data.refreshToken);
+export const refreshToken = createAsyncThunk("/auth/refreshToken", async () => {
+	try {
+		const { data } = await axiosClient.post("/user/refresh-token", {
+			refreshToken: jsCookie.get("refreshToken"),
+		});
+		jsCookie.set("token", data.token);
+		jsCookie.set("refreshToken", data.refreshToken);
 
-            return data;
-        } catch (error: any) {
-            // TODO: Actualizar manejo de errores
-        }
-    }
-)
+		return data;
+	} catch (error: any) {
+		// TODO: Actualizar manejo de errores
+	}
+});

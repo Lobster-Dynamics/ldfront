@@ -56,7 +56,7 @@ const Visualizador = () => {
 
             ],
             rightBottom: [
-                { id: 'right-bottom-1', content: 'Word Cloud', component: <Wordcloud />, Icon: <Cloud /> },
+                { id: 'right-bottom-1', content: 'Word Cloud', component: <Wordcloud uuid={id}/>, Icon: <Cloud /> },
                 { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
 
             ],

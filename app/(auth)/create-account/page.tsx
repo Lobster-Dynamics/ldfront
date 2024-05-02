@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie";
 import { setAuth } from "@/redux/slices/authSlice";
+import { loadUserAuthData } from "@/lib/utils";
 
 interface StepProps {
 	setStep: (step: number) => void;
@@ -60,13 +61,21 @@ export default function Create() {
                     "lastname": lastname,
 				},
 			);
+			const userData = loadUserAuthData(data);
 
-			jsCookie.set("token", data.token, {
+			jsCookie.set("token", userData.token, {
 				expires: new Date().setMonth(new Date().getMonth() + 1),
+                secure: true
 			});
 
-			dispatch(setAuth(data));
-			router.push("/file-explorer");
+			jsCookie.set("refreshToken", userData.refreshToken, {
+				expires: new Date().setMonth(new Date().getMonth() + 1),
+                secure: true
+			});
+
+			dispatch(setAuth(userData));
+
+			// router.push("/file-explorer");
 		} catch (err: any) {
 			Swal.fire({
 				icon: "error",
@@ -127,7 +136,7 @@ const Step1 = ({
                 onChange={(e) => setLastname(e.target.value)}
 			/>
 			<button
-				className="mt-10 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white"
+				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
 				onClick={() => setStep(1)}
 			>
 				Continuar
@@ -171,7 +180,7 @@ const Step2 = ({
 				/>
 			</div>
 			<button
-				className="mt-10 rounded-lg bg-purple-700 px-8 py-2 text-2xl text-white"
+				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
 				onClick={handleCreateAccount}
 			>
 				Registrar
