@@ -37,11 +37,13 @@ export interface UserAuth {
 	uid: string;
 }
 
-export interface DocumentDetails {
+export interface DirectoryItemDetails {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
-	id: string;
+	id: UUID;
+	type: "DOCUMENT" | "DIRECTORY";
 	name: string;
 	ownerId: string;
+	ownerName: string;
 }
 
 export interface Document {
@@ -84,4 +86,13 @@ export interface Summary {
 export interface Secction {
 	body: string;
 	title: string;
+}
+
+export interface DirectoryDetails {
+	id: UUID;
+	name: string;
+	ownerId: string;
+	ownerName: string;
+	items: DirectoryItemDetails[];
+	path: string;
 }

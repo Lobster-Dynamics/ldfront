@@ -19,8 +19,8 @@ export default function Layout({ children }: Props) {
     const router = useRouter();
 
     useEffect(() => {
-        dispatch(loadAuth());
-    }, [dispatch]);
+        if (!auth) dispatch(loadAuth());
+    }, [dispatch, auth]);
 
     useEffect(() => {
         if (!auth?.uid && !cargando) {

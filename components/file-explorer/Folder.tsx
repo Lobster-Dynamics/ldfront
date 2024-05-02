@@ -1,14 +1,15 @@
 import { UUID } from "crypto";
 import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
 
 interface FolderProps {
+	id: UUID;
 	name: string;
 	viewMode: "list" | "grid";
-	uuid: UUID;
 	ownerName: string;
 	uploadDate: Date;
 }
@@ -20,16 +21,40 @@ const initialContextMenu = {
 };
 
 export default function Folder({
+	id,
 	name,
 	uuid,
 	viewMode,
 	ownerName,
 	uploadDate,
 }: FolderProps) {
-	const fileRef = useRef<HTMLDivElement>(null);
-	const buttonRef = useRef<HTMLButtonElement>(null);
+	const directoryRef = useRef<HTMLDivElement>(null);
+	const router = useRouter();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
+
+	useEffect(() => {
+		const handleFolderClick = () => {
+			router.push(`/file-explorer?id=${id}`);
+		}
+
+		if (directoryRef.current) {
+			directoryRef.current.addEventListener("dblclick", handleFolderClick);
+			directoryRef.current.addEventListener("keypress", (e) => {
+				if (e.key === "Enter") handleFolderClick();
+			});
+		}
+
+		return () => {
+			if (directoryRef.current) {
+				directoryRef.current.removeEventListener("dblclick", handleFolderClick);
+				directoryRef.current.removeEventListener("keypress", (e) => {
+					if (e.key === "Enter") handleFolderClick();
+				});
+			}
+		};
+	}, []);
 
 	const openContextMenuButton = () => {
 		if (buttonRef.current) {
@@ -54,26 +79,27 @@ export default function Folder({
 			setContextMenu({ show: false, x: 0, y: 0 });
 		};
 
-		if (fileRef.current) {
-			fileRef.current.addEventListener("contextmenu", (e) =>
+		if (directoryRef.current) {
+			directoryRef.current.addEventListener("contextmenu", (e) =>
 				openContextMenu(e),
 			);
 		}
 
 		return () => {
-			if (fileRef.current) {
-				fileRef.current.removeEventListener("contextmenu", (e) =>
+			if (directoryRef.current) {
+				directoryRef.current.removeEventListener("contextmenu", (e) =>
 					openContextMenu(e),
 				);
 			}
 		};
 	}, [uuid]);
+
 	if (viewMode === "grid") {
 		return (
 			<div
 				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
-				ref={fileRef}
+				ref={directoryRef}
 			>
 				<Image
 					src="/folder.png"
@@ -98,7 +124,7 @@ export default function Folder({
 						show={contextMenu.show}
 						x={contextMenu.x}
 						y={contextMenu.y}
-						uuid={uuid}
+						uuid={id}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
@@ -108,11 +134,10 @@ export default function Folder({
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30">
+			<div className="h-16 border-t border-black border-opacity-30" ref={directoryRef}>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 					tabIndex={0}
-					ref={fileRef}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">
@@ -141,7 +166,7 @@ export default function Folder({
 						show={contextMenu.show}
 						x={contextMenu.x}
 						y={contextMenu.y}
-						uuid={uuid}
+						uuid={id}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}

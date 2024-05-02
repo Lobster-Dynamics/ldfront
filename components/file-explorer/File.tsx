@@ -3,12 +3,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
-import { setEngine } from "crypto";
+import { UUID, setEngine } from "crypto";
 
 interface FileProps {
-	name: string;
 	extension: ".docx" | ".pdf" | ".pptx" | null;
-	uuid: string;
+	id: UUID;
+	name: string;
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
@@ -21,12 +21,12 @@ const initialContextMenu = {
 };
 
 export default function File({
-	name,
 	extension,
-	uuid,
+	id,
+	name,
 	viewMode,
 	ownerName,
-	uploadDate,
+	uploadDate
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
@@ -48,7 +48,7 @@ export default function File({
 
 	useEffect(() => {
 		const openDocument = () => {
-			window.open(`/documento?id=${uuid}`, "_blank");
+			window.open(`/documento?id=${id}`, "_blank");
 		};
 
 		const openContextMenu = (e: any) => {
@@ -61,8 +61,6 @@ export default function File({
 			e.preventDefault();
 			setContextMenu({ show: false, x: 0, y: 0 });
 		};
-
-
 
 		if (fileRef.current) {
 			fileRef.current.addEventListener("contextmenu", (e) =>
@@ -85,7 +83,7 @@ export default function File({
 				});
 			}
 		};
-	}, [uuid]);
+	}, []);
 
 	if (viewMode === "grid") {
 		return (
@@ -120,7 +118,7 @@ export default function File({
 						show={contextMenu.show}
 						x={contextMenu.x}
 						y={contextMenu.y}
-						uuid={uuid}
+						uuid={id}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={extension}
@@ -163,7 +161,7 @@ export default function File({
 						show={contextMenu.show}
 						x={contextMenu.x}
 						y={contextMenu.y}
-						uuid={uuid}
+						uuid={id}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={extension}

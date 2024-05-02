@@ -1,5 +1,6 @@
 import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
+import { loadUserAuthData } from "@/lib/utils";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import jsCookie from "js-cookie";
 
@@ -12,11 +13,11 @@ export const loadAuth = createAsyncThunk(
 
 			const { data } = await axiosClient("/user/load_profile", config);
 
-			return {
+			return loadUserAuthData({
 				...data,
 				token: jsCookie.get("token"),
 				refreshToken: jsCookie.get("refreshToken"),
-			};
+			})
 		} catch (error: any) {
 			// TODO: Actualizar manejo de errores
 		}
