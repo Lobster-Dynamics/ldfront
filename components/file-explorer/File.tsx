@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
-import { UUID, setEngine } from "crypto";
+import { UUID } from "crypto";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -128,11 +128,10 @@ export default function File({
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30">
+			<div className="h-16 border-t border-black border-opacity-30" ref={fileRef}>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
 					tabIndex={0}
-					ref={fileRef}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">

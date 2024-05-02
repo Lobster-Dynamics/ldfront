@@ -23,16 +23,26 @@ const initialContextMenu = {
 export default function Folder({
 	id,
 	name,
-	uuid,
 	viewMode,
 	ownerName,
 	uploadDate,
 }: FolderProps) {
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
+
+	const openContextMenuButton = () => {
+		if (buttonRef.current) {
+			const rect = buttonRef.current.getBoundingClientRect();
+			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
+		}
+	};
+
+	useOnClickOutside(directoryRef, () =>
+		setContextMenu({ show: false, x: 0, y: 0 }),
+	);
 
 	useEffect(() => {
 		const handleFolderClick = () => {
@@ -55,17 +65,6 @@ export default function Folder({
 			}
 		};
 	}, []);
-
-	const openContextMenuButton = () => {
-		if (buttonRef.current) {
-			const rect = buttonRef.current.getBoundingClientRect();
-			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
-		}
-	};
-
-	useOnClickOutside(fileRef, () =>
-		setContextMenu({ show: false, x: 0, y: 0 }),
-	);
 
 	useEffect(() => {
 		const openContextMenu = (e: any) => {
@@ -92,7 +91,7 @@ export default function Folder({
 				);
 			}
 		};
-	}, [uuid]);
+	}, []);
 
 	if (viewMode === "grid") {
 		return (
