@@ -27,7 +27,7 @@ export default function Paper({ title, parse }: Paperprops) {
                     // Imagen 
                     return (
                         <div key={index} className="mb-4">
-                            <Image src={paragraph} alt={`Image at index ${index}`} width={500} height={300} layout="responsive" />
+                            <Image src={paragraph} alt={`Image at index ${index}`} className="w-2/3" width={500} height={300} layout="responsive" />
                         </div>
                     );
                 } else {
