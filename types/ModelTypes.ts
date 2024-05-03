@@ -1,4 +1,6 @@
 import { UUID } from "crypto";
+import { AttributeValue, Optional, Scale, Spiral } from "react-wordcloud";
+import { Props as TippyProps } from 'tippy.js';
 
 export interface Chatword {
 	Chat: ChatDetails[];
@@ -95,4 +97,24 @@ export interface DirectoryDetails {
 	ownerName: string;
 	items: DirectoryItemDetails[];
 	path: string;
+}
+
+export type Options  = {
+	colors: string[];
+	enableTooltip: boolean;
+	deterministic: boolean;
+	fontFamily: string;
+	fontSizes: [number, number];
+	fontStyle: string;
+	fontWeight: string;
+	padding: number;
+	rotations: number;
+	rotationAngles: [number, number];
+	scale: Scale;
+	transitionDuration: number;
+	enableOptimizations: boolean;
+	spiral: Spiral;
+	svgAttributes: Record<string, AttributeValue> | undefined;
+  	textAttributes: Record<string, AttributeValue> | undefined;
+  	tooltipOptions: Optional<TippyProps> | undefined;
 }

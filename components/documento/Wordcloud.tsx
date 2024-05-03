@@ -2,7 +2,8 @@ import React from 'react';
 import ReactWordcloud from 'react-wordcloud';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
-import { Word, Options } from 'react-wordcloud';
+import { Word } from 'react-wordcloud';
+import { Options } from '@/types/ModelTypes';
 
 interface WordCloudProps {
   uuid: string;
