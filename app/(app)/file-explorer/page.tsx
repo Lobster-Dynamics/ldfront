@@ -19,11 +19,9 @@ export default function FileExplorer() {
     const { auth } = useAuth()
 
     const searchParams = useSearchParams();
-    const directory_id = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
-    console.log(auth)
-    console.log(directory_id)
+    const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
 
-    const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directory_id}`, fetcher)
+    const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directoryId}`, fetcher)
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null)
 
 
@@ -38,7 +36,7 @@ export default function FileExplorer() {
             <div className="flex h-full w-full pt-4">
                 <div className="hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
                     <div className="relative w-full h-20 flex justify-center items-center ">
-                        <NewButton directory_id={directory_id} />
+                        <NewButton directoryId={directoryId}/>
                     </div>
                     <Sidebar />
                 </div>
@@ -101,7 +99,7 @@ export default function FileExplorer() {
                                                     viewMode={viewMode}
                                                     ownerName={file.ownerName}
                                                     uploadDate={new Date()} // TODO: Cambiar por fecha real
-                                                    directory_id={directory_id}
+                                                    directoryId={directoryId}
                                                 />
                                             );
                                         else if (file.type === "DOCUMENT")
@@ -114,7 +112,7 @@ export default function FileExplorer() {
                                                     viewMode={viewMode}
                                                     ownerName={file.ownerName}
                                                     uploadDate={new Date()} // TODO: Cambiar por fecha real
-                                                    directory_id={directory_id}
+                                                    directoryId={directoryId}
                                                 />
                                             );
                                     }

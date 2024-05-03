@@ -3,18 +3,16 @@ import { axiosConfig } from "@/config/axiosConfig";
 import { Plus } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
-import { toggleModalAñadirCarpeta } from "@/redux/slices/modalSlice";
 import { useDispatch } from "react-redux";
 import useAuth from "@/hooks/selectors/useAuth";
+import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
 
 interface NewButtonProps {
-	directory_id: string;
+	directoryId: string;
 }
 
-export default function NewButton({ directory_id }: NewButtonProps) {
+export default function NewButton({ directoryId }: NewButtonProps) {
 	const { auth } = useAuth();
-
-	const dispatch = useDispatch();
 	const menuRef = useRef<HTMLDivElement>(null);
 	const [menu, setMenu] = useState(false);
 
@@ -23,7 +21,7 @@ export default function NewButton({ directory_id }: NewButtonProps) {
 			const file = e.target.files[0];
 			const formData = new FormData();
 			formData.append("file", file);
-			formData.append("directory_id", directory_id);
+			formData.append("directory_id", directoryId);
 			formData.append("userId", String(auth?.uid));
 			console.log("Uploaded file:", file);
 			const config = axiosConfig(true);
@@ -46,6 +44,23 @@ export default function NewButton({ directory_id }: NewButtonProps) {
 		}
 		setMenu(false);
 	};
+
+    const handleFolderCreate = async () => {
+        const request = async (name: string) => {
+            const config = axiosConfig();
+            if (!config) return;
+
+            const data = {"name": name, "directory_id": directoryId}
+
+            try {
+                await axiosClient.post("/directory/create_directory", data, config)
+            } catch (error) {
+                await ErrorAlert("Error al crear la carpeta", "Por favor, intenta nuevamente")
+            }
+        };
+
+        InputAlert("Crear Carpeta", request, "Nombre de la carpeta", "Crear")
+    }
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -93,10 +108,7 @@ export default function NewButton({ directory_id }: NewButtonProps) {
 					</label>
 					<button
 						className="block px-4 py-2 text-start text-2xl hover:bg-blueFrida-500"
-						onClick={() => {
-							setMenu(false);
-							dispatch(toggleModalAñadirCarpeta());
-						}}
+						onClick={handleFolderCreate}
 					>
 						{" "}
 						Crear Carpeta

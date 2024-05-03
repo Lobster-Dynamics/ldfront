@@ -2,9 +2,7 @@ import { cn } from "@/lib/utils";
 import Swal from "sweetalert2";
 import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
-import { useDispatch } from "react-redux";
 import { mutate } from "swr";
-import useAuth from "@/hooks/selectors/useAuth";
 import { RefObject } from "react";
 
 interface SubMenuProps {
@@ -19,7 +17,7 @@ interface SubMenuProps {
 	}) => void;
 	ref: RefObject<HTMLDivElement>;
 	extension: ".docx" | ".pdf" | ".pptx" | null;
-	directory_id: string;
+	directoryId: string;
 }
 
 export default function SubMenu({
@@ -30,11 +28,8 @@ export default function SubMenu({
 	setContextMenu,
 	ref,
 	extension,
-	directory_id
+	directoryId
 }: SubMenuProps) {
-	const dispatch = useDispatch();
-	const { auth } = useAuth();
-
 	const handleFileDelete = async () => {
 		if (extension === null) {
 			console.log("se borro la carpeta");
@@ -56,7 +51,7 @@ export default function SubMenu({
 				preConfirm: async () => {
 					try {
 						await axiosClient.get(
-							`/document/delete_document/${uuid}/${directory_id}`,
+							`/document/delete_document/${uuid}/${directoryId}`,
 							config,
 						);
 					} catch (error) {
@@ -76,7 +71,7 @@ export default function SubMenu({
 						text: "Tu archivo ha sido eliminado.",
 						icon: "success",
 					});
-					mutate(`/directory/get_directory/${directory_id}`);
+					mutate(`/directory/get_directory/${directoryId}`);
 				}
 			});
 		}
@@ -122,7 +117,7 @@ export default function SubMenu({
 						text: "Tu archivo ha sido renombrado.",
 						icon: "success",
 					});
-					mutate(`/directory/get_directory/${directory_id}`);
+					mutate(`/directory/get_directory/${directoryId}`);
 				}
 			});
 		}

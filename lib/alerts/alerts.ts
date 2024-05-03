@@ -36,7 +36,7 @@ export const ConfirmAlert = async (message:string, confirmText:string = "Si", ca
 
 //Alerta que pide un input y realiza una accion dependiendo de eso
 
-export const InputAlert = async (title:string,confirmMessage:string = "Se realizo correctamente", confirmTitle:string = "Exito",confirmText:string = "Si", cancelText:string = "No", type: SwalIcons = "question",preConfirmCallback: (...args: any[]) => Promise<any>,) => {
+export const InputAlert = async (title:string, preConfirmCallback: (...args: any[]) => Promise<any>, confirmMessage:string = "Se realizo correctamente", confirmTitle:string = "Exito",confirmText:string = "Si", cancelText:string = "No", type: SwalIcons = "question",) => {
    
     await Swal.fire({
         title: title,
@@ -47,6 +47,8 @@ export const InputAlert = async (title:string,confirmMessage:string = "Se realiz
         showCancelButton: true,
         confirmButtonText: confirmText,
         cancelButtonText: cancelText,
+        confirmButtonColor: "#8700BF",
+        cancelButtonColor: "#E55E86",
         showLoaderOnConfirm: true,
         preConfirm: preConfirmCallback, 
         allowOutsideClick: () => !Swal.isLoading(),

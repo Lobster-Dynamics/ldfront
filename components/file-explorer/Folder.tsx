@@ -12,7 +12,7 @@ interface FolderProps {
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
-	directory_id: string;
+	directoryId: string;
 }
 
 const initialContextMenu = {
@@ -27,7 +27,7 @@ export default function Folder({
 	viewMode,
 	ownerName,
 	uploadDate,
-	directory_id
+	directoryId
 }: FolderProps) {
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
@@ -118,7 +118,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
-						directory_id={directory_id}
+						directoryId={directoryId}
 					/>
 				)}
 			</div>
@@ -161,7 +161,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
-						directory_id={directory_id}
+						directoryId={directoryId}
 					/>
 				)}
 			</div>
