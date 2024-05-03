@@ -19,6 +19,12 @@ export const AceptAlert = async (message:string,type: SwalIcons = "success") => 
       });
 }
 
+// Modal de carga 
+
+export const LoadingAlert = async (message:string) => {
+    
+}
+
 //Modal de confirmacion, se  puede usar para aceptar o rechazar algo
 
 export const ConfirmAlert = async (message:string, confirmText:string = "Si", cancelText:string = "No", type: SwalIcons = "question") => {
