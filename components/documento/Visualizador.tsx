@@ -45,7 +45,7 @@ const Visualizador = () => {
                 {
                     id: 'left-1',
                     content: 'Documento',
-                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input} /> : <h1>Cargando...</h1>,
+                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
                     Icon: <ScrollText />
                 },
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
