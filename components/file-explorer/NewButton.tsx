@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import useAuth from "@/hooks/selectors/useAuth";
 import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
+import { mutate } from "swr";
 
 interface NewButtonProps {
 	directoryId: string;
@@ -26,22 +27,27 @@ export default function NewButton({ directoryId }: NewButtonProps) {
 			console.log("Uploaded file:", file);
 			const config = axiosConfig(true);
 			if (!config) return;
+			Swal.showLoading();
 			await axiosClient.post(
 				"/document/upload_document",
 				formData,
 				config,
 			);
+			
 			Swal.fire({
 				icon: "success",
 				title: "Carga exitosa",
 			});
+			Swal.hideLoading
 		} catch (err) {
+			Swal.hideLoading();
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
 				text: "Error al cargar el archivo",
 			});
 		}
+		mutate(`/directory/get_directory/${directoryId}`);
 		setMenu(false);
 	};
 
@@ -58,7 +64,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                 await ErrorAlert("Error al crear la carpeta", "Por favor, intenta nuevamente")
             }
         };
-
+		mutate(`/directory/get_directory/${directoryId}`);
         InputAlert("Crear Carpeta", request, "Carpeta creada correctamente!!", "Felicidades!", "Crear", "Cancelar", "success")
     }
 
