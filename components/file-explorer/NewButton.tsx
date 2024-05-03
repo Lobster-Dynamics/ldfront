@@ -59,7 +59,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
             }
         };
 
-        InputAlert("Crear Carpeta", request, "Nombre de la carpeta", "Crear")
+        InputAlert("Crear Carpeta", request, "Carpeta creada correctamente!!", "Felicidades!", "Crear", "Cancelar", "success")
     }
 
 	useEffect(() => {
