@@ -12,6 +12,7 @@ interface FileProps {
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
+	directory_id: string;
 }
 
 const initialContextMenu = {
@@ -26,7 +27,8 @@ export default function File({
 	name,
 	viewMode,
 	ownerName,
-	uploadDate
+	uploadDate,
+	directory_id
 }: FileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
@@ -122,6 +124,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={extension}
+						directory_id={directory_id}
 					/>
 				)}
 			</div>
@@ -164,6 +167,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={extension}
+						directory_id={directory_id}
 					/>
 				)}
 			</div>

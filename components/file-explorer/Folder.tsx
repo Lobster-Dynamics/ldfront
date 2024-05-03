@@ -12,6 +12,7 @@ interface FolderProps {
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
+	directory_id: string;
 }
 
 const initialContextMenu = {
@@ -26,6 +27,7 @@ export default function Folder({
 	viewMode,
 	ownerName,
 	uploadDate,
+	directory_id
 }: FolderProps) {
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
@@ -49,24 +51,6 @@ export default function Folder({
 			router.push(`/file-explorer?id=${id}`);
 		}
 
-		if (directoryRef.current) {
-			directoryRef.current.addEventListener("dblclick", handleFolderClick);
-			directoryRef.current.addEventListener("keypress", (e) => {
-				if (e.key === "Enter") handleFolderClick();
-			});
-		}
-
-		return () => {
-			if (directoryRef.current) {
-				directoryRef.current.removeEventListener("dblclick", handleFolderClick);
-				directoryRef.current.removeEventListener("keypress", (e) => {
-					if (e.key === "Enter") handleFolderClick();
-				});
-			}
-		};
-	}, []);
-
-	useEffect(() => {
 		const openContextMenu = (e: any) => {
 			e.preventDefault();
 			const { pageX, pageY } = e;
@@ -79,6 +63,10 @@ export default function Folder({
 		};
 
 		if (directoryRef.current) {
+			directoryRef.current.addEventListener("dblclick", handleFolderClick);
+			directoryRef.current.addEventListener("keypress", (e) => {
+				if (e.key === "Enter") handleFolderClick();
+			});
 			directoryRef.current.addEventListener("contextmenu", (e) =>
 				openContextMenu(e),
 			);
@@ -86,13 +74,16 @@ export default function Folder({
 
 		return () => {
 			if (directoryRef.current) {
+				directoryRef.current.removeEventListener("dblclick", handleFolderClick);
+				directoryRef.current.removeEventListener("keypress", (e) => {
+					if (e.key === "Enter") handleFolderClick();
+				});
 				directoryRef.current.removeEventListener("contextmenu", (e) =>
 					openContextMenu(e),
 				);
 			}
 		};
-	}, []);
-
+	}, [id]);
 	if (viewMode === "grid") {
 		return (
 			<div
@@ -127,6 +118,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
+						directory_id={directory_id}
 					/>
 				)}
 			</div>
@@ -169,6 +161,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
+						directory_id={directory_id}
 					/>
 				)}
 			</div>

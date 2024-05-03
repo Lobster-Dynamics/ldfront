@@ -19,6 +19,7 @@ interface SubMenuProps {
 	}) => void;
 	ref: RefObject<HTMLDivElement>;
 	extension: ".docx" | ".pdf" | ".pptx" | null;
+	directory_id: string;
 }
 
 export default function SubMenu({
@@ -29,6 +30,7 @@ export default function SubMenu({
 	setContextMenu,
 	ref,
 	extension,
+	directory_id
 }: SubMenuProps) {
 	const dispatch = useDispatch();
 	const { auth } = useAuth();
@@ -54,7 +56,7 @@ export default function SubMenu({
 				preConfirm: async () => {
 					try {
 						await axiosClient.get(
-							`/document/delete_document/${uuid}`,
+							`/document/delete_document/${uuid}/${directory_id}`,
 							config,
 						);
 					} catch (error) {
@@ -74,7 +76,7 @@ export default function SubMenu({
 						text: "Tu archivo ha sido eliminado.",
 						icon: "success",
 					});
-					mutate(`/document/get_documents/${auth?.uid}`);
+					mutate(`/directory/get_directory/${directory_id}`);
 				}
 			});
 		}
@@ -120,7 +122,7 @@ export default function SubMenu({
 						text: "Tu archivo ha sido renombrado.",
 						icon: "success",
 					});
-					mutate(`/document/get_documents/${auth?.uid}`);
+					mutate(`/directory/get_directory/${directory_id}`);
 				}
 			});
 		}
