@@ -4,6 +4,11 @@ import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
 import { mutate } from "swr";
 import { RefObject } from "react";
+import { FolderOpen } from "lucide-react";
+import { UserRoundPlus } from "lucide-react";
+import { TextCursorInput } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import Folder from "./Folder";
 
 interface SubMenuProps {
 	show: boolean;
@@ -127,7 +132,7 @@ export default function SubMenu({
 		<div
 			ref={ref}
 			className={cn(
-				"items-left border-gray absolute z-20 w-28 justify-start rounded-sm border bg-white  opacity-0 transition",
+				"items-left border-gray absolute z-20 w-40 justify-start rounded-sm border bg-white  opacity-0 transition",
 				{ "opacity-100": show },
 			)}
 			style={{ top: `${y}px`, left: `${x}px` }}
@@ -142,28 +147,33 @@ export default function SubMenu({
 						setContextMenu({ show: false, x: 0, y: 0 });
 					}
 				}}
-				className="w-full items-start justify-start px-2 py-2 text-start hover:bg-purple-200"
+				className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
 			>
-				Abrir
+				<FolderOpen />
+				<p>Abrir</p>
 			</button>
-			<hr />
-			<button className="w-full items-start justify-start px-2 py-2 text-start hover:bg-purple-200">
-				Compartir
-			</button>
-			<hr />
 			<button
-				className="w-full items-start justify-start px-2 py-2 text-start hover:bg-purple-200"
-				onClick={handleFileDelete}
-			>
-				Eliminar
-			</button>
-			<hr />
-			<button
-				className="w-full items-start justify-start px-2 py-2 text-start hover:bg-purple-200"
+				className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
 				onClick={handleFileRename}
 			>
-				Renombrar
+				<TextCursorInput />
+				<p>Renombrar</p>
 			</button>
+			<button className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200">
+				<UserRoundPlus />
+				<p>Compartir</p>
+			</button>
+			
+			<hr />
+			<button
+				className="w-full flex items-center text-red-500 justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+				onClick={handleFileDelete}
+			>
+				<Trash2 />
+				<p>Eliminar</p>
+			</button>
+			
+			
 		</div>
 	);
 }
