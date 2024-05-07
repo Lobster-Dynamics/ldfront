@@ -44,7 +44,7 @@ export default function Wordcloud({ uuid }: WordCloudProps) {
     fontWeight: "normal",
     padding: 1,
     rotations: 3,
-    rotationAngles: [0, 75],
+    rotationAngles: [0, 0],
     scale: "sqrt",
     transitionDuration: 1000,
     enableOptimizations: false,
