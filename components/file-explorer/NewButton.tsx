@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import useAuth from "@/hooks/selectors/useAuth";
 import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
 import { mutate } from "swr";
+import { errorHandler } from "@/utils/errorHandler";
 
 interface NewButtonProps {
 	directoryId: string;
@@ -39,14 +40,10 @@ export default function NewButton({ directoryId }: NewButtonProps) {
 				title: "Carga exitosa",
 			});
 			Swal.hideLoading
-		} catch (err) {
+		} catch (err: any) {
 			Swal.hideLoading();
-			Swal.fire({
-				icon: "error",
-				title: "Oops...",
-				text: "Error al cargar el archivo",
-			});
-		}
+            errorHandler(err)
+				}
 		mutate(`/directory/get_directory/${directoryId}`);
 		setMenu(false);
 	};

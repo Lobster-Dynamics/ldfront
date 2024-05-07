@@ -40,7 +40,6 @@ export default function Login() {
 
 			router.push("/file-explorer")
 		} catch (err: any) {
-            toast.error(err.response.data.message)
             errorHandler(err)
 				}
 	}
