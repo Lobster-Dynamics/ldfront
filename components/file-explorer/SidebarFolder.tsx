@@ -3,7 +3,7 @@ import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import { loadDirectoryData } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SidebarFile from "@/components/file-explorer/SidebarFile";
 import useAuth from "@/hooks/selectors/useAuth";
 import { useSearchParams } from "next/navigation";
@@ -14,12 +14,14 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion"
-  
+import { useRouter } from "next/navigation";  
+
+
 interface SidebarFolderProps {
 	id: UUID;
     type: "DIRECTORY" | "DOCUMENT";
 	name: string;
-    directoryId: string;
+    directoryId: UUID | undefined;
 	ownerName: string;
 }
 
@@ -32,18 +34,37 @@ export default function SidebarFolder({
 }:SidebarFolderProps) {
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${id}`, fetcher);
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
-    
+    const fileRef = useRef<HTMLDivElement>(null);
+    const nameref = useRef<HTMLParagraphElement>(null);
+    const router = useRouter();
+
     useEffect(() => {
         if (directoryUnparsed) {
             setDirectory(loadDirectoryData(directoryUnparsed))
         }
+
+        const openDocument = () => {
+			router.push(`/file-explorer?id=${id}`);
+		};
+
+
+		if (nameref.current) {
+			nameref.current.addEventListener("click", openDocument);
+		}
+
+		return () => {
+			if (nameref.current) {
+				nameref.current.removeEventListener("click", openDocument);
+			}
+		};
+
     }, [directoryUnparsed])
 
 	return (
         
-		<div className="ml-2 flex">
+		<div ref={fileRef} className="ml-2 flex">
             <AccordionItem value={`item-${id}`}>
-                <AccordionTrigger><p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+                <AccordionTrigger><p ref={nameref} className="overflow-hidden overflow-ellipsis whitespace-nowrap">
                 {name}
                 </p></AccordionTrigger>
             <AccordionContent>

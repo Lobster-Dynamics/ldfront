@@ -22,22 +22,27 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion"
 
-
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
     const { auth } = useAuth()    
     const searchParams = useSearchParams();
     const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
-
+    const sidebardirectoryId = auth?.rootDirectoryId;
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directoryId}`, fetcher)
+    const { data: sidebardirectoryUnparsed } = useSWR<DirectoryDetails>(`/directory/get_directory/${sidebardirectoryId}`, fetcher)
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null)
+    const [sidebardirectory, setSidebarDirectory] = useState<DirectoryDetails | null>(null)
 
 
     useEffect(() => {
         if (directoryUnparsed) {
             setDirectory(loadDirectoryData(directoryUnparsed))
         }
-    }, [directoryUnparsed])
+
+        if (sidebardirectoryUnparsed) {
+            setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed))
+        }
+    }, [directoryUnparsed, sidebardirectoryUnparsed])
 
     return (
         <div className="max-h-full flex-grow bg-white">
@@ -48,8 +53,8 @@ export default function FileExplorer() {
                     </div>
                     <div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-[#F3F4F6] p-2">
                         <Accordion type="multiple" >
-                            {directory && directory.items.length > 0 && (
-                                directory.items.map((file, i) => {
+                            {sidebardirectory && sidebardirectory.items.length > 0 && (
+                                sidebardirectory.items.map((file, i) => {
                                     {
                                         if (file.type === "DIRECTORY")
                                             return (
@@ -59,7 +64,7 @@ export default function FileExplorer() {
                                                     id={file.id}
                                                     type = {file.type}
                                                     ownerName={file.ownerName}
-                                                    directoryId={directoryId}
+                                                    directoryId={sidebardirectoryId}
                                                 />
                                             );
                                         else if (file.type === "DOCUMENT")
@@ -71,7 +76,7 @@ export default function FileExplorer() {
                                                     extension={file.extension}
                                                     id={file.id}
                                                     ownerName={file.ownerName}
-                                                    directoryId={directoryId}
+                                                    directoryId={sidebardirectoryId}
                                                 />
                                             );
                                     }
