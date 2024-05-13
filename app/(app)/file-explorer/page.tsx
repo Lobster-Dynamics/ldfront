@@ -2,7 +2,9 @@
 
 import File from "@/components/file-explorer/File";
 import Folder from "@/components/file-explorer/Folder";
-import Sidebar from "@/components/file-explorer/Sidebar";
+import SidebarFolder from "@/components/file-explorer/SidebarFolder";
+import SidebarFile from "@/components/file-explorer/SidebarFile";
+
 import NewButton from "@/components/file-explorer/NewButton";
 import { Calendar, LayoutGrid, List } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,23 +15,34 @@ import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
 import { loadDirectoryData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion"
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-    const { auth } = useAuth()
-
+    const { auth } = useAuth()    
     const searchParams = useSearchParams();
     const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
-
+    const sidebardirectoryId = auth?.rootDirectoryId;
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directoryId}`, fetcher)
+    const { data: sidebardirectoryUnparsed } = useSWR<DirectoryDetails>(`/directory/get_directory/${sidebardirectoryId}`, fetcher)
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null)
+    const [sidebardirectory, setSidebarDirectory] = useState<DirectoryDetails | null>(null)
 
 
     useEffect(() => {
         if (directoryUnparsed) {
             setDirectory(loadDirectoryData(directoryUnparsed))
         }
-    }, [directoryUnparsed])
+
+        if (sidebardirectoryUnparsed) {
+            setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed))
+        }
+    }, [directoryUnparsed, sidebardirectoryUnparsed])
 
     return (
         <div className="max-h-full flex-grow bg-white">
@@ -38,7 +51,40 @@ export default function FileExplorer() {
                     <div className="relative w-full h-20 flex justify-center items-center ">
                         <NewButton directoryId={directoryId}/>
                     </div>
-                    <Sidebar />
+                    <div className="my-3 w-full h-screen flex-wrap rounded-lg overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap  bg-[#F3F4F6] p-2">
+                        <Accordion type="multiple" >
+                            {sidebardirectory && sidebardirectory.items.length > 0 && (
+                                sidebardirectory.items.map((file, i) => {
+                                    {
+                                        if (file.type === "DIRECTORY")
+                                            return (
+                                                <SidebarFolder
+                                                    key={file.id}
+                                                    name={file.name}
+                                                    id={file.id}
+                                                    type = {file.type}
+                                                    ownerName={file.ownerName}
+                                                    directoryId={sidebardirectoryId}
+                                                />
+                                            );
+                                        else if (file.type === "DOCUMENT")
+                                            return (
+                                                <SidebarFile
+                                                    key={file.id}
+                                                    name={file.name}
+                                                    type = {file.type}
+                                                    extension={file.extension}
+                                                    id={file.id}
+                                                    ownerName={file.ownerName}
+                                                    directoryId={sidebardirectoryId}
+                                                />
+                                            );
+                                    }
+                                })
+                            )}
+                        </Accordion>
+                    </div>
+                    
                 </div>
                 <div className="flex h-full w-full flex-col px-4 pb-16 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
                     {/* CONTENEDOR DE DOCUMENTOS */}
@@ -101,6 +147,7 @@ export default function FileExplorer() {
                                                     uploadDate={new Date()} // TODO: Cambiar por fecha real
                                                     directoryId={directoryId}
                                                 />
+                                                
                                             );
                                         else if (file.type === "DOCUMENT")
                                             return (
