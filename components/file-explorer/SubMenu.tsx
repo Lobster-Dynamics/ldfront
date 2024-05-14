@@ -8,6 +8,7 @@ import { FolderOpen } from "lucide-react";
 import { UserRoundPlus } from "lucide-react";
 import { TextCursorInput } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";  
 import Folder from "./Folder";
 
 interface SubMenuProps {
@@ -35,6 +36,8 @@ export default function SubMenu({
 	extension,
 	directoryId
 }: SubMenuProps) {
+	const router = useRouter();
+
 	const handleFileDelete = async () => {
 		if (extension === null) {
 			console.log("se borro la carpeta");
@@ -84,8 +87,44 @@ export default function SubMenu({
 
 	const handleFileRename = async () => {
 		if (extension === null) {
-			console.log("se renombro la carpeta");
+			const config = axiosConfig(true);
+			if (!config) return;
 			setContextMenu({ show: false, x: 0, y: 0 });
+			Swal.fire({
+				title: "Renombrar",
+				text: "Estás a punto de cambiar el nombre de la carpeta.",
+				input: "text",
+				showCancelButton: true,
+				confirmButtonColor: "#7B20C3",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Renombrar",
+				showLoaderOnConfirm: true,
+				preConfirm: async (new_name) => {
+					try {
+						await axiosClient.get(
+							`/document/rename_document/${uuid}/${new_name}/FOLDER`,
+							config,
+						);
+					} catch (error) {
+						console.error("Error renaming directory:", error);
+						await Swal.fire({
+							icon: "error",
+							title: "Oops...",
+							text: "Error al renombrar la carpeta. Por favor, intenta nuevamente.",
+						});
+					}
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: "¡Renombrada!",
+						text: "Tu carpeta ha sido renombrada.",
+						icon: "success",
+					});
+					mutate(`/directory/get_directory/${directoryId}`);
+				}
+			});
 		} else {
 			const config = axiosConfig(true);
 			if (!config) return;
@@ -102,7 +141,7 @@ export default function SubMenu({
 				preConfirm: async (new_name) => {
 					try {
 						await axiosClient.get(
-							`/document/rename_document/${uuid}/${new_name}`,
+							`/document/rename_document/${uuid}/${new_name}/DOCUMENT`,
 							config,
 						);
 					} catch (error) {
@@ -140,7 +179,7 @@ export default function SubMenu({
 			<button
 				onClick={() => {
 					if (extension === null) {
-						console.log("Se abrio la carpeta")
+						router.push(`/file-explorer?id=${uuid}`);
 						setContextMenu({ show: false, x: 0, y: 0 });
 					} else {
 						window.open(`/documento?id=${uuid}`, "_blank");
