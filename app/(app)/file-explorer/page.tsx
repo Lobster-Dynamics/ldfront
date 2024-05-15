@@ -21,6 +21,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion"
+import ModalDefinicion from "@/components/documento/ModalDefinition";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
@@ -170,8 +171,6 @@ export default function FileExplorer() {
                 </div>
             </div>
             <ModalAddFolder />
-            
-            
         </div>
     );
 }

@@ -124,3 +124,12 @@ export type Options  = {
   	textAttributes: Record<string, AttributeValue> | undefined;
   	tooltipOptions: Optional<TippyProps> | undefined;
 }
+
+export interface Dictionary  {
+
+    language: string; 
+    meanings: string[];
+    start: string;
+    word: string;
+
+}
