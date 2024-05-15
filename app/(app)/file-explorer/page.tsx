@@ -22,7 +22,7 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import BreadCrumb from "@/components/file-explorer/BreadCrumb";
 
 export default function FileExplorer() {
-    const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
+    const [viewMode, setViewMode] = useState<"list" | "grid">("list");
     const { auth } = useAuth();
     const searchParams = useSearchParams();
     const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
