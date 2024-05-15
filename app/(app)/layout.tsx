@@ -18,9 +18,10 @@ interface Props {
 export default function Layout({ children }: Props) {
     const { auth, cargando } = useSelector((state: RootState) => state.auth);
     
-    const { sendMessage, lastMessage, readyState } = useWebSocket(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_WEBSOCKET}?auth_token=${auth !== null ? auth.token : "dummy"}`);
+    const { sendMessage, lastMessage, readyState } = useWebSocket(`${process.env.NEXT_PUBLIC_NOTIFICATIONS_WEBSOCKET}?auth_token=${auth !== null && auth !== undefined ? auth.token : "dummy"}`);
     useEffect(() => {
         if (lastMessage != null) {
+            console.log(JSON.parse(lastMessage.data));
             Swal.fire({
                 icon: "info",
                 title: "Recieved Notification",
@@ -28,7 +29,6 @@ export default function Layout({ children }: Props) {
             }) 
         }
     }, [lastMessage]);
-     
     
 
     const dispatch = useDispatch<any>();
