@@ -12,7 +12,7 @@ export const stackSlice = createSlice({
         addElement: (state, action: PayloadAction<Stack>) => {
             state.stack.push(action.payload);
         },
-        deleteElement: (state, action: PayloadAction<string>) => {
+        ChangeElement: (state, action: PayloadAction<string>) => {
             const index = state.stack.findIndex(
                 (element) => element.id === action.payload,
             );
@@ -20,8 +20,21 @@ export const stackSlice = createSlice({
                 state.stack[index].cargado = false;
             }
         },
+         deleteElement: (state, action: PayloadAction<string>) => {
+            const index = state.stack.findIndex(
+                (element) => element.id === action.payload,
+            );
+            if (index !== -1) {
+                state.stack.splice(index, 1);
+            }
+        },
+
+        emptyStack: (state) => {
+            state.stack = [];
+        },
+
     },
 });
 
-export const { addElement,deleteElement } = stackSlice.actions;
+export const { addElement,ChangeElement,deleteElement,emptyStack} = stackSlice.actions;
 export default stackSlice.reducer;
