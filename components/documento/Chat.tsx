@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Send } from "lucide-react";
-import { Chatword } from '@/types/ModelTypes';
+import { Chatword, ChatDetails } from '@/types/ModelTypes';
 
 
 interface ChatProps {
@@ -9,15 +9,39 @@ interface ChatProps {
 
 export default function Chat({ Chat }: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
+    const [ newInputValue, setNewInputValue ] = useState('');
+    const [ messages, setMessages] = useState<Chatword>({Chat: [
+        {
+            Message: "Sample message",
+            role: "bot"
+        },
+        {
+            Message: "Sample message",
+            role: "user"
+        }
+    ]})
+
+    const newMessage: React.FormEventHandler = async (e) => {
+        e.preventDefault();
+        setNewInputValue('');
+        const newMessages: Chatword = { Chat: [...messages.Chat, 
+            {
+                Message: newInputValue,
+                role:'user'
+            }
+        ]
+        }
+        setMessages(newMessages);
+    }
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [Chat.Chat]);
+    }, [messages]);
 
     return (
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col overflow-y-auto">
-                {Chat.Chat.map((message, index) => (
+                {messages.Chat.map((message, index) => (
                     message.role === "bot" ? (
                         <div className="flex flex-row w-full justify-start mt-2" key={index}>
                             <div className="bg-blueFrida-300 text-lg font-mono rounded-lg mx-4 p-3">
@@ -35,12 +59,18 @@ export default function Chat({ Chat }: ChatProps) {
                 <div ref={bottomRef} />
             </div>
             <div className="relative mt-1">
-                <Send className="absolute bottom-0 right-3 top-0 m-auto h-8" />
-                <input
-                    type="text"
-                    placeholder="Preguntar a Frida..."
-                    className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition focus:border-purpleFrida-300 focus:outline-none"
-                />
+                <form className="input-form" onSubmit={newMessage}>
+                    
+                    <input
+                        type="text"
+                        placeholder="Preguntar a Frida..."
+                        className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition"
+                        value={newInputValue}
+                        onChange={e => setNewInputValue(e.currentTarget.value)}
+                    />
+                    <button type="submit"><Send className="absolute bottom-0 right-3 top-0 m-auto h-8" /></button>
+                </form>
+                
 		    </div>
         </div>
     );
