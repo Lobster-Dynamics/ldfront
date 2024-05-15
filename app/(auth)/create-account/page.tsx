@@ -80,7 +80,7 @@ export default function Create() {
 			Swal.fire({
 				icon: "error",
 				title: "Oops...",
-				text: e.response.data.message || "Ha ocurrido un error",
+				text: err.response.data.message || "Ha ocurrido un error",
 			});
 		}
 	};

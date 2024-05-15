@@ -3,3 +3,11 @@ export interface ModalDefinicionState {
     word: string;
     language: string;
 }
+
+export interface Stack {
+    
+    name: string;
+    id: string;
+    cargado: boolean;
+
+}
