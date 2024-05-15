@@ -2,13 +2,18 @@
 
 import { logOut } from "@/redux/slices/authSlice";
 import { Eye, EyeOff, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import jsCookie from "js-cookie";
+import useAuth from "@/hooks/selectors/useAuth";
 
 export default function Profile() {
 	const dispatch = useDispatch();
+	const { auth } = useAuth();
 
+	const [name, setName] = useState<string>(auth?.name ?? "");
+	const [lastname, setLastname] = useState<string>(auth?.lastname ?? "");
+	const [email, setEmail] = useState<string>(auth?.email ?? "");
 	const [showPassword, setShowPassword] = useState(false);
 	const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
@@ -25,6 +30,14 @@ export default function Profile() {
 		jsCookie.remove("token");
 		jsCookie.remove("refreshToken");
 	};
+
+	useEffect(() => {
+		if (auth) {
+			setName(auth.name);
+			setLastname(auth.lastname);
+			setEmail(auth.email);
+		}
+	}, [auth])
 
 	return (
 		<div className="flex-grow bg-white pt-10">
@@ -44,16 +57,18 @@ export default function Profile() {
 							<label htmlFor="name">Nombre</label>
 							<input
 								type="text"
-								placeholder="Rodrigo"
+								value={name}
 								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
+								onChange={(e) => setName(e.target.value)}
 							/>
 						</div>
 						<div className="flex w-full flex-col">
 							<label htmlFor="surname">Apellido</label>
 							<input
 								type="text"
-								placeholder="Reyes"
+								value={lastname}
 								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
+								onChange={(e) => setLastname(e.target.value)}
 							/>
 						</div>
 					</div>
@@ -62,8 +77,9 @@ export default function Profile() {
 							<label htmlFor="surname">Correo</label>
 							<input
 								type="email"
-								placeholder="rodrigoreyes@mail.com"
+								value={email}
 								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
+								onChange={(e) => setEmail(e.target.value)}
 							/>
 						</div>
 					</div>

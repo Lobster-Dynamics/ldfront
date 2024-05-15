@@ -24,7 +24,7 @@ import {
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-    const { auth } = useAuth()    
+    const { auth } = useAuth()
     const searchParams = useSearchParams();
     const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
     const sidebardirectoryId = auth?.rootDirectoryId;

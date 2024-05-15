@@ -11,7 +11,7 @@ export default function InitialContainer({
     image?: boolean;
 }) {
     return (
-        <div className="z-10 flex w-2/5 flex-col items-center rounded-xl  border-8 border-black bg-white p-10">
+        <div className="z-10 flex w-2/5 flex-col items-center rounded-xl shadow-xl border-black bg-white p-10">
             {image && (
                 <Image
                     src="/logoFrida.png"
