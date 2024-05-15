@@ -15,6 +15,8 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
     const [selectedText, setSelectedText] = useState<string>('');
     const textAreaRef = useRef<HTMLDivElement>(null);
 
+    console.log(parse)
+
     const toggleImages = (): void => {
         setImages(!images);
     };
