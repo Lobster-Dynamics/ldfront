@@ -1,38 +1,72 @@
 import { useEffect, useRef, useState } from 'react';
 import { Send } from "lucide-react";
 import { Chatword, ChatDetails } from '@/types/ModelTypes';
-
+import axiosClient from '@/config/axiosClient';
+import { UUID } from 'crypto';
+import { axiosConfig } from '@/config/axiosConfig';
 
 interface ChatProps {
     Chat: Chatword;
+    id: string;
 }
 
-export default function Chat({ Chat }: ChatProps) {
+export default function Chat({ Chat, id }: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [ newInputValue, setNewInputValue ] = useState('');
     const [ messages, setMessages] = useState<Chatword>({Chat: [
         {
-            Message: "Sample message",
+            Message: "Hola, soy FRIDA Research Engine!",
             role: "bot"
         },
         {
-            Message: "Sample message",
-            role: "user"
-        }
+            Message: "¿En que te puedo ayudar?",
+            role: "bot"
+        },
     ]})
+
 
     const newMessage: React.FormEventHandler = async (e) => {
         e.preventDefault();
+        const userMessage = newInputValue;
+        if (!userMessage.trim()) return;
+    
         setNewInputValue('');
-        const newMessages: Chatword = { Chat: [...messages.Chat, 
-            {
-                Message: newInputValue,
-                role:'user'
-            }
-        ]
-        }
+    
+        const newMessages: Chatword = { 
+            Chat: [
+                ...messages.Chat, 
+                {
+                    Message: userMessage,
+                    role: 'user'
+                }
+            ]
+        };
         setMessages(newMessages);
-    }
+    
+        const config = axiosConfig();
+        if (!config) return;
+    
+        const data = { id: id, query: userMessage };
+        console.log(data);
+    
+        try {
+            const response = await axiosClient.post("/document/get_message", data, config);
+            console.log(response.data["msg"]);
+            const botMessage = response.data["msg"];
+    
+            setMessages(prevMessages => ({
+                Chat: [
+                    ...prevMessages.Chat, 
+                    {
+                        Message: botMessage,
+                        role: 'bot'
+                    }
+                ]
+            }));
+        } catch (error) {
+            console.error("Error fetching bot response:", error);
+        }
+    };
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
