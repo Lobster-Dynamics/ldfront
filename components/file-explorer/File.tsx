@@ -1,4 +1,4 @@
-import { CircleUserRound, EllipsisVertical } from "lucide-react";
+import { CircleUserRound, EllipsisVertical, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
@@ -30,6 +30,8 @@ export default function File({
 	uploadDate,
 	directoryId
 }: FileProps) {
+	const [menuVisible, setMenuVisible] = useState<boolean>(false);
+    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 	const fileRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
@@ -37,14 +39,30 @@ export default function File({
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
-	useOnClickOutside(fileRef, () =>
-		setContextMenu({ show: false, x: 0, y: 0 }),
-	);
+	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+        event.preventDefault();
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            setMenuVisible(true);
+            setMenuPosition({
+                x: event.clientX,
+                y: event.clientY
+            });
+        }
+    };
+	
+	const handleCloseMenu = (): void => {
+        setMenuVisible(false);
+    };
 
 	const openContextMenuButton = () => {
 		if (buttonRef.current) {
 			const rect = buttonRef.current.getBoundingClientRect();
-			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
+			setMenuVisible(true)
+			setMenuPosition({
+				x: rect.left,
+				y: rect.bottom
+			})
 		}
 	};
 
@@ -53,21 +71,8 @@ export default function File({
 			window.open(`/documento?id=${id}`, "_blank");
 		};
 
-		const openContextMenu = (e: any) => {
-			e.preventDefault();
-			const { pageX, pageY } = e;
-			setContextMenu({ show: true, x: pageX, y: pageY });
-		};
-
-		const closeContextMenu = (e: any) => {
-			e.preventDefault();
-			setContextMenu({ show: false, x: 0, y: 0 });
-		};
 
 		if (fileRef.current) {
-			fileRef.current.addEventListener("contextmenu", (e) =>
-				openContextMenu(e),
-			);
 			fileRef.current.addEventListener("dblclick", openDocument);
 			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
@@ -76,9 +81,6 @@ export default function File({
 
 		return () => {
 			if (fileRef.current) {
-				fileRef.current.removeEventListener("contextmenu", (e) =>
-					openContextMenu(e),
-				);
 				fileRef.current.removeEventListener("dblclick", openDocument);
 				fileRef.current.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
@@ -93,6 +95,7 @@ export default function File({
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={fileRef}
+				onContextMenu={handleRightClick}
 			>
 				<Image
 					src={`/${cleanExtension}.png`}
@@ -116,11 +119,12 @@ export default function File({
 						/>
 					</button>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
+						onClose={handleCloseMenu}
 						uuid={id}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
@@ -132,7 +136,7 @@ export default function File({
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30" ref={fileRef}>
+			<div className="h-16 border-t border-black border-opacity-30" ref={fileRef} onContextMenu={handleRightClick}>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
 					tabIndex={0}
@@ -159,12 +163,13 @@ export default function File({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
 						uuid={id}
+						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={extension}

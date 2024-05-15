@@ -3,18 +3,21 @@ import Swal from "sweetalert2";
 import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
 import { mutate } from "swr";
-import { RefObject } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import { FolderOpen } from "lucide-react";
 import { UserRoundPlus } from "lucide-react";
 import { TextCursorInput } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";  
 import Folder from "./Folder";
+import ReactDOM from "react-dom";
+
 
 interface SubMenuProps {
 	show: boolean;
 	x: number;
 	y: number;
+	onClose: () => void;
 	uuid: string;
 	setContextMenu: (contextMenu: {
 		show: boolean;
@@ -30,6 +33,7 @@ export default function SubMenu({
 	x,
 	y,
 	show,
+	onClose,
 	uuid,
 	setContextMenu,
 	ref,
@@ -37,15 +41,16 @@ export default function SubMenu({
 	directoryId
 }: SubMenuProps) {
 	const router = useRouter();
+	const menuRef = useRef<HTMLDivElement>(null);
 
 	const handleFileDelete = async () => {
 		if (extension === null) {
 			console.log("se borro la carpeta");
-			setContextMenu({ show: false, x: 0, y: 0 });
+			onClose();
 		} else {
 			const config = axiosConfig(true);
 			if (!config) return;
-			setContextMenu({ show: false, x: 0, y: 0 });
+			onClose();
 
 			Swal.fire({
 				title: "¿Estás seguro?",
@@ -89,7 +94,7 @@ export default function SubMenu({
 		if (extension === null) {
 			const config = axiosConfig(true);
 			if (!config) return;
-			setContextMenu({ show: false, x: 0, y: 0 });
+			onClose();
 			Swal.fire({
 				title: "Renombrar",
 				text: "Estás a punto de cambiar el nombre de la carpeta.",
@@ -128,7 +133,7 @@ export default function SubMenu({
 		} else {
 			const config = axiosConfig(true);
 			if (!config) return;
-			setContextMenu({ show: false, x: 0, y: 0 });
+			onClose();
 			Swal.fire({
 				title: "Renombrar",
 				text: "Estás a punto de cambiar el nombre del documento.",
@@ -167,9 +172,25 @@ export default function SubMenu({
 		}
 	};
 
-	return (
+	useEffect(() => {
+        const handleClickOutside = (event: MouseEvent): void => {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                onClose();
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside, true);
+        return () => {
+            document.removeEventListener("click", handleClickOutside, true);
+        };
+    }, [onClose]);
+
+	return ReactDOM.createPortal(
 		<div
-			ref={ref}
+			ref={menuRef}
 			className={cn(
 				"items-left border-gray absolute z-20 w-40 justify-start rounded-sm border bg-white  opacity-0 transition",
 				{ "opacity-100": show },
@@ -180,10 +201,10 @@ export default function SubMenu({
 				onClick={() => {
 					if (extension === null) {
 						router.push(`/file-explorer?id=${uuid}`);
-						setContextMenu({ show: false, x: 0, y: 0 });
+						onClose();
 					} else {
 						window.open(`/documento?id=${uuid}`, "_blank");
-						setContextMenu({ show: false, x: 0, y: 0 });
+						onClose();
 					}
 				}}
 				className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
@@ -213,6 +234,7 @@ export default function SubMenu({
 			</button>
 			
 			
-		</div>
+		</div>,
+		document.getElementById("portal-root")!,
 	);
 }

@@ -29,38 +29,48 @@ export default function Folder({
 	uploadDate,
 	directoryId,
 }: FolderProps) {
+	const [menuVisible, setMenuVisible] = useState<boolean>(false);
+    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
+	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+        event.preventDefault();
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+            setMenuVisible(true);
+            setMenuPosition({
+                x: event.clientX,
+                y: event.clientY
+            });
+        }
+    };
+
+	const handleCloseMenu = (): void => {
+        setMenuVisible(false);
+    };
+
 	const openContextMenuButton = () => {
 		if (buttonRef.current) {
 			const rect = buttonRef.current.getBoundingClientRect();
-			setContextMenu({ show: true, x: rect.left, y: rect.bottom });
+			setMenuVisible(true);
+			setMenuPosition({
+				x: rect.left,
+				y: rect.bottom
+			})
+			
 		}
 	};
 
-	useOnClickOutside(directoryRef, () =>
-		setContextMenu({ show: false, x: 0, y: 0 }),
-	);
 
 	useEffect(() => {
 		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}`);
 		};
 
-		const openContextMenu = (e: any) => {
-			e.preventDefault();
-			const { pageX, pageY } = e;
-			setContextMenu({ show: true, x: pageX, y: pageY });
-		};
-
-		const closeContextMenu = (e: any) => {
-			e.preventDefault();
-			setContextMenu({ show: false, x: 0, y: 0 });
-		};
 
 		if (directoryRef.current) {
 			directoryRef.current.addEventListener(
@@ -70,9 +80,6 @@ export default function Folder({
 			directoryRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") handleFolderClick();
 			});
-			directoryRef.current.addEventListener("contextmenu", (e) =>
-				openContextMenu(e),
-			);
 		}
 
 		return () => {
@@ -84,9 +91,6 @@ export default function Folder({
 				directoryRef.current.removeEventListener("keypress", (e) => {
 					if (e.key === "Enter") handleFolderClick();
 				});
-				directoryRef.current.removeEventListener("contextmenu", (e) =>
-					openContextMenu(e),
-				);
 			}
 		};
 	}, [id]);
@@ -96,6 +100,7 @@ export default function Folder({
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={directoryRef}
+				onContextMenu={handleRightClick}
 			>
 				<Image
 					src="/folder.png"
@@ -119,12 +124,13 @@ export default function Folder({
 						/>
 					</button>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
 						uuid={id}
+						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
@@ -138,6 +144,7 @@ export default function Folder({
 			<div
 				className="h-16 border-t border-black border-opacity-30"
 				ref={directoryRef}
+				onContextMenu={handleRightClick}
 			>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
@@ -165,12 +172,13 @@ export default function Folder({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
 						uuid={id}
+						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
 						extension={null}
