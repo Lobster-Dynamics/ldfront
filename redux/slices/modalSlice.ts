@@ -1,18 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 //Se crea la slice
 
 export const modalSlice = createSlice({
     name: "modal",
     initialState: {
-        modalDefinicion: false,
+        modalDefinicion:{
+            isOpen: false,
+            word: "",
+            language: "",
+        },
         modalAñadirConcepto: false,
         modalBorrar: false,
         modalAñadirCarpeta: false,
     },
     reducers: {
-        toggleModalDefinicion: (state: { modalDefinicion: boolean; }) => {
-            state.modalDefinicion = !state.modalDefinicion;
+        toggleModalDefinicion: (state) => {
+            state.modalDefinicion.isOpen = !state.modalDefinicion.isOpen;
+        },
+         setModalDefinicionDetails: (state, action: PayloadAction<{ word: string; language: string; }>) => {
+            state.modalDefinicion.word = action.payload.word;
+            state.modalDefinicion.language = action.payload.language;
         },
         toggleModalAñadirConcepto: (state: { modalAñadirConcepto: boolean; }) => {
             state.modalAñadirConcepto = !state.modalAñadirConcepto;
@@ -26,7 +33,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
 
 export default modalSlice.reducer
 

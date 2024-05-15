@@ -27,11 +27,11 @@ export default function Folder({
 	viewMode,
 	ownerName,
 	uploadDate,
-	directoryId
+	directoryId,
 }: FolderProps) {
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
-  	const buttonRef = useRef<HTMLButtonElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
@@ -49,7 +49,7 @@ export default function Folder({
 	useEffect(() => {
 		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}`);
-		}
+		};
 
 		const openContextMenu = (e: any) => {
 			e.preventDefault();
@@ -63,7 +63,10 @@ export default function Folder({
 		};
 
 		if (directoryRef.current) {
-			directoryRef.current.addEventListener("dblclick", handleFolderClick);
+			directoryRef.current.addEventListener(
+				"dblclick",
+				handleFolderClick,
+			);
 			directoryRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") handleFolderClick();
 			});
@@ -74,7 +77,10 @@ export default function Folder({
 
 		return () => {
 			if (directoryRef.current) {
-				directoryRef.current.removeEventListener("dblclick", handleFolderClick);
+				directoryRef.current.removeEventListener(
+					"dblclick",
+					handleFolderClick,
+				);
 				directoryRef.current.removeEventListener("keypress", (e) => {
 					if (e.key === "Enter") handleFolderClick();
 				});
@@ -87,7 +93,7 @@ export default function Folder({
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={directoryRef}
 			>
@@ -98,11 +104,15 @@ export default function Folder({
 					height={100}
 					className="self-center"
 				/>
-				<div className="flex items-end justify-between">
+				<div className="mx-auto flex w-[95%] items-end justify-between">
 					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
 					</p>
-					<button onClick={openContextMenuButton} ref={buttonRef}>
+					<button
+						onClick={openContextMenuButton}
+						ref={buttonRef}
+						className="absolute bottom-3 right-0"
+					>
 						<EllipsisVertical
 							className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
 							size={20}
@@ -125,7 +135,10 @@ export default function Folder({
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30" ref={directoryRef}>
+			<div
+				className="h-16 border-t border-black border-opacity-30"
+				ref={directoryRef}
+			>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 					tabIndex={0}

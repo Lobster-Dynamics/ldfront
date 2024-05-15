@@ -17,10 +17,8 @@ import { loadDirectoryData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import {
 	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
 } from "@/components/ui/accordion"
+import PageLoader from "@/components/PageLoader/PageLoader";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
@@ -28,8 +26,8 @@ export default function FileExplorer() {
     const searchParams = useSearchParams();
     const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
     const sidebardirectoryId = auth?.rootDirectoryId;
-    const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${directoryId}`, fetcher)
-    const { data: sidebardirectoryUnparsed } = useSWR<DirectoryDetails>(`/directory/get_directory/${sidebardirectoryId}`, fetcher)
+    const { data: directoryUnparsed, isLoading: isLoadingDirectory } = useSWR<DirectoryDetails>(`/directory/get_directory/${directoryId}`, fetcher)
+    const { data: sidebardirectoryUnparsed, isLoading: isLoadingSidebar } = useSWR<DirectoryDetails>(`/directory/get_directory/${sidebardirectoryId}`, fetcher)
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null)
     const [sidebardirectory, setSidebarDirectory] = useState<DirectoryDetails | null>(null)
 
@@ -43,6 +41,8 @@ export default function FileExplorer() {
             setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed))
         }
     }, [directoryUnparsed, sidebardirectoryUnparsed])
+
+    if (isLoadingDirectory || isLoadingSidebar) return <PageLoader />
 
     return (
         <div className="max-h-full flex-grow bg-white">
@@ -170,8 +170,6 @@ export default function FileExplorer() {
                 </div>
             </div>
             <ModalAddFolder />
-            
-            
         </div>
     );
 }
