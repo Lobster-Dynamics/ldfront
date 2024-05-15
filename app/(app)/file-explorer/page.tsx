@@ -18,6 +18,8 @@ import { useSearchParams } from "next/navigation";
 import { Accordion } from "@/components/ui/accordion";
 import PageLoader from "@/components/PageLoader/PageLoader";
 import UploadContainer from "@/components/file-explorer/UploadContainer";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import BreadCrumb from "@/components/file-explorer/BreadCrumb";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
@@ -128,7 +130,7 @@ export default function FileExplorer() {
                     </div>
                     <div className="text-xl text-[#5C5868]">
                         {/* TODO: Obtener PATH real */}
-                        {directory?.path}
+                        <BreadCrumb items={directory?.path} />
                     </div>
                     <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
                         <div

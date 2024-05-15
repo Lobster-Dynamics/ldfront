@@ -102,7 +102,12 @@ export interface DirectoryDetails {
 	ownerId: string;
 	ownerName: string;
 	items: DirectoryItemDetails[];
-	path: string;
+	path: PathItem[];
+}
+
+export interface PathItem {
+    name: string;
+    id: UUID;
 }
 
 export type Options  = {

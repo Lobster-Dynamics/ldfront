@@ -1,4 +1,4 @@
-import { DirectoryDetails, DirectoryItemDetails, UserAuth } from "@/types/ModelTypes"
+import { DirectoryDetails, DirectoryItemDetails, PathItem, UserAuth } from "@/types/ModelTypes"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -42,6 +42,6 @@ export function loadDirectoryData(data: any): DirectoryDetails {
 		ownerId: data.owner_id,
 		ownerName: data.owner_name,
 		items: containedItems,
-		path: "Mi Unidad > Mi primer folder",
+		path: data.path
 	};
 }
