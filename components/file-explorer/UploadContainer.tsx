@@ -20,7 +20,7 @@ export default function UploadContainer() {
 	}
 
 	return (
-		<div className="absolute bottom-0 right-0 z-10 flex w-4/12 flex-col h-48   rounded-md bg-white p-4 shadow-sm">
+		<div className="absolute bottom-0 right-0 z-10 flex w-4/12 flex-col h-48   rounded-md bg-white p-4 shadow-lg">
             <div className="flex mb-2 flex-row items-center justify-end mr-5 font-extralight">
                 <h1 className="text-base hover:cursor-pointer"
                     onClick={() => dispatch(emptyStack())}
