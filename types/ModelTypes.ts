@@ -133,3 +133,9 @@ export interface Dictionary  {
     word: string;
 
 }
+
+export interface SearchItem {
+    extension: ".docx" | ".pdf" | ".pptx" | null;
+	id: UUID;
+    name: string;
+}
