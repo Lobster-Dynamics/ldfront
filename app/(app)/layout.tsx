@@ -56,6 +56,7 @@ export default function Layout({ children }: Props) {
         <>
             <Navbar isAuth={false} />
             {children}
+            <div id="portal-root"/>
         </>
     );
 }

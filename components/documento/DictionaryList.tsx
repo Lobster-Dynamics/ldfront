@@ -18,15 +18,5 @@ export default function DicLi({ WordDef }: DicProps){
             </ul>
         </div>
 
-        // <div className="flex">
-        //     <ul className="list-disc list-outside">
-        //         <li className="text-1xl text-semibold">{WordDef.Definition}</li>
-        //     </ul>
-        //     <ul className="list-inside ml-4 flex-grow" style={{ listStyleType: 'square' }}>
-        //         {WordDef.examples.map((examples, index) => (
-        //             <li key={index} className="text-sm">{examples}</li>
-        //         ))}
-        //     </ul>
-        // </div>
-    );
+            );
 } 
