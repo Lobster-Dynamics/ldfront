@@ -90,7 +90,7 @@ export default function File({
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={fileRef}
 			>
@@ -101,13 +101,14 @@ export default function File({
 					height={100}
 					className="self-center"
 				/>
-				<div className="flex items-end justify-between ">
+				<div className="mx-auto flex w-[95%] items-end justify-between">
 					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
 					</p>
 					<button
 						onClick={openContextMenuButton}
 						ref={buttonRef}
+						className="absolute bottom-3 right-0"
 					>
 						<EllipsisVertical
 							className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"

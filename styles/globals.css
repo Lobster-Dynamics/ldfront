@@ -85,4 +85,7 @@
         background-color:#DBDEFF ;
     }
 
-}
+    img {
+        @apply select-none;
+    }
+  }
