@@ -88,4 +88,8 @@
     img {
         @apply select-none;
     }
+
+    input {
+        @apply focus:border-purpleFrida-300 focus:outline-none;
+    }
   }

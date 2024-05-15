@@ -5,15 +5,18 @@ import { Eye, EyeOff, LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import jsCookie from "js-cookie";
+import axiosClient from "@/config/axiosClient";
+import { axiosConfig } from "@/config/axiosConfig";
+import { AceptAlert, ErrorAlert } from "@/lib/alerts/alerts";
+import { loadAuth } from "@/redux/thunks/authThunk";
 import useAuth from "@/hooks/selectors/useAuth";
 
 export default function Profile() {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<any>();
 	const { auth } = useAuth();
 
 	const [name, setName] = useState<string>(auth?.name ?? "");
 	const [lastname, setLastname] = useState<string>(auth?.lastname ?? "");
-	const [email, setEmail] = useState<string>(auth?.email ?? "");
 	const [showPassword, setShowPassword] = useState(false);
 	const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
@@ -31,13 +34,26 @@ export default function Profile() {
 		jsCookie.remove("refreshToken");
 	};
 
-	useEffect(() => {
-		if (auth) {
-			setName(auth.name);
-			setLastname(auth.lastname);
-			setEmail(auth.email);
-		}
-	}, [auth])
+    const handleProfileUpdate = async (e: any) => {
+        const config = axiosConfig();
+        if (!config) return;
+
+        const data = {"name": name, "lastname": lastname}
+
+        try {
+            await axiosClient.post("/user/update_profile", data, config)
+            AceptAlert("Usuario actualizado correctamente")
+            dispatch(loadAuth());
+        } catch (error) {
+            await ErrorAlert("Error al actualizar usuario", "Por favor, intenta nuevamente")
+        }
+	};
+
+    useEffect(() => {
+        if (!auth) return;
+        setName(auth.name);
+        setLastname(auth.lastname);
+    }, [auth])
 
 	return (
 		<div className="flex-grow bg-white pt-10">
@@ -46,7 +62,7 @@ export default function Profile() {
 					<p className="text-2xl">Cuenta</p>
 					<button className="group transition-none focus:outline-none">
 						<LogOut
-							className="hover:text-redFrida-400 group-focus:text-redFrida-400 h-8 transition"
+							className="h-8 transition hover:text-redFrida-400 group-focus:text-redFrida-400"
 							onClick={handleLogout}
 						/>
 					</button>
@@ -77,9 +93,9 @@ export default function Profile() {
 							<label htmlFor="surname">Correo</label>
 							<input
 								type="email"
-								value={email}
-								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
-								onChange={(e) => setEmail(e.target.value)}
+								value={auth?.email}
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black disabled:bg-gray-300"
+                                disabled={true}
 							/>
 						</div>
 					</div>
@@ -121,7 +137,10 @@ export default function Profile() {
 							)}
 						</div>
 					</div>
-					<button className="bg-purpleFrida-300 hover:bg-purpleFrida-500 focus:bg-purpleFrida-500 mx-auto mt-8 block rounded-lg px-8 py-2 text-white transition">
+					<button
+						className="mx-auto mt-8 block rounded-lg bg-purpleFrida-300 px-8 py-2 text-white transition hover:bg-purpleFrida-500 focus:bg-purpleFrida-500"
+						onClick={handleProfileUpdate}
+					>
 						Guardar cambios
 					</button>
 				</div>

@@ -39,7 +39,7 @@ export default function Chat({ Chat }: ChatProps) {
                 <input
                     type="text"
                     placeholder="Preguntar a Frida..."
-                    className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition focus:border-purpleFrida-300 focus:outline-none"
+                    className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition"
                 />
 		    </div>
         </div>

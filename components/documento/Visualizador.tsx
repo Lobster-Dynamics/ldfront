@@ -140,7 +140,7 @@ const Visualizador = () => {
             </div>
             <ModalBorrar />
             <ModalAdd />
-            <ModalDefinicion language="es" word="perro"/>
+            <ModalDefinicion />
 
         </DndProvider>
     );

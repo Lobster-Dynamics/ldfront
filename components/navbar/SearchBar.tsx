@@ -10,7 +10,7 @@ export default function SearchBar() {
 			<input
 				type="text"
 				placeholder="Buscar en mis documentos"
-				className="w-80 md:96 rounded-lg border-2 lg:w-10/12 max-w-[600px] border-gray-600 py-2 pl-12 transition focus:border-purpleFrida-300 focus:outline-none"
+				className="w-80 md:96 rounded-lg border-2 lg:w-10/12 max-w-[600px] border-gray-600 py-2 pl-12 transition"
 			/>
 		</div>
 	);
