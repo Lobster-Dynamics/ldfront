@@ -32,8 +32,8 @@ export default function Layout({ children }: Props) {
 			console.log("NOTIFICATION",lastMessage.data);
 			Swal.fire({
 				icon: "info",
-				title: "Recieved Notification",
-				text: "Recieved notification",
+				title: "Estamos procesando tu documento",
+				text: "Estamos procesando tu documento, esto puede tomar unos minutos. Te notificarmenos cuando se haya subido correctamente",
 			});
 
          dispatch(deleteElement(String(messageData.data.document_id)));
