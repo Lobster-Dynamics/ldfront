@@ -1,20 +1,34 @@
-import React from 'react';
-import ReactWordcloud from 'react-wordcloud';
+import React, { useState } from 'react';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
-import { Word } from 'react-wordcloud';
-import { Options } from '@/types/ModelTypes';
+import { Text } from '@visx/text';
+import { scaleLog } from '@visx/scale';
+import Wordcloud from '@visx/wordcloud/lib/Wordcloud';
 
 interface WordCloudProps {
   uuid: string;
+  width: number;
+  height: number;
 }
 
-export default function Wordcloud({ uuid }: WordCloudProps) {
+export interface Word {
+  [key: string]: any;
+  text: string;
+  value: number;
+}
+
+export interface WordData {
+  text: string;
+  value: number;
+}
+
+export default function WordCloud({ uuid, width, height }: WordCloudProps) {
   // Use SWR to fetch data from the endpoint
-  const { data, error } = useSWR<Word[]>(
-    `/document/generate_word_cloud/${uuid}`,
-    fetcher
-  );
+  const { data, error } = useSWR<Word[]>(`/document/generate_word_cloud/${uuid}`, fetcher);
+
+  // State for spiral type and rotation
+  const [spiralType, setSpiralType] = useState<'archimedean' | 'rectangular'>('archimedean');
+  const [withRotation, setWithRotation] = useState(false);
 
   // Handle error and loading states
   if (error) {
@@ -34,30 +48,48 @@ export default function Wordcloud({ uuid }: WordCloudProps) {
     }
   });
 
-  const options: Options = {
-    colors: ["#AC73D9", "#8700BF", "#7B20C3", "#DBDEFF", "#AEB1F8", "#6568BB"],
-    enableTooltip: true,
-    deterministic: false,
-    fontFamily: "inter",
-    fontSizes: [35, 60],
-    fontStyle: "normal",
-    fontWeight: "normal",
-    padding: 1,
-    rotations: 3,
-    rotationAngles: [0, 0],
-    scale: "sqrt",
-    transitionDuration: 1000,
-    enableOptimizations: false,
-    spiral: 'archimedean',
-    svgAttributes: undefined,
-    textAttributes: undefined,
-    tooltipOptions: undefined
-  };
+  console.log(words)
 
-  // Render the ReactWordcloud with the validated data
+  const colors = ["#AC73D9", "#8700BF", "#7B20C3", "#AEB1F8", "#6568BB"];
+
+  const fontScale = scaleLog({
+    domain: [Math.min(...words.map((w) => w.value)), Math.max(...words.map((w) => w.value))],
+    range: [50, 100],
+  });
+
+  const fontSizeSetter = (datum: WordData) => fontScale(datum.value);
+
+  const fixedValueGenerator = () => 0.5;
+
   return (
     <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto">
-      <ReactWordcloud options={options} words={words} />
+      <Wordcloud
+        words={words}
+        width={width}
+        height={height}
+        fontSize={fontSizeSetter}
+        font={'Impact'}
+        padding={2}
+        spiral={spiralType}
+        rotate={withRotation ? () => Math.random() * 90 - 45 : 0}
+        random={fixedValueGenerator}
+        
+      >
+        {(cloudWords) =>
+          cloudWords.map((w, i) => (
+            <Text
+              key={w.text}
+              fill={colors[i % colors.length]}
+              textAnchor={'middle'}
+              transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
+              fontSize={w.size}
+              fontFamily={w.font}
+            >
+              {w.text}
+            </Text>
+          ))
+        }
+      </Wordcloud>
     </div>
   );
 }
