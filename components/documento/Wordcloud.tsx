@@ -54,12 +54,12 @@ export default function WordCloud({ uuid, width, height }: WordCloudProps) {
 
   const fontScale = scaleLog({
     domain: [Math.min(...words.map((w) => w.value)), Math.max(...words.map((w) => w.value))],
-    range: [50, 100],
+    range: [30, 50],
   });
 
   const fontSizeSetter = (datum: WordData) => fontScale(datum.value);
 
-  const fixedValueGenerator = () => 0.5;
+  const fixedValueGenerator = () => Math.random();
 
   return (
     <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto">
@@ -73,10 +73,10 @@ export default function WordCloud({ uuid, width, height }: WordCloudProps) {
         spiral={spiralType}
         rotate={withRotation ? () => Math.random() * 90 - 45 : 0}
         random={fixedValueGenerator}
-        
       >
         {(cloudWords) =>
           cloudWords.map((w, i) => (
+            
             <Text
               key={w.text}
               fill={colors[i % colors.length]}
