@@ -1,16 +1,18 @@
-import { CircleUserRound, EllipsisVertical } from "lucide-react";
+import { CircleUserRound, EllipsisVertical, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import SubMenu from "./SubMenu";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
+import { UUID } from "crypto";
 
 interface FileProps {
-	name: string;
 	extension: ".docx" | ".pdf" | ".pptx" | null;
-	uuid: string;
+	id: UUID;
+	name: string;
 	viewMode: "list" | "grid";
 	ownerName: string;
 	uploadDate: Date;
+	directoryId: string;
 }
 
 const initialContextMenu = {
@@ -20,40 +22,99 @@ const initialContextMenu = {
 };
 
 export default function File({
-	name,
 	extension,
-	uuid,
+	id,
+	name,
 	viewMode,
 	ownerName,
 	uploadDate,
+	directoryId
 }: FileProps) {
+	const [menuVisible, setMenuVisible] = useState<boolean>(false);
+    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
 	const fileRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
+	const submenuRef = useRef<HTMLDivElement>(null);
+
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
+	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+        event.preventDefault();
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+			const viewportWidth = window.innerWidth;
+			const viewportHeight = window.innerHeight;
 
-	useOnClickOutside(fileRef, () =>
-		setContextMenu({ show: false, x: 0, y: 0 }),
-	);
+			// Assume a fixed size for the context menu
+			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
+			const contextMenuWidth = 200;  // Adjust this to your context menu's width
+			const contextMenuHeight = 150; // Adjust this to your context menu's height
 
+			let x = event.clientX;
+			let y = event.clientY;
+
+			// Adjust if near right edge
+			if (x + contextMenuWidth > viewportWidth) {
+				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
+			}
+
+			// Adjust if near bottom edge
+			if (y + contextMenuHeight > viewportHeight) {
+				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
+			}
+
+            setMenuVisible(true);
+            setMenuPosition({
+                x: x,
+                y: y
+            });
+        }
+    };
+	
+	const handleCloseMenu = (): void => {
+        setMenuVisible(false);
+    };
+
+	const openContextMenuButton = () => {
+		if (buttonRef.current) {
+			const rect = buttonRef.current.getBoundingClientRect();
+			// Get viewport dimensions
+			const viewportWidth = window.innerWidth;
+			const viewportHeight = window.innerHeight;
+	
+			// Assume a fixed size for the context menu
+			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
+			const contextMenuWidth = 200;  // Set this to your context menu's width
+			const contextMenuHeight = 150; // Set this to your context menu's height
+	
+			let x = rect.left;
+			let y = rect.bottom;
+
+			// Adjust if near right edge
+			if (x + contextMenuWidth > viewportWidth) {
+				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
+			}
+	
+			// Adjust if near bottom edge
+			if (y + contextMenuHeight > viewportHeight) {
+				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
+			}
+			setMenuVisible(true)
+			setMenuPosition({
+				x: x,
+				y: y
+			})
+		}
+	};
 
 	useEffect(() => {
 		const openDocument = () => {
-			window.open(`/documento?id=${uuid}`, "_blank");
-		};
-
-
-		const openContextMenu = (e: any) => {
-			e.preventDefault();
-			const { pageX, pageY } = e;
-			setContextMenu({ show: true, x: pageX, y: pageY });
+			window.open(`/documento?id=${id}`, "_blank");
 		};
 
 
 		if (fileRef.current) {
-			fileRef.current.addEventListener("contextmenu", (e) =>
-				openContextMenu(e),
-			);
 			fileRef.current.addEventListener("dblclick", openDocument);
 			fileRef.current.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
@@ -62,24 +123,21 @@ export default function File({
 
 		return () => {
 			if (fileRef.current) {
-				// fileRef.current.removeEventListener("click", closeContextMenu);
-				fileRef.current.removeEventListener("contextmenu", (e) =>
-					openContextMenu(e),
-				);
 				fileRef.current.removeEventListener("dblclick", openDocument);
 				fileRef.current.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
 				});
 			}
 		};
-	}, [uuid]);
+	}, []);
 
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={fileRef}
+				onContextMenu={handleRightClick}
 			>
 				<Image
 					src={`/${cleanExtension}.png`}
@@ -88,33 +146,42 @@ export default function File({
 					height={100}
 					className="self-center"
 				/>
-				<div className="flex items-end justify-between ">
+				<div className="mx-auto flex w-[95%] items-end justify-between">
 					<p className="mt-2 flex-grow overflow-hidden text-ellipsis whitespace-nowrap text-center">
 						{name}
 					</p>
-					<EllipsisVertical
-						className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
-						size={20}
-					/>
+					<button
+						onClick={openContextMenuButton}
+						ref={buttonRef}
+						className="absolute bottom-3 right-0"
+					>
+						<EllipsisVertical
+							className="flex-shrink-0 text-transparent transition group-hover:text-black group-focus:text-black"
+							size={20}
+						/>
+					</button>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
-						uuid={uuid}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
+						onClose={handleCloseMenu}
+						uuid={id}
 						setContextMenu={setContextMenu}
+						ref={submenuRef}
+						extension={extension}
+						directoryId={directoryId}
 					/>
 				)}
 			</div>
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30">
+			<div className="h-16 border-t border-black border-opacity-30" ref={fileRef} onContextMenu={handleRightClick}>
 				<div
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-[#7B20C3] hover:bg-opacity-10 focus:bg-[#7B20C3] focus:bg-opacity-10"
+					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
 					tabIndex={0}
-					ref={fileRef}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">
@@ -138,13 +205,17 @@ export default function File({
 						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
 					</div>
 				</div>
-				{contextMenu.show && (
+				{menuVisible && (
 					<SubMenu
-						show={contextMenu.show}
-						x={contextMenu.x}
-						y={contextMenu.y}
-						uuid={uuid}
+						show={menuVisible}
+						x={menuPosition.x}
+						y={menuPosition.y}
+						uuid={id}
+						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
+						ref={submenuRef}
+						extension={extension}
+						directoryId={directoryId}
 					/>
 				)}
 			</div>

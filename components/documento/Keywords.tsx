@@ -15,7 +15,7 @@ export default function Keywords({ keywords }: KeywordsProps) {
 			{keywords.map((keyword) => (
 				<Keyword keyword={keyword.name} key={keyword.id} />
 			))}
-			<button className="my-2 rounded-3xl bg-gray-200 p-2"
+			<button className="my-2 rounded-3xl bg-gray-200 p-2 hover:bg-blueFrida-300"
             onClick={() => {
                 dispatch(toggleModalAñadirConcepto())
             }}
@@ -34,7 +34,7 @@ const Keyword = ({ keyword }: KeywordProps) => {
     const dispatch = useDispatch();
 	return (
 		<>
-			<div className="group my-2 mr-4 flex flex-row items-start rounded-2xl bg-gray-200 px-3 py-2 font-mono font-medium shadow-sm hover:bg-purple-200">
+			<div className="group my-2 mr-4 flex flex-row items-start rounded-2xl bg-gray-200 px-3 py-2 font-mono font-medium shadow-sm hover:bg-blueFrida-300">
 				<button className="text-black hover:underline" 
 				onClick={() => {
 					dispatch(toggleModalDefinicion())
@@ -52,7 +52,7 @@ const Keyword = ({ keyword }: KeywordProps) => {
 
                 >
 					<X
-						className="ml-3 text-red-500 opacity-0 group-hover:opacity-100"
+						className="ml-3 text-redFrida-400 opacity-0 group-hover:opacity-100"
 						style={{ cursor: "url('Lobster.cur'), auto" }}
 					/>
 				</button>

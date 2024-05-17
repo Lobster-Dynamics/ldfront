@@ -3,45 +3,100 @@ import { axiosConfig } from "@/config/axiosConfig";
 import { Plus } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
-import { toggleModalAñadirCarpeta } from "@/redux/slices/modalSlice";
 import { useDispatch } from "react-redux";
 import useAuth from "@/hooks/selectors/useAuth";
+import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
+import { mutate } from "swr";
+import { errorHandler } from "@/utils/errorHandler";
+import { Stack } from "@/types/ReduxTypes";
+import { addElement } from "@/redux/slices/stackSlice";
 
-export default function NewButton() {
+interface NewButtonProps {
+    directoryId: string;
+}
 
-    const {auth} = useAuth()
+interface ResponseUpload {
+    document_id: string;
+    msg: string;
+    user_id: string;
+}
 
+export default function NewButton({ directoryId }: NewButtonProps) {
     const dispatch = useDispatch();
+
+    const { auth } = useAuth();
     const menuRef = useRef<HTMLDivElement>(null);
     const [menu, setMenu] = useState(false);
 
-    const handleFileUpload = async (e: any) => { 
+    const handleFileUpload = async (e: any) => {
         try {
             const file = e.target.files[0];
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("userId",String(auth?.uid));
+            formData.append("directory_id", directoryId);
+            formData.append("userId", String(auth?.uid));
             console.log("Uploaded file:", file);
             const config = axiosConfig(true);
             if (!config) return;
-            await axiosClient.post("/document/upload_document", formData, config);
-            Swal.fire({
-                icon: 'success',
-                title: 'Carga exitosa',
-            });
-        } catch (err) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Error al cargar el archivo',
-            });
+            const response = await axiosClient.post<ResponseUpload>(
+                "/document/upload_document",
+                formData,
+                config,
+            );
+
+            const newStack: Stack = {
+                name: file.name,
+                id: response.data.document_id,
+                cargado: true,
+            };
+
+            dispatch(addElement(newStack));
+        } catch (err: any) {
+            errorHandler(err);
         }
+        mutate(`/directory/get_directory/${directoryId}`);
         setMenu(false);
+    };
+
+    const handleFolderCreate = async () => {
+        const request = async (name: string) => {
+            const config = axiosConfig();
+            if (!config) return;
+
+            const data = { name: name, directory_id: directoryId };
+
+            try {
+                await axiosClient.post(
+                    "/directory/create_directory",
+                    data,
+                    config,
+                );
+            } catch (error) {
+                await ErrorAlert(
+                    "Error al crear la carpeta",
+                    "Por favor, intenta nuevamente",
+                );
+            }
+        };
+        mutate(`/directory/get_directory/${directoryId}`);
+        InputAlert(
+            "Crear Carpeta",
+            request,
+            "Carpeta creada correctamente!!",
+            "Felicidades!",
+            "Crear",
+            "Cancelar",
+            "success",
+        );
     };
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) { // Type assertion
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                // Type assertion
                 setMenu(false);
             }
         }
@@ -54,17 +109,23 @@ export default function NewButton() {
 
     return (
         <div>
-            <button onClick={() => setMenu(true)} className="self-center items-center flex">
-                <label className="cursor-pointer border-2 border-black self-center items-center flex h-14 rounded-lg bg-[#F3F4F6] hover:bg-[#7B20C3] hover:bg-opacity-20 transition p-4">
+            <button
+                onClick={() => setMenu(true)}
+                className="flex items-center self-center"
+            >
+                <label className="flex h-14 cursor-pointer items-center self-center rounded-lg border-2 border-black bg-[#F3F4F6] p-4 transition hover:bg-purpleFrida-700 hover:bg-opacity-10">
                     <Plus size={30} />
-                    <p className="min-[0px]:hidden lg:block lg:text-md xl:text-2xl">
+                    <p className="lg:text-md min-[0px]:hidden lg:block xl:text-2xl">
                         Nuevo
                     </p>
                 </label>
             </button>
             {menu && (
-                <div ref={menuRef} className="-mr-20 absolute right-0 top-1/2 z-10  bg-white border border-gray-300 rounded-lg">
-                    <label className="block mb-2 hover:bg-purple-200 text-2xl w-full text-start py-2 px-4" >
+                <div
+                    ref={menuRef}
+                    className="absolute right-0 top-1/2 z-10 -mr-20  rounded-lg border border-gray-300 bg-white"
+                >
+                    <label className="mb-2 block w-full px-4 py-2 text-start text-2xl hover:bg-blueFrida-500">
                         Archivo
                         <input
                             type="file"
@@ -73,17 +134,15 @@ export default function NewButton() {
                             onChange={handleFileUpload}
                         />
                     </label>
-                    <button className="block text-2xl hover:bg-purple-200 py-2 px-4 text-start" onClick={() => {
-
-                        setMenu(false)
-                        dispatch(toggleModalAñadirCarpeta())
-                    }
-
-                    }> Crear Carpeta
+                    <button
+                        className="block px-4 py-2 text-start text-2xl hover:bg-blueFrida-500"
+                        onClick={handleFolderCreate}
+                    >
+                        {" "}
+                        Crear Carpeta
                     </button>
                 </div>
             )}
         </div>
     );
 }
-

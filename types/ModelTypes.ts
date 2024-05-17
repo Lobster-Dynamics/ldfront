@@ -37,51 +37,88 @@ export interface UserAuth {
 	uid: string;
 }
 
-export interface DocumentDetails {
+export interface DirectoryItemDetails {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
-	id: string;
+	id: UUID;
+	type: "DOCUMENT" | "DIRECTORY";
 	name: string;
 	ownerId: string;
+	ownerName: string;
 }
 
 export interface Document {
-	bibliographic_info: BibliographicInfo;
-	extension: string;
-	id: string;
-	id_raw_doc: string;
-	key_concepts: KeyConcept[];
-	name: string;
-	owner_id: string;
-	parsed_llm_input: string[];
-	relationships: any;
-	summary: Summary;
-	users_with_access: any[];
+    bibliographic_info: BibliographicInfo | null; 
+    extension: string;
+    id: string;
+    id_raw_doc: string;
+    key_concepts: KeyConcept[];
+    name: string;
+    owner_id: string;
+    parsed_llm_input: ParsedLLMInput; 
+    relationships: any[] | null; 
+    summary: Summary;
+    users_with_access: any[]; 
 }
 
 export interface BibliographicInfo {
-	authors: Author[];
-	publisher: string;
-	publishment_date: any;
-	title: string;
+    authors?: Author[]; 
+    publisher?: string;
+    publishment_date?: any;
+    title?: string;
 }
 
 export interface Author {
-	name: string;
-	surnames: string[];
+    name: string;
+    surnames: string[];
 }
 
 export interface KeyConcept {
-	description: string;
-	id: string;
-	name: string;
-	relationships: any[];
+    description: string;
+    id: string;
+    name: string;
+    relationships: any[]; 
+}
+
+export interface ParsedLLMInput {
+    content: string[];
+    image_sections: any | null; 
 }
 
 export interface Summary {
-	secctions: Secction[];
+    secctions: Section[]; 
 }
 
-export interface Secction {
-	body: string;
-	title: string;
+export interface Section {
+    body: string;
+    title: string;
+}
+
+
+export interface DirectoryDetails {
+	id: UUID;
+	name: string;
+	ownerId: string;
+	ownerName: string;
+	items: DirectoryItemDetails[];
+	path: PathItem[];
+}
+
+export interface PathItem {
+    name: string;
+    id: UUID;
+}
+
+export interface Dictionary  {
+
+    language: string; 
+    meanings: string[];
+    start: string;
+    word: string;
+
+}
+
+export interface SearchItem {
+    extension: ".docx" | ".pdf" | ".pptx" | null;
+	id: UUID;
+    name: string;
 }

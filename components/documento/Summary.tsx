@@ -1,8 +1,8 @@
-import { Secction } from "@/types/ModelTypes";
+import { Section } from "@/types/ModelTypes";
 import React from "react";
 
 interface SummaryProps {
-    summary: Secction[];
+    summary: Section[];
 }   
 
 

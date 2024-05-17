@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Paper from '@/components/documento/Paper';
 import Container from '@/components/documento/DragandDrop/Container';
-import Wordcloud from '@/components/documento/Wordcloud';
+import WordCloud from '@/components/documento/Wordcloud';
 import { chatData } from '@/utils/constants';
 import { Tab } from '@/types/AppTypes';
 import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow } from 'lucide-react';
@@ -45,18 +45,18 @@ const Visualizador = () => {
                 {
                     id: 'left-1',
                     content: 'Documento',
-                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input} /> : <h1>Cargando...</h1>,
+                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
                     Icon: <ScrollText />
                 },
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
-                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} />, Icon: <MessageSquare /> },
+                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} />, Icon: <MessageSquare /> },
                 { id: 'right-top-2', content: 'Resumen', component: document ?  <Summary summary={document?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
 
             ],
             rightBottom: [
-                { id: 'right-bottom-1', content: 'Word Cloud', component: <Wordcloud />, Icon: <Cloud /> },
+                { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
                 { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
 
             ],
@@ -141,6 +141,7 @@ const Visualizador = () => {
             <ModalBorrar />
             <ModalAdd />
             <ModalDefinicion />
+
         </DndProvider>
     );
 };
