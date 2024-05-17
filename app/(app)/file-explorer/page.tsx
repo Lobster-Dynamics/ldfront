@@ -51,7 +51,7 @@ export default function FileExplorer() {
         }
     }, [directoryUnparsed, sidebardirectoryUnparsed]);
 
-    if (isLoadingDirectory || isLoadingSidebar) return <PageLoader />;
+    if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;
 
     return (
         <div className="max-h-full flex-grow bg-white">

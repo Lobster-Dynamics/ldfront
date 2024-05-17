@@ -32,7 +32,7 @@ export default function SearchBar() {
     const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
     const searchBarRef = useRef<HTMLDivElement | null>(null);
 
-    const debouncedQuery = useDebounceValue(searchValue, 150);
+    const debouncedQuery = useDebounceValue(searchValue, 350);
     const controller = new AbortController();
 
     const handleClickOutside = () => {
