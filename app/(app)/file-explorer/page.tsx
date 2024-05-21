@@ -1,19 +1,16 @@
 "use client";
 
-import File from "@/components/file-explorer/File";
-import Folder from "@/components/file-explorer/Folder";
-import SidebarFolder from "@/components/file-explorer/SidebarFolder";
-import SidebarFile from "@/components/file-explorer/SidebarFile";
+import SidebarFolder from "@/components/file-explorer/sidebar/SidebarFolder";
+import SidebarFile from "@/components/file-explorer/sidebar/SidebarFile";
 
-import NewButton from "@/components/file-explorer/NewButton";
-import { Calendar, LayoutGrid, List } from "lucide-react";
+import NewButton from "@/components/file-explorer/sidebar/NewButton";
+import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useState } from "react";
-import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
+import ModalAddFolder from "@/components/file-explorer/sidebar/ModalAddFolder";
 import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
-import { loadDirectoryData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { Accordion } from "@/components/ui/accordion";
 import PageLoader from "@/components/PageLoader/PageLoader";
@@ -23,6 +20,10 @@ import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import { CreateDocument } from "@/services/Document/DocumentManagment";
 import { useDispatch } from "react-redux";
+import FilesContainer from "@/components/file-explorer/files/FilesContainer";
+import { loadDirectoryData } from "@/utils/loadData";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function FileExplorer() {
 	const dispatch = useDispatch();
@@ -42,44 +43,51 @@ export default function FileExplorer() {
 			`/directory/get_directory/${sidebardirectoryId}`,
 			fetcher,
 		);
+
 	const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
 	const [sidebardirectory, setSidebarDirectory] =
 		useState<DirectoryDetails | null>(null);
 
 	useEffect(() => {
-		if (directoryUnparsed) {
+		if (directoryUnparsed)
 			setDirectory(loadDirectoryData(directoryUnparsed));
-		}
-
-		if (sidebardirectoryUnparsed) {
+		if (sidebardirectoryUnparsed)
 			setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed));
-		}
 	}, [directoryUnparsed, sidebardirectoryUnparsed]);
 
-     const onDrop = useCallback(async (acceptedFiles: File[]) => {
+	const onDrop = useCallback(
+		async (acceptedFiles: File[]) => {
+			const allowedTypes = [
+				"application/pdf",
+				"application/vnd.ms-powerpoint",
+				"application/vnd.openxmlformats-officedocument.presentationml.presentation",
+				"application/msword",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			];
 
-         const allowedTypes = [
-        'application/pdf',
-        'application/vnd.ms-powerpoint',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ];
+			const filteredFiles = acceptedFiles.filter((file) =>
+				allowedTypes.includes(file.type),
+			);
 
-        const filteredFiles = acceptedFiles.filter(file => allowedTypes.includes(file.type));
-
-        if (filteredFiles.length > 0) {
-            for (const file of filteredFiles) {
-                if(!auth?.uid) return;
-                const response = await CreateDocument({ file, directoryId, userId: auth?.uid, dispatch });
-                if (response) {
-                    mutate(`/directory/get_directory/${directoryId}`);
-                }
-            }
-        } else {
-            console.log('Error Langostin 3000');
-        }
-    }, [directoryId, auth?.uid, dispatch]);	
+			if (filteredFiles.length > 0) {
+				for (const file of filteredFiles) {
+					if (!auth?.uid) return;
+					const response = await CreateDocument({
+						file,
+						directoryId,
+						userId: auth?.uid,
+						dispatch,
+					});
+					if (response) {
+						mutate(`/directory/get_directory/${directoryId}`);
+					}
+				}
+			} else {
+				console.log("Error Langostin 3000");
+			}
+		},
+		[directoryId, auth?.uid, dispatch],
+	);
 
 	const {
 		getRootProps,
@@ -90,7 +98,6 @@ export default function FileExplorer() {
 	});
 
 	if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;
-
 	return (
 		<div className="max-h-full flex-grow bg-white">
 			<div className="flex h-full w-full pt-4">
@@ -166,68 +173,22 @@ export default function FileExplorer() {
 							</button>
 						</div>
 					</div>
-					<div className="text-xl text-[#5C5868]">
-						{/* TODO: Obtener PATH real */}
-						<BreadCrumb items={directory?.path} />
-					</div>
-					<div
-						{...getRootProps()}
-						className={`my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]  ${dropzoneisDragActive ? "border-4 border-purple-500" : ""} `}
-					>
-						<input {...getInputProps()} />
-						<div
-							className="grid"
-							style={{
-								gridTemplateColumns:
-									viewMode === "grid"
-										? "repeat(auto-fit,minmax(12rem, 1fr))"
-										: "minmax(0, 1fr)",
-								gap: viewMode === "grid" ? "1rem" : "0.5rem",
-							}}
-						>
-							{viewMode === "list" && (
-								<div className="flex justify-between">
-									<p className="w-2/4">Nombre</p>
-									<p className="w-1/4">Propietario</p>
-									<div className="flex w-1/4 items-center justify-end gap-2">
-										<Calendar size="20px" />
-										<p>Fecha de subida</p>
-									</div>
-								</div>
-							)}
-							{directory &&
-								directory.items.length > 0 &&
-								directory.items.map((file, i) => {
-									{
-										if (file.type === "DIRECTORY")
-											return (
-												<Folder
-													key={i}
-													name={file.name}
-													id={file.id}
-													viewMode={viewMode}
-													ownerName={file.ownerName}
-													uploadDate={new Date()} // TODO: Cambiar por fecha real
-													directoryId={directoryId}
-												/>
-											);
-										else if (file.type === "DOCUMENT")
-											return (
-												<File
-													key={i}
-													name={file.name}
-													extension={file.extension}
-													id={file.id}
-													viewMode={viewMode}
-													ownerName={file.ownerName}
-													uploadDate={new Date()} // TODO: Cambiar por fecha real
-													directoryId={directoryId}
-												/>
-											);
-									}
-								})}
+					<DndProvider backend={HTML5Backend}>
+						<div className="text-xl text-[#5C5868]">
+							<BreadCrumb items={directory?.path} />
 						</div>
-					</div>
+						<div
+							{...getRootProps()}
+							className={`my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]  ${dropzoneisDragActive ? "border-4 border-purple-500" : ""} `}
+						>
+							<input {...getInputProps()} />
+							<FilesContainer
+								viewMode={viewMode}
+								directory={directory}
+								parentDirectoryId={directoryId}
+							/>
+						</div>
+					</DndProvider>
 				</div>
 			</div>
 			<ModalAddFolder />

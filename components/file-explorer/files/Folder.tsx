@@ -3,8 +3,11 @@ import { CircleUserRound, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import SubMenu from "./SubMenu";
-import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
+import SubMenu from "../SubMenu";
+import {
+	handleRightClick,
+	openContextMenuButton,
+} from "@/utils/contextMenuFunctions";
 
 interface FolderProps {
 	id: UUID;
@@ -30,113 +33,44 @@ export default function Folder({
 	directoryId,
 }: FolderProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
-    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
+		x: 0,
+		y: 0,
+	});
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        event.preventDefault();
-        const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0) {
-			const viewportWidth = window.innerWidth;
-			const viewportHeight = window.innerHeight;
-
-			// Assume a fixed size for the context menu
-			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
-			const contextMenuWidth = 200;  // Adjust this to your context menu's width
-			const contextMenuHeight = 150; // Adjust this to your context menu's height
-
-			let x = event.clientX;
-			let y = event.clientY;
-
-			// Adjust if near right edge
-			if (x + contextMenuWidth > viewportWidth) {
-				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
-			}
-
-			// Adjust if near bottom edge
-			if (y + contextMenuHeight > viewportHeight) {
-				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
-			}
-            setMenuVisible(true);
-            setMenuPosition({
-                x: x,
-                y: y
-            });
-        }
-    };
-
 	const handleCloseMenu = (): void => {
-        setMenuVisible(false);
-    };
-
-	const openContextMenuButton = () => {
-		if (buttonRef.current) {
-			const rect = buttonRef.current.getBoundingClientRect();
-
-			// Get viewport dimensions
-			const viewportWidth = window.innerWidth;
-			const viewportHeight = window.innerHeight;
-	
-			// Assume a fixed size for the context menu
-			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
-			const contextMenuWidth = 200;  // Set this to your context menu's width
-			const contextMenuHeight = 150; // Set this to your context menu's height
-	
-			let x = rect.left;
-			let y = rect.bottom;
-
-			// Adjust if near right edge
-			if (x + contextMenuWidth > viewportWidth) {
-				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
-				
-			}
-	
-			// Adjust if near bottom edge
-			if (y + contextMenuHeight > viewportHeight) {
-				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
-			}
-
-			setMenuVisible(true);
-			setMenuPosition({
-				x: x,
-				y: y
-			})
-			
-		}
+		setMenuVisible(false);
 	};
-
 
 	useEffect(() => {
 		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}`);
 		};
 
+		let localRef = directoryRef.current;
+		if (directoryRef.current) localRef = directoryRef.current;
 
-		if (directoryRef.current) {
-			directoryRef.current.addEventListener(
-				"dblclick",
-				handleFolderClick,
-			);
-			directoryRef.current.addEventListener("keypress", (e) => {
+		if (localRef) {
+			localRef.addEventListener("dblclick", handleFolderClick);
+			localRef.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") handleFolderClick();
 			});
 		}
 
 		return () => {
-			if (directoryRef.current) {
-				directoryRef.current.removeEventListener(
-					"dblclick",
-					handleFolderClick,
-				);
-				directoryRef.current.removeEventListener("keypress", (e) => {
+			if (localRef) {
+				localRef.removeEventListener("dblclick", handleFolderClick);
+				localRef.removeEventListener("keypress", (e) => {
 					if (e.key === "Enter") handleFolderClick();
 				});
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
 	if (viewMode === "grid") {
 		return (
@@ -144,7 +78,9 @@ export default function Folder({
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				ref={directoryRef}
-				onContextMenu={handleRightClick}
+				onContextMenu={(e) =>
+					handleRightClick(e, setMenuVisible, setMenuPosition)
+				}
 			>
 				<Image
 					src="/folder.png"
@@ -158,7 +94,13 @@ export default function Folder({
 						{name}
 					</p>
 					<button
-						onClick={openContextMenuButton}
+						onClick={() =>
+							openContextMenuButton(
+								buttonRef,
+								setMenuVisible,
+								setMenuPosition,
+							)
+						}
 						ref={buttonRef}
 						className="absolute bottom-3 right-0"
 					>
@@ -188,7 +130,9 @@ export default function Folder({
 			<div
 				className="h-16 border-t border-black border-opacity-30"
 				ref={directoryRef}
-				onContextMenu={handleRightClick}
+				onContextMenu={(e) =>
+					handleRightClick(e, setMenuVisible, setMenuPosition)
+				}
 			>
 				<div
 					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"

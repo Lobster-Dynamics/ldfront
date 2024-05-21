@@ -9,7 +9,6 @@ import { UserRoundPlus } from "lucide-react";
 import { TextCursorInput } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";  
-import Folder from "./Folder";
 import ReactDOM from "react-dom";
 
 
@@ -45,8 +44,46 @@ export default function SubMenu({
 
 	const handleFileDelete = async () => {
 		if (extension === null) {
-			console.log("se borro la carpeta");
+			const config = axiosConfig(true);
+			if (!config) return;
 			onClose();
+
+			Swal.fire({
+				title: "¿Estás seguro?",
+				text: "Estás a punto de eliminar la carpeta y todos sus elementos.",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#7B20C3",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "¡Confirmar!",
+				showLoaderOnConfirm: true,
+				preConfirm: async () => {
+					try {
+						await axiosClient.get(
+							`/directory/delete_directory/${uuid}/${directoryId}`,
+							config,
+						);
+					} catch (error) {
+						console.error("Error deleting directory:", error);
+						await Swal.fire({
+							icon: "error",
+							title: "Oops...",
+							text: "Error al borrar la carpeta. Por favor, intenta nuevamente.",
+						});
+					}
+				},
+				allowOutsideClick: () => !Swal.isLoading(),
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: "¡Eliminado!",
+						text: "Tu carpeta ha sido eliminado con todos sus elementos.",
+						icon: "success",
+					});
+					mutate(`/directory/get_directory/${directoryId}`);
+				}
+			});
+			
 		} else {
 			const config = axiosConfig(true);
 			if (!config) return;
