@@ -2,7 +2,6 @@ import { UUID } from "crypto";
 import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
-import { loadDirectoryData } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import SidebarFile from "@/components/file-explorer/sidebar/SidebarFile";
 import useAuth from "@/hooks/selectors/useAuth";
@@ -15,6 +14,7 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion"
 import { useRouter } from "next/navigation";  
+import { loadDirectoryData } from "@/utils/loadData";
 
 
 interface SidebarFolderProps {

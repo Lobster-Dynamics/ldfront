@@ -29,23 +29,28 @@ export default function Folder({
 	directoryId,
 }: FolderProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
-    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
+		x: 0,
+		y: 0,
+	});
 	const directoryRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        event.preventDefault();
-        const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0) {
+	const handleRightClick = (
+		event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+	): void => {
+		event.preventDefault();
+		const selection = window.getSelection();
+		if (selection && selection.rangeCount > 0) {
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
 
 			// Assume a fixed size for the context menu
 			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
-			const contextMenuWidth = 200;  // Adjust this to your context menu's width
+			const contextMenuWidth = 200; // Adjust this to your context menu's width
 			const contextMenuHeight = 150; // Adjust this to your context menu's height
 
 			let x = event.clientX;
@@ -60,17 +65,17 @@ export default function Folder({
 			if (y + contextMenuHeight > viewportHeight) {
 				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
 			}
-            setMenuVisible(true);
-            setMenuPosition({
-                x: x,
-                y: y
-            });
-        }
-    };
+			setMenuVisible(true);
+			setMenuPosition({
+				x: x,
+				y: y,
+			});
+		}
+	};
 
 	const handleCloseMenu = (): void => {
-        setMenuVisible(false);
-    };
+		setMenuVisible(false);
+	};
 
 	const openContextMenuButton = () => {
 		if (buttonRef.current) {
@@ -79,21 +84,20 @@ export default function Folder({
 			// Get viewport dimensions
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
-	
+
 			// Assume a fixed size for the context menu
 			// Alternatively, you can dynamically get the size of the context menu if it's rendered already
-			const contextMenuWidth = 200;  // Set this to your context menu's width
+			const contextMenuWidth = 200; // Set this to your context menu's width
 			const contextMenuHeight = 150; // Set this to your context menu's height
-	
+
 			let x = rect.left;
 			let y = rect.bottom;
 
 			// Adjust if near right edge
 			if (x + contextMenuWidth > viewportWidth) {
 				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
-				
 			}
-	
+
 			// Adjust if near bottom edge
 			if (y + contextMenuHeight > viewportHeight) {
 				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
@@ -102,40 +106,35 @@ export default function Folder({
 			setMenuVisible(true);
 			setMenuPosition({
 				x: x,
-				y: y
-			})
-			
+				y: y,
+			});
 		}
 	};
-
 
 	useEffect(() => {
 		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}`);
 		};
 
+		let localRef = directoryRef.current;
+		if (directoryRef.current) localRef = directoryRef.current;
 
-		if (directoryRef.current) {
-			directoryRef.current.addEventListener(
-				"dblclick",
-				handleFolderClick,
-			);
-			directoryRef.current.addEventListener("keypress", (e) => {
+		if (localRef) {
+			localRef.addEventListener("dblclick", handleFolderClick);
+			localRef.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") handleFolderClick();
 			});
 		}
 
 		return () => {
-			if (directoryRef.current) {
-				directoryRef.current.removeEventListener(
-					"dblclick",
-					handleFolderClick,
-				);
-				directoryRef.current.removeEventListener("keypress", (e) => {
+			if (localRef) {
+				localRef.removeEventListener("dblclick", handleFolderClick);
+				localRef.removeEventListener("keypress", (e) => {
 					if (e.key === "Enter") handleFolderClick();
 				});
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
 	if (viewMode === "grid") {
 		return (

@@ -1,6 +1,6 @@
 import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
-import { loadUserAuthData } from "@/lib/utils";
+import { loadUserAuthData } from "@/utils/loadData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import jsCookie from "js-cookie";
 

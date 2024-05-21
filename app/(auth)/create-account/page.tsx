@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie";
 import { setAuth } from "@/redux/slices/authSlice";
-import { loadUserAuthData } from "@/lib/utils";
+import { loadUserAuthData } from "@/utils/loadData";
 
 interface StepProps {
 	setStep: (step: number) => void;

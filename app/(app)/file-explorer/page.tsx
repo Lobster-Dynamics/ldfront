@@ -11,13 +11,13 @@ import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
-import { loadDirectoryData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { Accordion } from "@/components/ui/accordion";
 import PageLoader from "@/components/PageLoader/PageLoader";
 import UploadContainer from "@/components/file-explorer/UploadContainer";
 import BreadCrumb from "@/components/file-explorer/BreadCrumb";
 import FilesContainer from "@/components/file-explorer/files/FilesContainer";
+import { loadDirectoryData } from "@/utils/loadData";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
@@ -40,13 +40,9 @@ export default function FileExplorer() {
     const [sidebardirectory, setSidebarDirectory] = useState<DirectoryDetails | null>(null);
 
     useEffect(() => {
-        if (directoryUnparsed) {
-            setDirectory(loadDirectoryData(directoryUnparsed));
-        }
+        if (directoryUnparsed) setDirectory(loadDirectoryData(directoryUnparsed));
+        if (sidebardirectoryUnparsed) setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed));
 
-        if (sidebardirectoryUnparsed) {
-            setSidebarDirectory(loadDirectoryData(sidebardirectoryUnparsed));
-        }
     }, [directoryUnparsed, sidebardirectoryUnparsed]);
 
     if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;

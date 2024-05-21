@@ -111,23 +111,26 @@ export default function File({
 		const openDocument = () => {
 			window.open(`/documento?id=${id}`, "_blank");
 		};
+        let localRef = fileRef.current;
+        if (fileRef.current) localRef = fileRef.current;
 
 
-		if (fileRef.current) {
-			fileRef.current.addEventListener("dblclick", openDocument);
-			fileRef.current.addEventListener("keypress", (e) => {
+		if (localRef) {
+			localRef.addEventListener("dblclick", openDocument);
+			localRef.addEventListener("keypress", (e) => {
 				if (e.key === "Enter") openDocument();
 			});
 		}
 
 		return () => {
-			if (fileRef.current) {
-				fileRef.current.removeEventListener("dblclick", openDocument);
-				fileRef.current.addEventListener("keypress", (e) => {
+			if (localRef) {
+				localRef.removeEventListener("dblclick", openDocument);
+				localRef.addEventListener("keypress", (e) => {
 					if (e.key === "Enter") openDocument();
 				});
 			}
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (viewMode === "grid") {

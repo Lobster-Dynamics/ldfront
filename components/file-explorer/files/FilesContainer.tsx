@@ -3,7 +3,6 @@ import React from "react";
 import Folder from "./Folder";
 import File from "./File";
 import { DirectoryDetails } from "@/types/ModelTypes";
-import { UUID } from "crypto";
 
 interface FilesContainerProps {
 	viewMode: "list" | "grid";

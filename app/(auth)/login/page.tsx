@@ -10,8 +10,8 @@ import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
-import { loadUserAuthData } from "@/lib/utils";
 import { errorHandler } from "@/utils/errorHandler";
+import { loadUserAuthData } from "@/utils/loadData";
 
 export default function Login() {
 
