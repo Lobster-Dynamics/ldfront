@@ -18,6 +18,8 @@ import UploadContainer from "@/components/file-explorer/UploadContainer";
 import BreadCrumb from "@/components/file-explorer/BreadCrumb";
 import FilesContainer from "@/components/file-explorer/files/FilesContainer";
 import { loadDirectoryData } from "@/utils/loadData";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
@@ -122,12 +124,14 @@ export default function FileExplorer() {
                             </button>
                         </div>
                     </div>
-                    <div className="text-xl text-[#5C5868]">
-                        <BreadCrumb items={directory?.path} />
-                    </div>
-                    <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
-                        <FilesContainer viewMode={viewMode} directory={directory} parentDirectoryId={directoryId}/>
-                    </div>
+                    <DndProvider backend={HTML5Backend}>
+                        <div className="text-xl text-[#5C5868]">
+                            <BreadCrumb items={directory?.path} />
+                        </div>
+                        <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
+                            <FilesContainer viewMode={viewMode} directory={directory} parentDirectoryId={directoryId}/>
+                        </div>
+                    </DndProvider>
                 </div>
             </div>
             <ModalAddFolder />
