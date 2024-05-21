@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import { loadDirectoryData } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
-import SidebarFile from "@/components/file-explorer/SidebarFile";
+import SidebarFile from "@/components/file-explorer/sidebar/SidebarFile";
 import useAuth from "@/hooks/selectors/useAuth";
 import { useSearchParams } from "next/navigation";
 

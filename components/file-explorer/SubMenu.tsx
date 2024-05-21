@@ -9,7 +9,6 @@ import { UserRoundPlus } from "lucide-react";
 import { TextCursorInput } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";  
-import Folder from "./Folder";
 import ReactDOM from "react-dom";
 
 

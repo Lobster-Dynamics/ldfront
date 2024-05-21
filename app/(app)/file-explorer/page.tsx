@@ -1,14 +1,12 @@
 "use client";
 
-import File from "@/components/file-explorer/File";
-import Folder from "@/components/file-explorer/Folder";
-import SidebarFolder from "@/components/file-explorer/SidebarFolder";
-import SidebarFile from "@/components/file-explorer/SidebarFile";
+import SidebarFolder from "@/components/file-explorer/sidebar/SidebarFolder";
+import SidebarFile from "@/components/file-explorer/sidebar/SidebarFile";
 
-import NewButton from "@/components/file-explorer/NewButton";
-import { Calendar, LayoutGrid, List } from "lucide-react";
+import NewButton from "@/components/file-explorer/sidebar/NewButton";
+import { LayoutGrid, List } from "lucide-react";
 import { useEffect, useState } from "react";
-import ModalAddFolder from "@/components/file-explorer/ModalAddFolder";
+import ModalAddFolder from "@/components/file-explorer/sidebar/ModalAddFolder";
 import { DirectoryDetails } from "@/types/ModelTypes";
 import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
@@ -18,8 +16,8 @@ import { useSearchParams } from "next/navigation";
 import { Accordion } from "@/components/ui/accordion";
 import PageLoader from "@/components/PageLoader/PageLoader";
 import UploadContainer from "@/components/file-explorer/UploadContainer";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
 import BreadCrumb from "@/components/file-explorer/BreadCrumb";
+import FilesContainer from "@/components/file-explorer/files/FilesContainer";
 
 export default function FileExplorer() {
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
@@ -37,9 +35,9 @@ export default function FileExplorer() {
             `/directory/get_directory/${sidebardirectoryId}`,
             fetcher,
         );
+    
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
-    const [sidebardirectory, setSidebarDirectory] =
-        useState<DirectoryDetails | null>(null);
+    const [sidebardirectory, setSidebarDirectory] = useState<DirectoryDetails | null>(null);
 
     useEffect(() => {
         if (directoryUnparsed) {
@@ -129,62 +127,10 @@ export default function FileExplorer() {
                         </div>
                     </div>
                     <div className="text-xl text-[#5C5868]">
-                        {/* TODO: Obtener PATH real */}
                         <BreadCrumb items={directory?.path} />
                     </div>
                     <div className="my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]">
-                        <div
-                            className="grid"
-                            style={{
-                                gridTemplateColumns:
-                                    viewMode === "grid"
-                                        ? "repeat(auto-fit,minmax(12rem, 1fr))"
-                                        : "minmax(0, 1fr)",
-                                gap: viewMode === "grid" ? "1rem" : "0.5rem",
-                            }}
-                        >
-                            {viewMode === "list" && (
-                                <div className="flex justify-between">
-                                    <p className="w-2/4">Nombre</p>
-                                    <p className="w-1/4">Propietario</p>
-                                    <div className="flex w-1/4 items-center justify-end gap-2">
-                                        <Calendar size="20px" />
-                                        <p>Fecha de subida</p>
-                                    </div>
-                                </div>
-                            )}
-                            {directory &&
-                                directory.items.length > 0 &&
-                                directory.items.map((file, i) => {
-                                    {
-                                        if (file.type === "DIRECTORY")
-                                            return (
-                                                <Folder
-                                                    key={i}
-                                                    name={file.name}
-                                                    id={file.id}
-                                                    viewMode={viewMode}
-                                                    ownerName={file.ownerName}
-                                                    uploadDate={new Date()} // TODO: Cambiar por fecha real
-                                                    directoryId={directoryId}
-                                                />
-                                            );
-                                        else if (file.type === "DOCUMENT")
-                                            return (
-                                                <File
-                                                    key={i}
-                                                    name={file.name}
-                                                    extension={file.extension}
-                                                    id={file.id}
-                                                    viewMode={viewMode}
-                                                    ownerName={file.ownerName}
-                                                    uploadDate={new Date()} // TODO: Cambiar por fecha real
-                                                    directoryId={directoryId}
-                                                />
-                                            );
-                                    }
-                                })}
-                        </div>
+                        <FilesContainer viewMode={viewMode} directory={directory} parentDirectoryId={directoryId}/>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,11 @@
-import { CircleUserRound, EllipsisVertical, TrendingUp } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import SubMenu from "./SubMenu";
-import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
 import { UUID } from "crypto";
+import { CircleUserRound, EllipsisVertical } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import SubMenu from "../SubMenu";
 
-interface FileProps {
-	extension: ".docx" | ".pdf" | ".pptx" | null;
+interface FolderProps {
 	id: UUID;
 	name: string;
 	viewMode: "list" | "grid";
@@ -21,23 +20,21 @@ const initialContextMenu = {
 	y: 0,
 };
 
-export default function File({
-	extension,
+export default function Folder({
 	id,
 	name,
 	viewMode,
 	ownerName,
 	uploadDate,
-	directoryId
-}: FileProps) {
+	directoryId,
+}: FolderProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-	const fileRef = useRef<HTMLDivElement>(null);
+	const directoryRef = useRef<HTMLDivElement>(null);
+	const router = useRouter();
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
-
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
-	const cleanExtension = extension?.replace(".", "");
 
 	const handleRightClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
         event.preventDefault();
@@ -63,7 +60,6 @@ export default function File({
 			if (y + contextMenuHeight > viewportHeight) {
 				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
 			}
-
             setMenuVisible(true);
             setMenuPosition({
                 x: x,
@@ -71,7 +67,7 @@ export default function File({
             });
         }
     };
-	
+
 	const handleCloseMenu = (): void => {
         setMenuVisible(false);
     };
@@ -79,6 +75,7 @@ export default function File({
 	const openContextMenuButton = () => {
 		if (buttonRef.current) {
 			const rect = buttonRef.current.getBoundingClientRect();
+
 			// Get viewport dimensions
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
@@ -94,55 +91,64 @@ export default function File({
 			// Adjust if near right edge
 			if (x + contextMenuWidth > viewportWidth) {
 				x = viewportWidth - contextMenuWidth - 10; // 10px padding from edge
+				
 			}
 	
 			// Adjust if near bottom edge
 			if (y + contextMenuHeight > viewportHeight) {
 				y = viewportHeight - contextMenuHeight - 10; // 10px padding from edge
 			}
-			setMenuVisible(true)
+
+			setMenuVisible(true);
 			setMenuPosition({
 				x: x,
 				y: y
 			})
+			
 		}
 	};
 
+
 	useEffect(() => {
-		const openDocument = () => {
-			window.open(`/documento?id=${id}`, "_blank");
+		const handleFolderClick = () => {
+			router.push(`/file-explorer?id=${id}`);
 		};
 
 
-		if (fileRef.current) {
-			fileRef.current.addEventListener("dblclick", openDocument);
-			fileRef.current.addEventListener("keypress", (e) => {
-				if (e.key === "Enter") openDocument();
+		if (directoryRef.current) {
+			directoryRef.current.addEventListener(
+				"dblclick",
+				handleFolderClick,
+			);
+			directoryRef.current.addEventListener("keypress", (e) => {
+				if (e.key === "Enter") handleFolderClick();
 			});
 		}
 
 		return () => {
-			if (fileRef.current) {
-				fileRef.current.removeEventListener("dblclick", openDocument);
-				fileRef.current.addEventListener("keypress", (e) => {
-					if (e.key === "Enter") openDocument();
+			if (directoryRef.current) {
+				directoryRef.current.removeEventListener(
+					"dblclick",
+					handleFolderClick,
+				);
+				directoryRef.current.removeEventListener("keypress", (e) => {
+					if (e.key === "Enter") handleFolderClick();
 				});
 			}
 		};
-	}, []);
-
+	}, [id]);
 	if (viewMode === "grid") {
 		return (
 			<div
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
-				ref={fileRef}
+				ref={directoryRef}
 				onContextMenu={handleRightClick}
 			>
 				<Image
-					src={`/${cleanExtension}.png`}
+					src="/folder.png"
 					alt="folder"
-					width={77}
+					width={100}
 					height={100}
 					className="self-center"
 				/>
@@ -166,11 +172,11 @@ export default function File({
 						show={menuVisible}
 						x={menuPosition.x}
 						y={menuPosition.y}
-						onClose={handleCloseMenu}
 						uuid={id}
+						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
-						extension={extension}
+						extension={null}
 						directoryId={directoryId}
 					/>
 				)}
@@ -178,19 +184,23 @@ export default function File({
 		);
 	} else if (viewMode === "list") {
 		return (
-			<div className="h-16 border-t border-black border-opacity-30" ref={fileRef} onContextMenu={handleRightClick}>
+			<div
+				className="h-16 border-t border-black border-opacity-30"
+				ref={directoryRef}
+				onContextMenu={handleRightClick}
+			>
 				<div
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
+					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">
 							<Image
-								src={`/${cleanExtension}.png`}
-								alt="file icon"
-								width={40}
-								height={40}
-								className="m-auto w-10 self-center"
+								src="/folder.png"
+								alt="folder"
+								width={50}
+								height={50}
+								className="m-auto self-center"
 							/>
 						</div>
 						<p className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -214,7 +224,7 @@ export default function File({
 						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
 						ref={submenuRef}
-						extension={extension}
+						extension={null}
 						directoryId={directoryId}
 					/>
 				)}
