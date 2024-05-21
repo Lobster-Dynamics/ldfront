@@ -95,6 +95,7 @@ export default function FileExplorer() {
 		isDragActive: dropzoneisDragActive,
 	} = useDropzone({
 		onDrop,
+        noClick: true,
 	});
 
 	if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;
