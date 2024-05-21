@@ -4,6 +4,10 @@ export const ItemTypes = {
 	TAB: 'tab',
 };
 
+export const ReactDndItemTypes = {
+    FILE: "FileItemDrag",
+    BREADCRUMB: "BreadCrumbDrop",
+}
 
 export const chatData: Chatword = {
 	Chat: [

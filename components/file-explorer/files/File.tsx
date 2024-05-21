@@ -7,6 +7,11 @@ import {
 	handleRightClick,
 	openContextMenuButton,
 } from "@/utils/contextMenuFunctions";
+import { useDrag } from "react-dnd";
+import mergeRefs from "merge-refs";
+import { ReactDndItemTypes } from "@/utils/constants";
+import { BreadCrumbDrop } from "@/types/AppTypes";
+import { cn } from "@/lib/utils";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -49,10 +54,25 @@ export default function File({
 		setMenuVisible(false);
 	};
 
+	const [{ isDragging }, dragRef] = useDrag({
+		type: ReactDndItemTypes.FILE,
+		item: { id, extension },
+		collect: (monitor) => ({
+			isDragging: !!monitor.isDragging(),
+		}),
+		end: (item, monitor) => {
+			const dropResult = monitor.getDropResult<BreadCrumbDrop>();
+			if (item && dropResult) {
+				alert(`You dropped ${item.id} into ${dropResult.id}!`);
+			}
+		},
+	});
+
 	useEffect(() => {
 		const openDocument = () => {
 			window.open(`/documento?id=${id}`, "_blank");
 		};
+
 		let localRef = fileRef.current;
 		if (fileRef.current) localRef = fileRef.current;
 
@@ -74,12 +94,17 @@ export default function File({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+    if (isDragging) console.log("isDragging " + name);
+
+    
+
 	if (viewMode === "grid") {
 		return (
 			<div
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
-				ref={fileRef}
+				// @ts-ignore
+				ref={mergeRefs(fileRef, dragRef)}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
@@ -131,13 +156,16 @@ export default function File({
 		return (
 			<div
 				className="h-16 border-t border-black border-opacity-30"
-				ref={fileRef}
+				// @ts-ignore
+				ref={mergeRefs(fileRef, dragRef)}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
 			>
 				<div
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
+					className={cn(
+						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10", 
+					)}
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">

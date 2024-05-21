@@ -70,8 +70,9 @@ export default function Folder({
 				});
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	if (viewMode === "grid") {
 		return (
 			<div

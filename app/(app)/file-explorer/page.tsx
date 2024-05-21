@@ -15,7 +15,7 @@ import { useSearchParams } from "next/navigation";
 import { Accordion } from "@/components/ui/accordion";
 import PageLoader from "@/components/PageLoader/PageLoader";
 import UploadContainer from "@/components/file-explorer/UploadContainer";
-import BreadCrumb from "@/components/file-explorer/BreadCrumb";
+import BreadCrumb from "@/components/file-explorer/breadCrumb/BreadCrumb";
 import FilesContainer from "@/components/file-explorer/files/FilesContainer";
 import { loadDirectoryData } from "@/utils/loadData";
 import { DndProvider } from "react-dnd";
