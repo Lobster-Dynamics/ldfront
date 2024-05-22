@@ -1,5 +1,7 @@
 import { UUID } from "crypto";
+import { DirectoryItemDetails } from "./ModelTypes";
 
+// Interfaces & Types for React DnD
 export interface Tab {
 	id: string;
 	content: string;
@@ -7,11 +9,11 @@ export interface Tab {
 	Icon: JSX.Element;
 }
 
-export interface FileItemDrag {
-    id: UUID;
-    type: "DIRECTORY" | "DOCUMENT";
-}
+export type FileItemDrag = Omit<DirectoryItemDetails, "ownerId" | "ownerName"> & {
+    directoryId: UUID;
+    draggedComponent: HTMLDivElement | null;
+};
 
-export interface BreadCrumbDrop {
-    id: UUID;
+export type BreadCrumbDrop = {
+	id: UUID;
 }

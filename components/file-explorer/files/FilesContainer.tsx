@@ -3,17 +3,18 @@ import React from "react";
 import Folder from "./Folder";
 import File from "./File";
 import { DirectoryDetails } from "@/types/ModelTypes";
+import CustomFilesDragLayer from "./CustomFilesDragLayer";
 
 interface FilesContainerProps {
 	viewMode: "list" | "grid";
 	directory: DirectoryDetails | null;
-    parentDirectoryId: string;
+	parentDirectoryId: string;
 }
 
 export default function FilesContainer({
 	viewMode,
 	directory,
-    parentDirectoryId
+	parentDirectoryId,
 }: FilesContainerProps) {
 	return (
 		<div
@@ -26,6 +27,7 @@ export default function FilesContainer({
 				gap: viewMode === "grid" ? "1rem" : "0.5rem",
 			}}
 		>
+			{/* TITLE OF LIST MODE */}
 			{viewMode === "list" && (
 				<div className="flex justify-between">
 					<p className="w-2/4">Nombre</p>
@@ -39,34 +41,33 @@ export default function FilesContainer({
 			{directory &&
 				directory.items.length > 0 &&
 				directory.items.map((file, i) => {
-					{
-						if (file.type === "DIRECTORY")
-							return (
-								<Folder
-									key={i}
-									name={file.name}
-									id={file.id}
-									viewMode={viewMode}
-									ownerName={file.ownerName}
-									uploadDate={new Date()} // TODO: Cambiar por fecha real
-									directoryId={parentDirectoryId}
-								/>
-							);
-						else if (file.type === "DOCUMENT")
-							return (
-								<File
-									key={i}
-									name={file.name}
-									extension={file.extension}
-									id={file.id}
-									viewMode={viewMode}
-									ownerName={file.ownerName}
-									uploadDate={new Date()} // TODO: Cambiar por fecha real
-									directoryId={parentDirectoryId}
-								/>
-							);
-					}
+                    if (file.type === "DIRECTORY")
+                        return (
+                            <Folder
+                                key={i}
+                                name={file.name}
+                                id={file.id}
+                                viewMode={viewMode}
+                                ownerName={file.ownerName}
+                                uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                directoryId={parentDirectoryId}
+                            />
+                        );
+                    else if (file.type === "DOCUMENT")
+                        return (
+                            <File
+                                key={i}
+                                name={file.name}
+                                extension={file.extension}
+                                id={file.id}
+                                viewMode={viewMode}
+                                ownerName={file.ownerName}
+                                uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                directoryId={parentDirectoryId}
+                            />
+                        );
 				})}
+            <CustomFilesDragLayer />
 		</div>
 	);
 }

@@ -10,8 +10,9 @@ import {
 import { useDrag } from "react-dnd";
 import mergeRefs from "merge-refs";
 import { ReactDndItemTypes } from "@/utils/constants";
-import { BreadCrumbDrop } from "@/types/AppTypes";
+import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { cn } from "@/lib/utils";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -47,6 +48,10 @@ export default function File({
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 
+	const [dragHelperRef, setDragHelperRef] = useState<HTMLDivElement | null>(
+		null,
+	);
+
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
@@ -54,21 +59,35 @@ export default function File({
 		setMenuVisible(false);
 	};
 
-	const [{ isDragging }, dragRef] = useDrag({
-		type: ReactDndItemTypes.FILE,
-		item: { id, extension },
-		collect: (monitor) => ({
-			isDragging: !!monitor.isDragging(),
+	const [{ isDragging }, dragRef, preview] = useDrag(
+		() => ({
+			type: ReactDndItemTypes.FILE,
+			item: {
+				id,
+				name,
+				extension,
+				directoryId,
+				type: "DOCUMENT",
+				draggedComponent: dragHelperRef,
+			} as FileItemDrag,
+			collect: (monitor) => ({
+				isDragging: !!monitor.isDragging(),
+			}),
+			end: (item, monitor) => {
+				const dropResult = monitor.getDropResult<BreadCrumbDrop>();
+				if (item && dropResult) {
+					alert(`You dropped ${item.id} into ${dropResult.id}!`);
+				}
+			},
 		}),
-		end: (item, monitor) => {
-			const dropResult = monitor.getDropResult<BreadCrumbDrop>();
-			if (item && dropResult) {
-				alert(`You dropped ${item.id} into ${dropResult.id}!`);
-			}
-		},
-	});
+		[dragHelperRef, id, extension],
+	);
 
 	useEffect(() => {
+		// When dragging, hides the file preview being dragged (the one implemented in the web browser)
+		// This to use a custom drag preview
+		preview(getEmptyImage(), { captureDraggingState: true });
+
 		const openDocument = () => {
 			window.open(`/documento?id=${id}`, "_blank");
 		};
@@ -94,9 +113,7 @@ export default function File({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-    if (isDragging) console.log("isDragging " + name);
-
-    
+	if (isDragging) console.log("isDragging " + name + " " + dragHelperRef?.offsetWidth);
 
 	if (viewMode === "grid") {
 		return (
@@ -104,7 +121,11 @@ export default function File({
 				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
 				tabIndex={0}
 				// @ts-ignore
-				ref={mergeRefs(fileRef, dragRef)}
+				ref={(div) => {
+                    setDragHelperRef(div);
+                    // @ts-ignore
+					mergeRefs(fileRef, dragRef(div));
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
@@ -156,17 +177,22 @@ export default function File({
 		return (
 			<div
 				className="h-16 border-t border-black border-opacity-30"
-				// @ts-ignore
-				ref={mergeRefs(fileRef, dragRef)}
+				ref={(div) => {
+                    setDragHelperRef(div);
+                    // @ts-ignore
+					mergeRefs(fileRef, dragRef(div));
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
 			>
 				<div
 					className={cn(
-						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10", 
+						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10",
+                        {"opacity-30": isDragging}
 					)}
 					tabIndex={0}
+                    onClick={(e) => console.log(e.clientX, e.clientY)}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">
