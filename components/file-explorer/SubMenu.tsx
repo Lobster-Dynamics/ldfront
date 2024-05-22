@@ -23,7 +23,6 @@ interface SubMenuProps {
 		x: number;
 		y: number;
 	}) => void;
-	ref: RefObject<HTMLDivElement>;
 	extension: ".docx" | ".pdf" | ".pptx" | null;
 	directoryId: string;
 }
@@ -35,7 +34,6 @@ export default function SubMenu({
 	onClose,
 	uuid,
 	setContextMenu,
-	ref,
 	extension,
 	directoryId
 }: SubMenuProps) {

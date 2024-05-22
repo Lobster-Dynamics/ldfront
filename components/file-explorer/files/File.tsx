@@ -120,7 +120,6 @@ export default function File({
 						onClose={handleCloseMenu}
 						uuid={id}
 						setContextMenu={setContextMenu}
-						ref={submenuRef}
 						extension={extension}
 						directoryId={directoryId}
 					/>
@@ -170,7 +169,6 @@ export default function File({
 						uuid={id}
 						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
-						ref={submenuRef}
 						extension={extension}
 						directoryId={directoryId}
 					/>
