@@ -10,7 +10,11 @@ export const modalSlice = createSlice({
             language: "",
         },
         modalAñadirConcepto: false,
-        modalBorrar: false,
+        modalBorrar:{
+            isOpen: false,
+            id: "",
+            documentId: "",
+        },
         modalAñadirCarpeta: false,
     },
     reducers: {
@@ -24,8 +28,12 @@ export const modalSlice = createSlice({
         toggleModalAñadirConcepto: (state: { modalAñadirConcepto: boolean; }) => {
             state.modalAñadirConcepto = !state.modalAñadirConcepto;
         },
-        toggleModalBorrar: (state: { modalBorrar: boolean; }) => {
-            state.modalBorrar = !state.modalBorrar;
+        toggleModalBorrar: (state) => {
+            state.modalBorrar.isOpen = !state.modalBorrar.isOpen;
+        },
+        setModalBorrarDetails: (state, action: PayloadAction<{ id: string; documentId: string; }>) => {
+            state.modalBorrar.id = action.payload.id;
+            state.modalBorrar.documentId = action.payload.documentId;
         },
         toggleModalAñadirCarpeta: (state: { modalAñadirCarpeta: boolean; }) => {
             state.modalAñadirCarpeta = !state.modalAñadirCarpeta;
@@ -33,7 +41,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
 
 export default modalSlice.reducer
 

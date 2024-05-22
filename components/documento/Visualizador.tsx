@@ -57,11 +57,11 @@ const Visualizador = () => {
             ],
             rightBottom: [
                 { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
-                { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+                { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords documentId={id} keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
 
             ],
         });
-    }, [document]);
+    }, [document,id]);
 
     const moveTab = useCallback((tab: Tab, targetContainerId: string) => {
         setTabs((prevTabs) => {
