@@ -8,12 +8,27 @@ import { XYCoord } from "react-dnd";
 interface FileDragLayerProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
 	name: string;
-    offSet: XYCoord | null;
+	offSet: XYCoord;
+	parentWidth: number;
+	parentHeight: number;
 }
 
-export default function FileDragLayer({ extension, name, offSet }: FileDragLayerProps) {
+function getItemStyles(Offset: XYCoord, isResized: boolean) {
+	if (!Offset || !isResized) return {};
+
+	let { x, y } = Offset;
+
+	const transform = `translate(${x}px, ${y}px)`;
+	return {
+		transform,
+		WebkitTransform: transform,
+	};
+}
+
+export default function FileDragLayer({ extension, name, offSet, parentWidth, parentHeight }: FileDragLayerProps) {
 	const cleanExtension = extension?.replace(".", "");
 	const [isResized, setIsResized] = useState<boolean>(false);
+	const [finalOffset, setFinalOffset] = useState<XYCoord>({ x: 0, y: 0 })
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;
@@ -22,18 +37,19 @@ export default function FileDragLayer({ extension, name, offSet }: FileDragLayer
 		return () => clearTimeout(timer); // Limpiar el temporizador en desmontaje
 	}, []);
 
-    console.log(offSet);
+	useEffect(() => {
+		console.log({ x: offSet.x, y: offSet.y })
+		setFinalOffset({ x: offSet.x + 100 - parentWidth / 2, y: offSet.y })
+	}, [isResized])
 
 	return (
 		<div
 			className={cn(
-				"flex w-full justify-between rounded-lg bg-white p-2 text-black outline-none transition-all ease-out",
-				{
-					"mx-auto w-[250px] bg-white bg-opacity-100 shadow-md":
-						isResized,
-				},
+				"flex w-full bg-purpleFrida-700 bg-opacity-10 justify-between rounded-lg p-2 text-black outline-none transition-all ease-out",
+				isResized && "mx-auto w-[200px] bg-white bg-opacity-100 shadow-md"
+				// isResized && "bg-white bg-opacity-100 shadow-md"
 			)}
-            // style={{left: offSet?.x, top: offSet?.y}}
+			style={getItemStyles(finalOffset, isResized)}
 		>
 			<div className="flex w-full items-center gap-1 mx-auto">
 				<div className="w-[50px] flex-shrink-0">

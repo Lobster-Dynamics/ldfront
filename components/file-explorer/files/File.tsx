@@ -124,7 +124,7 @@ export default function File({
 				ref={(div) => {
                     setDragHelperRef(div);
                     // @ts-ignore
-					mergeRefs(fileRef, dragRef(div));
+					mergeRefs(fileRef(div), dragRef(div));
 				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)

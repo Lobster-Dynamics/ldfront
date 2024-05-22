@@ -44,6 +44,8 @@ export default function CustomFilesDragLayer() {
 						name={item.name}
 						extension={item.extension}
 						offSet={getOffset()}
+						parentWidth={item?.draggedComponent.offsetWidth}
+						parentHeight={item?.draggedComponent.offsetHeight}
 					/>
 				);
 			default:
@@ -62,6 +64,12 @@ export default function CustomFilesDragLayer() {
 			x: clientOffset.x - item?.draggedComponent.offsetLeft,
 			y: clientOffset.y - item?.draggedComponent.offsetTop,
 		};
+		// if (!currentOffset || !initialOffset) return {x: 0, y: 0};
+
+		// return {
+		// 	x: currentOffset.x - initialOffset.x,
+		// 	y: currentOffset.y - initialOffset.y
+		// };
 	}
 
 	if (!isDragging) return null;
@@ -73,7 +81,6 @@ export default function CustomFilesDragLayer() {
 					currentOffset,
 					item?.draggedComponent.offsetWidth,
 				)}
-				// className="bg-green-300"
 			>
 				{renderItem()}
 			</div>
