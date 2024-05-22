@@ -113,18 +113,20 @@ export default function File({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	if (isDragging) console.log("isDragging " + name + " " + dragHelperRef?.offsetWidth);
 
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+				className={cn(
+					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
+					{ "opacity-30": isDragging },
+				)}
 				tabIndex={0}
 				// @ts-ignore
 				ref={(div) => {
-                    setDragHelperRef(div);
-                    // @ts-ignore
-					mergeRefs(fileRef(div), dragRef(div));
+					setDragHelperRef(div);
+					// @ts-ignore
+					mergeRefs(fileRef, dragRef(div));
 				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
@@ -178,8 +180,8 @@ export default function File({
 			<div
 				className="h-16 border-t border-black border-opacity-30"
 				ref={(div) => {
-                    setDragHelperRef(div);
-                    // @ts-ignore
+					setDragHelperRef(div);
+					// @ts-ignore
 					mergeRefs(fileRef, dragRef(div));
 				}}
 				onContextMenu={(e) =>
@@ -189,10 +191,9 @@ export default function File({
 				<div
 					className={cn(
 						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10",
-                        {"opacity-30": isDragging}
+						{ "opacity-30": isDragging },
 					)}
 					tabIndex={0}
-                    onClick={(e) => console.log(e.clientX, e.clientY)}
 				>
 					<div className="flex w-2/4 items-center gap-2">
 						<div className="w-[50px] flex-shrink-0">

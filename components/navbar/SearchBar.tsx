@@ -1,7 +1,6 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { searchItems } from "@/utils/constants";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "@/hooks/selectors/use-on-click-outside";
@@ -57,23 +56,11 @@ export default function SearchBar() {
             catch {
                 console.log("Error")
             }
-            // if (debouncedQuery.length > 0) {
-            //     const data = await fetch(url + debouncedQuery, { signal });
-            //     const res = await data.json();
-            //     if (res) {
-            //         setSearchResults(res);
-            //     }
-            // }
         })();
 
         return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedQuery]);
-
-    // useEffect(() => {
-    //     if (searchValue !== null) {
-    //         if (searchValue.length === 0) navigate(props.currentUrl);
-    //     }
-    // }, [searchValue])
 
 	return (
 		// TODO: Implementar SearchBar y mejorar el diseño

@@ -1,86 +1,87 @@
 import { useDragLayer, XYCoord } from "react-dnd";
 import { ReactDndItemTypes } from "@/utils/constants";
 import FileDragLayer from "./FileDragLayer";
+import { useEffect, useState } from "react";
 
-function getItemStyles(Offset: XYCoord | null, offsetWidth: number) {
-	if (!Offset) {
-		return {
-			display: "none",
-		};
+function getItemStyles(
+	initialOffset: XYCoord | null,
+	clientOffset: XYCoord | null,
+	offsetWidth: number,
+	isResized: boolean,
+) {
+	if (!initialOffset || !clientOffset) {
+		return { display: "none" };
 	}
 
-	let { x, y } = Offset;
+	let pos: XYCoord;
+	let width: number;
+	if (!isResized) {
+		pos = initialOffset; // Posición inicial del item (Creo en referencia a DNDProvider)
+		width = offsetWidth; // Ancho del componente (Item original)
+	} else {
+		pos = clientOffset; // Posición actual del cursor
+		width = 250; // Ancho del componente (Item que se dragea)
+	}
 
-	const transform = `translate(${x}px, ${y}px)`;
+	const transform = `translate(${pos.x}px, ${pos.y}px)`;
+
 	return {
 		transform,
 		WebkitTransform: transform,
-		width: `${offsetWidth}px`,
+		width: `${width}px`,
 	};
 }
 
 export default function CustomFilesDragLayer() {
-	const {
-		itemType,
-		isDragging,
-		item,
-		initialOffset,
-		currentOffset,
-		clientOffset,
-	} = useDragLayer((monitor) => ({
-		item: monitor.getItem(),
-		itemType: monitor.getItemType(),
-		initialOffset: monitor.getInitialSourceClientOffset(),
-		currentOffset: monitor.getSourceClientOffset(),
-		clientOffset: monitor.getClientOffset(),
-		isDragging: monitor.isDragging(),
-	}));
+	const { itemType, isDragging, item, currentOffset, clientOffset } =
+		useDragLayer((monitor) => ({
+			item: monitor.getItem(),
+			itemType: monitor.getItemType(),
+			currentOffset: monitor.getSourceClientOffset(),
+			clientOffset: monitor.getClientOffset(),
+			isDragging: monitor.isDragging(),
+		}));
+	const [isResized, setIsResized] = useState<boolean>(false);
 
-	function renderItem() {
+	const renderItem = () => {
 		switch (itemType) {
 			case ReactDndItemTypes.FILE:
 				return (
 					<FileDragLayer
 						name={item.name}
 						extension={item.extension}
-						offSet={getOffset()}
-						parentWidth={item?.draggedComponent.offsetWidth}
-						parentHeight={item?.draggedComponent.offsetHeight}
+						isResized={isResized}
 					/>
 				);
 			default:
 				return null;
 		}
-	}
+	};
 
-	function getOffset() {
-		if (!clientOffset)
-			return {
-				x: item?.draggedComponent.offsetLeft,
-				y: item?.draggedComponent.offsetTop,
-			};
-
-		return {
-			x: clientOffset.x - item?.draggedComponent.offsetLeft,
-			y: clientOffset.y - item?.draggedComponent.offsetTop,
-		};
-		// if (!currentOffset || !initialOffset) return {x: 0, y: 0};
-
-		// return {
-		// 	x: currentOffset.x - initialOffset.x,
-		// 	y: currentOffset.y - initialOffset.y
-		// };
-	}
-
-	if (!isDragging) return null;
+	useEffect(() => {
+		let timer: NodeJS.Timeout;
+		if (isDragging) {
+			// Iniciar el temporizador cuando comience el drag
+			timer = setTimeout(() => setIsResized(true), 100);
+		} else {
+			// Limpiar el temporizador y restablecer el estado cuando termine el drag
+			//   @ts-ignore
+			clearTimeout(timer);
+			setIsResized(false);
+		}
+		return () => clearTimeout(timer); // Limpiar el temporizador en desmontaje
+	}, [isDragging, item]);
 
 	return (
 		<div className="pointer-events-none fixed left-0 top-0 z-[100] h-full">
 			<div
 				style={getItemStyles(
 					currentOffset,
+					clientOffset,
 					item?.draggedComponent.offsetWidth,
+					isResized,
 				)}
+				className="transition-all ease-out"
 			>
 				{renderItem()}
 			</div>
