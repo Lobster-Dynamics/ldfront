@@ -5,6 +5,7 @@ import { RootState } from "@/redux/store";
 import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
 import { errorHandler } from "@/utils/errorHandler";
+import { mutate } from "swr";
 
 export default function ModalBorrar() {
     const dispatch = useDispatch();
@@ -20,6 +21,8 @@ export default function ModalBorrar() {
 
             await axiosClient.delete(`/document/delete_key_concept/${documentId}/${id}`, config)
 
+            mutate(`/document/get_document/${documentId}`)
+
             dispatch(toggleModalBorrar());
         } catch (error:any) {
             errorHandler(error)
@@ -33,7 +36,7 @@ export default function ModalBorrar() {
             className="w-1/3 p-8"
         >
             <h1 className="text-start font-mono text-4xl leading-loose">
-                ¿Desea eliminar &apos;Crops&apos; de los keywords?
+                ¿Esta seguro de que desea eliminar este concepto?
             </h1>
             <div className="flex justify-end mt-8">
                 <div className="flex w-1/2 justify-between">

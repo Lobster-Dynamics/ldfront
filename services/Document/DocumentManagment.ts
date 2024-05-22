@@ -27,7 +27,6 @@ export async function CreateDocument({ file, directoryId, userId, dispatch }: Cr
         formData.append("file", file);
         formData.append("directory_id", directoryId);
         formData.append("userId", userId);
-        console.log("Uploaded file:", file);
 
         const config = axiosConfig(true);
         if (!config) return null;

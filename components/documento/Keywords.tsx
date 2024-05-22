@@ -13,6 +13,7 @@ export default function Keywords({ keywords, documentId }: KeywordsProps) {
 
 
     const dispatch = useDispatch();
+
 	return (
 		<div className="flex flex-wrap  p-6 ">
 			{keywords.map((keyword) => (
