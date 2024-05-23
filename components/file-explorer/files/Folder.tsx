@@ -123,13 +123,17 @@ export default function Folder({
 			<div
 				className={cn(
 					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
-					{ "opacity-30": isDragging },
+					{
+						"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
+							isOver && !isDragging,
+					},
 				)}
 				tabIndex={0}
 				ref={(div) => {
 					setDragHelperRef(div);
 					// @ts-ignore
 					directoryRef.current = div;
+					dropRef(div);
 					dragRef(div);
 				}}
 				onContextMenu={(e) =>
