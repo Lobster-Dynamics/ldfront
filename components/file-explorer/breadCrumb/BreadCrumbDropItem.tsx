@@ -1,5 +1,4 @@
 import { BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
-import { PathItem } from "@/types/ModelTypes";
 import { ReactDndItemTypes } from "@/utils/constants";
 import { UUID } from "crypto";
 import { useRouter } from "next/navigation";
@@ -20,7 +19,7 @@ export default function BreadCrumbDropItem({
 		router.push(`/file-explorer?id=${id}`);
 	};
 
-	const [{ canDrop, isOver }, drop] = useDrop(() => ({
+	const [{ canDrop, isOver }, dropRef] = useDrop(() => ({
 		accept: ReactDndItemTypes.FILE,
 		drop: () => ({ id: id }),
 		collect: (monitor) => ({
@@ -35,7 +34,7 @@ export default function BreadCrumbDropItem({
 				className="text-xl"
 				onClick={() => handleItemClick(id)}
                 // @ts-ignore
-                ref={drop}
+                ref={dropRef}
 			>
 				{name}
 			</BreadcrumbLink>

@@ -8,7 +8,6 @@ import {
 	openContextMenuButton,
 } from "@/utils/contextMenuFunctions";
 import { useDrag } from "react-dnd";
-import mergeRefs from "merge-refs";
 import { ReactDndItemTypes } from "@/utils/constants";
 import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { cn } from "@/lib/utils";

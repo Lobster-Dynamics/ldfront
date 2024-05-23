@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { XYCoord } from "react-dnd";
 
 interface FileDragLayerProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -16,13 +14,13 @@ export default function FileDragLayer({
 	name,
 	isResized,
 }: FileDragLayerProps) {
-	const cleanExtension = extension?.replace(".", "");
+	const cleanExtension = extension ? extension.replace(".", "") : "folder";
 
 	return (
 		<div
 			className={cn(
 				"flex w-full justify-between rounded-lg bg-purpleFrida-700 bg-opacity-10 p-2 text-black outline-none",
-				isResized && "bg-white bg-opacity-100 shadow-md",
+				isResized && "bg-white bg-opacity-100 shadow-lg",
 			)}
 		>
 			<div className="mx-auto flex w-full items-center gap-1">
