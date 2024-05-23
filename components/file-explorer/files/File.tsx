@@ -122,11 +122,11 @@ export default function File({
 					{ "opacity-30": isDragging },
 				)}
 				tabIndex={0}
-				// @ts-ignore
 				ref={(div) => {
 					setDragHelperRef(div);
-					// @ts-ignore
-					mergeRefs(fileRef, dragRef(div));
+                    // @ts-ignore
+                    fileRef.current = div;
+					dragRef(div);
 				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
@@ -181,8 +181,9 @@ export default function File({
 				className="h-16 border-t border-black border-opacity-30"
 				ref={(div) => {
 					setDragHelperRef(div);
-					// @ts-ignore
-					mergeRefs(fileRef, dragRef(div));
+                    // @ts-ignore
+                    fileRef.current = div;
+					dragRef(div);
 				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
