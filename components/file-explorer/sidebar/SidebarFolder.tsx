@@ -12,6 +12,7 @@ import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
+    CurrentAccordionTrigger
 } from "@/components/ui/accordion"
 import { useRouter } from "next/navigation";  
 import { loadDirectoryData } from "@/utils/loadData";
@@ -38,66 +39,66 @@ export default function SidebarFolder({
     const nameref = useRef<HTMLParagraphElement>(null);
     const router = useRouter();
 
+    const { auth } = useAuth();
+	const searchParams = useSearchParams();
+	const currdir = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
+
+    const openDocument = () => {
+        router.push(`/file-explorer?id=${id}`);
+    };
+
     useEffect(() => {
         if (directoryUnparsed) {
             setDirectory(loadDirectoryData(directoryUnparsed))
         }
 
-        const openDocument = () => {
-			router.push(`/file-explorer?id=${id}`);
-		};
-
-
-		if (nameref.current) {
-			nameref.current.addEventListener("click", openDocument);
-		}
-
-		return () => {
-			if (nameref.current) {
-				nameref.current.removeEventListener("click", openDocument);
-			}
-		};
-
+        
     }, [directoryUnparsed])
 
-	return (
-        
-		<div ref={fileRef} className="ml-2 flex">
+	return ( 
+		<div ref={fileRef} className="ml-2 my-1 flex">
             <AccordionItem value={`item-${id}`}>
-                <AccordionTrigger><p ref={nameref} className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-                {name}
-                </p></AccordionTrigger>
-            <AccordionContent>
-                {directory && directory.items.length > 0 && (
-                    directory.items.map((file) => {
-                        {
-                            if (file.type === "DIRECTORY")
-                                return (
-                                    <SidebarFolder
-                                        key ={file.name}
-                                        name={file.name}
-                                        id={file.id}
-                                        type = {file.type}
-                                        ownerName={file.ownerName}
-                                        directoryId={directoryId}
-                                    />                  
-                                );
-                            else if (file.type === "DOCUMENT")
-                                return (
-                                    <SidebarFile
-                                        key ={file.id}
-                                        name={file.name}
-                                        type = {file.type}
-                                        extension={file.extension}
-                                        id={file.id}
-                                        ownerName={file.ownerName}
-                                        directoryId={directoryId}
-                                    />
-                                );
-                        }
-                    })
+                {id === currdir ? (
+                    <CurrentAccordionTrigger>
+                        
+                        <button onClick={openDocument}><p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+                            {name}
+                        </p></button>
+                    </CurrentAccordionTrigger>
+                ) : (
+                    <AccordionTrigger>
+                        <button onClick={openDocument}
+                        ><p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+                            {name}
+                        </p></button>
+                    </AccordionTrigger>
                 )}
-            </AccordionContent>
+                <AccordionContent>
+                    {directory && directory.items.length > 0 && (
+                        directory.items.map((file) => (
+                            file.type === "DIRECTORY" ? (
+                                <SidebarFolder
+                                    key={file.id}
+                                    name={file.name}
+                                    id={file.id}
+                                    type={file.type}
+                                    ownerName={file.ownerName}
+                                    directoryId={directoryId}
+                                />
+                            ) : (
+                                <SidebarFile
+                                    key={file.id}
+                                    name={file.name}
+                                    type={file.type}
+                                    extension={file.extension}
+                                    id={file.id}
+                                    ownerName={file.ownerName}
+                                    directoryId={directoryId}
+                                />
+                            )
+                        ))
+                    )}
+                </AccordionContent>
             </AccordionItem>
         </div>
 	)

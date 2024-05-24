@@ -1,7 +1,10 @@
 import { File } from "lucide-react";
 import { UUID } from "crypto";
-import { useEffect, useRef } from "react";
-  
+import { useEffect, useRef, useState } from "react";
+import useAuth from "@/hooks/selectors/useAuth";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
+
 interface SidebarFileProps {
     extension: ".docx" | ".pdf" | ".pptx" | null;	
     id: UUID;
@@ -21,29 +24,41 @@ export default function SidebarFile({
 }:SidebarFileProps) {
 	const fileRef = useRef<HTMLDivElement>(null);
 
+	const [extensionType, setExtensionType] = useState<"/pdf-jair.png" | "/docx-jair.png" | "/pptx-jair.png" >("/pdf-jair.png");
+	const openDocument = () => {
+		window.open(`/documento?id=${id}`, "_blank");
+	};
+	
+
+
+	
+
 	useEffect(() => {
-		const openDocument = () => {
-			window.open(`/documento?id=${id}`, "_blank");
-		};
-
-
-		if (fileRef.current) {
-			fileRef.current.addEventListener("click", openDocument);
+		if (extension == ".docx"){
+			setExtensionType("/docx-jair.png")
+		} else if (extension == ".pdf"){
+			setExtensionType("/pdf-jair.png")
+		} else if (extension == ".pptx"){
+			setExtensionType("/pptx-jair.png")
 		}
-
-		return () => {
-			if (fileRef.current) {
-				fileRef.current.removeEventListener("click", openDocument);
-			}
-		};
-	}, []);
+	
+	}, [extension]);
 
 	return (
-		<div ref={fileRef} className="ml-2 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10 px-2">
-		    <File className="flex-shrink-0 h-4 w-4 ml-4"></File>
-			<p className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-				{name}
-			</p>
+		<div ref={fileRef} className="pl-9 my-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10 px-2">
+			<Image
+				src={extensionType}
+				alt="fileicon"
+				width={25}
+				height={40}
+				className="self-center"
+			/>
+			<button onClick={openDocument}>
+				<p className="ml-2 overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+					{name}
+				</p>
+			</button>
+			
 		</div>
 	)
 }
