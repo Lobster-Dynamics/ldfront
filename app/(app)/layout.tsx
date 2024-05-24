@@ -23,7 +23,8 @@ export default function Layout({ children }: Props) {
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
 		`${process.env.NEXT_PUBLIC_NOTIFICATIONS_WEBSOCKET}?auth_token=${auth !== null && auth !== undefined ? auth.token : "dummy"}`,
         {
-            shouldReconnect: (event) => true
+            shouldReconnect: (event) => true,
+			retryOnError: true
         }
 	);
 
