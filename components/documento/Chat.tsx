@@ -8,9 +8,10 @@ import { axiosConfig } from '@/config/axiosConfig';
 interface ChatProps {
     Chat: Chatword;
     id: string;
+    userid: string | undefined;
 }
 
-export default function Chat({ Chat, id }: ChatProps) {
+export default function Chat({ Chat, id, userid}: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [ newInputValue, setNewInputValue ] = useState('');
     const [ messages, setMessages] = useState<Chatword>({Chat: [
@@ -46,7 +47,7 @@ export default function Chat({ Chat, id }: ChatProps) {
         const config = axiosConfig();
         if (!config) return;
     
-        const data = { id: id, query: userMessage };
+        const data = { id: id, userid: userid,query: userMessage };
         console.log(data);
     
         try {

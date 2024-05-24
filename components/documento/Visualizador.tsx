@@ -20,6 +20,7 @@ import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
 import { Document } from '@/types/ModelTypes';
 import { useSearchParams } from 'next/navigation';
+import useAuth from '@/hooks/selectors/useAuth';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
@@ -30,6 +31,7 @@ const Visualizador = () => {
         rightTop: [],
         rightBottom: [],
     });
+    const { auth } = useAuth()
 
     const [selectedTabs, setSelectedTabs] = useState<{
         [key: string]: string;
@@ -51,7 +53,7 @@ const Visualizador = () => {
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
-                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} />, Icon: <MessageSquare /> },
+                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
                 { id: 'right-top-2', content: 'Resumen', component: document ?  <Summary summary={document?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
 
             ],
