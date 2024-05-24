@@ -13,6 +13,7 @@ import { ReactDndItemTypes } from "@/utils/constants";
 import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { cn } from "@/lib/utils";
+import handleItemDrop from "@/lib/requests/functions";
 
 interface FolderProps {
 	id: UUID;
@@ -73,7 +74,7 @@ export default function Folder({
 			end: (item, monitor) => {
 				const dropResult = monitor.getDropResult<BreadCrumbDrop>();
 				if (item && dropResult && dropResult.id !== item.id) {
-					alert(`You dropped ${item.id} into ${dropResult.id}!`);
+					handleItemDrop(directoryId, dropResult.id, id);
 				}
 			},
 		}),

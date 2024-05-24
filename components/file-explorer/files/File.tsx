@@ -12,6 +12,7 @@ import { ReactDndItemTypes } from "@/utils/constants";
 import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { cn } from "@/lib/utils";
 import { getEmptyImage } from "react-dnd-html5-backend";
+import handleItemDrop from "@/lib/requests/functions";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -75,7 +76,7 @@ export default function File({
 			end: (item, monitor) => {
 				const dropResult = monitor.getDropResult<BreadCrumbDrop>();
 				if (item && dropResult) {
-					alert(`You dropped ${item.id} into ${dropResult.id}!`);
+					handleItemDrop(directoryId, dropResult.id, id);
 				}
 			},
 		}),

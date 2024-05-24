@@ -1,4 +1,5 @@
 import { BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import { cn } from "@/lib/utils";
 import { ReactDndItemTypes } from "@/utils/constants";
 import { UUID } from "crypto";
 import { useRouter } from "next/navigation";
@@ -31,10 +32,16 @@ export default function BreadCrumbDropItem({
 	return (
 		<BreadcrumbItem>
 			<BreadcrumbLink
-				className="text-xl"
+				className={cn(
+					"rounded-lg py-1 px-2 text-xl outline-none transition",
+					{
+						"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
+							isOver,
+					},
+				)}
 				onClick={() => handleItemClick(id)}
-                // @ts-ignore
-                ref={dropRef}
+				// @ts-ignore
+				ref={dropRef}
 			>
 				{name}
 			</BreadcrumbLink>
