@@ -48,7 +48,6 @@ export default function WordCloud({ uuid, width, height }: WordCloudProps) {
     }
   });
 
-  console.log(words)
 
   const colors = ["#AC73D9", "#8700BF", "#7B20C3", "#AEB1F8", "#6568BB"];
 

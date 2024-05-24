@@ -9,7 +9,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function ModalDefinicion() {
     const { isOpen, word, language } = useSelector((state: RootState) => state.modal.modalDefinicion);
-    const url = `https://dictionary.frida-backend.me/meaning?word=${encodeURIComponent(word)}&lang=${encodeURIComponent(language)}`;
+    const url = `${process.env.NEXT_PUBLIC_DICTIONARY_URL}/meaning?word=${encodeURIComponent(word)}&lang=${encodeURIComponent(language)}`;
     const { data: dictionary, error } = useSWR<Dictionary>(url, fetcher);
     
     const dispatch = useDispatch();

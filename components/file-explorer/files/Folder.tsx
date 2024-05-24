@@ -178,7 +178,6 @@ export default function Folder({
 						uuid={id}
 						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
-						ref={submenuRef}
 						extension={null}
 						directoryId={directoryId}
 					/>
@@ -241,7 +240,6 @@ export default function Folder({
 						uuid={id}
 						onClose={handleCloseMenu}
 						setContextMenu={setContextMenu}
-						ref={submenuRef}
 						extension={null}
 						directoryId={directoryId}
 					/>

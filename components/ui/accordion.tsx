@@ -4,7 +4,8 @@ import * as React from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { ChevronRight, Folder } from "lucide-react"
 import { cn } from "@/lib/utils"
-
+import Image
+ from "next/image"
 const Accordion = AccordionPrimitive.Root
 
 const AccordionItem = React.forwardRef<
@@ -34,15 +35,52 @@ const AccordionTrigger = React.forwardRef<
       )}
       {...props}
     >
-      <ChevronRight className="h-4 w-4 shrink-0 transition-transform duration-200" />
+      <ChevronRight className="ml-1 h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
-      <Folder className="h-4 w-4 shrink-0" />
-      {children}
+      <Image
+        src="/folder.png"
+        alt="folder"
+        width={25}
+        height={25}
+        className="self-center"
+      />
+      <p className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap text-base">{children}</p>
     </div>
     
   </AccordionPrimitive.Header>
 ))
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+
+const CurrentAccordionTrigger = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  
+  <AccordionPrimitive.Header className="flex">
+    <div className="flex flex-1 items-center justify-start py-1 rounded-lg border border-purpleFrida-700 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10 px-2">
+      <AccordionPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-90",
+        className
+      )}
+      {...props}
+    >
+      <ChevronRight className="ml-1 h-4 w-4 shrink-0 transition-transform duration-200" />
+    </AccordionPrimitive.Trigger>
+      <Image
+        src="/folder.png"
+        alt="folder"
+        width={25}
+        height={25}
+        className="self-center"
+      />
+      <p className="ml-1 overflow-hidden overflow-ellipsis whitespace-nowrap text-base">{children}</p>
+    </div>
+    
+  </AccordionPrimitive.Header>
+))
+CurrentAccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
 const AccordionContent = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Content>,
@@ -59,4 +97,4 @@ const AccordionContent = React.forwardRef<
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent, CurrentAccordionTrigger }
