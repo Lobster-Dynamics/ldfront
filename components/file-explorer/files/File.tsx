@@ -7,6 +7,12 @@ import {
 	handleRightClick,
 	openContextMenuButton,
 } from "@/utils/contextMenuFunctions";
+import { useDrag } from "react-dnd";
+import { ReactDndItemTypes } from "@/utils/constants";
+import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
+import { cn } from "@/lib/utils";
+import { getEmptyImage } from "react-dnd-html5-backend";
+import handleItemDrop from "@/lib/requests/functions";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -42,6 +48,10 @@ export default function File({
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const submenuRef = useRef<HTMLDivElement>(null);
 
+	const [dragHelperRef, setDragHelperRef] = useState<HTMLDivElement | null>(
+		null,
+	);
+
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 	const cleanExtension = extension?.replace(".", "");
 
@@ -49,10 +59,39 @@ export default function File({
 		setMenuVisible(false);
 	};
 
+	const [{ isDragging }, dragRef, preview] = useDrag(
+		() => ({
+			type: ReactDndItemTypes.FILE,
+			item: {
+				id,
+				name,
+				extension,
+				directoryId,
+				type: "DOCUMENT",
+				draggedComponent: dragHelperRef,
+			} as FileItemDrag,
+			collect: (monitor) => ({
+				isDragging: !!monitor.isDragging(),
+			}),
+			end: (item, monitor) => {
+				const dropResult = monitor.getDropResult<BreadCrumbDrop>();
+				if (item && dropResult) {
+					handleItemDrop(directoryId, dropResult.id, id);
+				}
+			},
+		}),
+		[dragHelperRef, id, extension],
+	);
+
 	useEffect(() => {
+		// When dragging, hides the file preview being dragged (the one implemented in the web browser)
+		// This to use a custom drag preview
+		preview(getEmptyImage(), { captureDraggingState: true });
+
 		const openDocument = () => {
 			window.open(`/documento?id=${id}`, "_blank");
 		};
+
 		let localRef = fileRef.current;
 		if (fileRef.current) localRef = fileRef.current;
 
@@ -74,12 +113,21 @@ export default function File({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+				className={cn(
+					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
+					{ "opacity-30": isDragging },
+				)}
 				tabIndex={0}
-				ref={fileRef}
+				ref={(div) => {
+					setDragHelperRef(div);
+                    // @ts-ignore
+                    fileRef.current = div;
+					dragRef(div);
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
@@ -130,13 +178,21 @@ export default function File({
 		return (
 			<div
 				className="h-16 border-t border-black border-opacity-30"
-				ref={fileRef}
+				ref={(div) => {
+					setDragHelperRef(div);
+                    // @ts-ignore
+                    fileRef.current = div;
+					dragRef(div);
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
 			>
 				<div
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
+					className={cn(
+						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10",
+						{ "opacity-30": isDragging },
+					)}
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">

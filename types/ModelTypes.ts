@@ -9,23 +9,12 @@ export interface ChatDetails {
 	role: string;
 }
 
-export interface Files {
-	files: File[];
-}
-
-export interface File {
-	name: string;
-	type: string;
-	extension: ".docx" | ".pdf" | ".pptx" | null;
-	uuid: UUID;
-	owner: string;
-	uploadDate: Date;
-}
-
 export interface WordDefinition {
 	Definition: string;
 	examples: string[];
 }
+
+
 
 export interface UserAuth {
 	token: string;
@@ -37,6 +26,8 @@ export interface UserAuth {
 	uid: string;
 }
 
+
+
 export interface DirectoryItemDetails {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
 	id: UUID;
@@ -45,6 +36,22 @@ export interface DirectoryItemDetails {
 	ownerId: string;
 	ownerName: string;
 }
+
+export interface PathItem {
+    name: string;
+    id: UUID;
+}
+
+export interface DirectoryDetails {
+	id: UUID;
+	name: string;
+	ownerId: string;
+	ownerName: string;
+	items: DirectoryItemDetails[];
+	path: PathItem[];
+}
+
+
 
 export interface Document {
     bibliographic_info: BibliographicInfo | null; 
@@ -93,28 +100,11 @@ export interface Section {
     title: string;
 }
 
-
-export interface DirectoryDetails {
-	id: UUID;
-	name: string;
-	ownerId: string;
-	ownerName: string;
-	items: DirectoryItemDetails[];
-	path: PathItem[];
-}
-
-export interface PathItem {
-    name: string;
-    id: UUID;
-}
-
 export interface Dictionary  {
-
     language: string; 
     meanings: string[];
     start: string;
     word: string;
-
 }
 
 export interface SearchItem {

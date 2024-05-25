@@ -8,6 +8,12 @@ import {
 	handleRightClick,
 	openContextMenuButton,
 } from "@/utils/contextMenuFunctions";
+import { useDrag, useDrop } from "react-dnd";
+import { ReactDndItemTypes } from "@/utils/constants";
+import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
+import { getEmptyImage } from "react-dnd-html5-backend";
+import { cn } from "@/lib/utils";
+import handleItemDrop from "@/lib/requests/functions";
 
 interface FolderProps {
 	id: UUID;
@@ -43,11 +49,51 @@ export default function Folder({
 	const submenuRef = useRef<HTMLDivElement>(null);
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
+	const [dragHelperRef, setDragHelperRef] = useState<HTMLDivElement | null>(
+		null,
+	);
+
 	const handleCloseMenu = (): void => {
 		setMenuVisible(false);
 	};
 
+	const [{ isDragging }, dragRef, preview] = useDrag(
+		() => ({
+			type: ReactDndItemTypes.FILE,
+			item: {
+				id,
+				name,
+				extension: null,
+				directoryId,
+				type: "DOCUMENT",
+				draggedComponent: dragHelperRef,
+			} as FileItemDrag,
+			collect: (monitor) => ({
+				isDragging: !!monitor.isDragging(),
+			}),
+			end: (item, monitor) => {
+				const dropResult = monitor.getDropResult<BreadCrumbDrop>();
+				if (item && dropResult && dropResult.id !== item.id) {
+					handleItemDrop(directoryId, dropResult.id, id);
+				}
+			},
+		}),
+		[dragHelperRef, id],
+	);
+
+	const [{ isOver }, dropRef] = useDrop(() => ({
+		accept: ReactDndItemTypes.FILE,
+		drop: () => ({ id: id }),
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+		}),
+	}));
+
 	useEffect(() => {
+		// When dragging, hides the file preview being dragged (the one implemented in the web browser)
+		// This to use a custom drag preview
+		preview(getEmptyImage(), { captureDraggingState: true });
+
 		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}`);
 		};
@@ -71,13 +117,27 @@ export default function Folder({
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [id]);
+	}, []);
+
 	if (viewMode === "grid") {
 		return (
 			<div
-				className="group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+				className={cn(
+					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
+					{ "opacity-30": isDragging },
+					{
+						"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
+							isOver && !isDragging,
+					},
+				)}
 				tabIndex={0}
-				ref={directoryRef}
+				ref={(div) => {
+					setDragHelperRef(div);
+					// @ts-ignore
+					directoryRef.current = div;
+					dropRef(div);
+					dragRef(div);
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
@@ -128,13 +188,26 @@ export default function Folder({
 		return (
 			<div
 				className="h-16 border-t border-black border-opacity-30"
-				ref={directoryRef}
+				ref={(div) => {
+					setDragHelperRef(div);
+					// @ts-ignore
+					directoryRef.current = div;
+					dropRef(div);
+					dragRef(div);
+				}}
 				onContextMenu={(e) =>
 					handleRightClick(e, setMenuVisible, setMenuPosition)
 				}
 			>
 				<div
-					className="group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10"
+					className={cn(
+						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
+						{ "opacity-30": isDragging },
+						{
+							"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
+								isOver && !isDragging,
+						},
+					)}
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">

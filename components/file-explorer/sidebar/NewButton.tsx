@@ -71,6 +71,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                     data,
                     config,
                 );
+                mutate(`/directory/get_directory/${directoryId}`);
             } catch (error) {
                 await ErrorAlert(
                     "Error al crear la carpeta",
@@ -78,7 +79,6 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                 );
             }
         };
-        mutate(`/directory/get_directory/${directoryId}`);
         InputAlert(
             "Crear Carpeta",
             request,

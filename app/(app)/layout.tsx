@@ -31,7 +31,7 @@ export default function Layout({ children }: Props) {
 	useEffect(() => {
 		if (lastMessage != null) {
 			const messageData = JSON.parse(lastMessage.data);
-			console.log(messageData);
+            
 			if (messageData.event_type === "DOCUMENT_CREATED") {
 				dispatch(ChangeElement(String(messageData.data.document_id)));
 				toast.info(
