@@ -30,38 +30,38 @@ export default function UploadContainer() {
             </div>
 			{stack.map((item: Stack) => (
 				<div
-					key={item.id}
-					className="flex mb-2 flex-row items-center justify-between"
-				>
-					<div className="flex flex-row items-center gap-2">
-						{!item.cargado && (
-							<X
-								className="text-red-300 hover:cursor-pointer"
-								onClick={() => {
-									dispatch(deleteElement(item.id));
-								}}
-								size={20}
-							/>
-						)}
-
-						<h1
-                            className={`text-xl ${!item.cargado && " font-light hover:underline hover:cursor-pointer"}`}
-							onClick={() =>
-								window.open(
-									`/documento?id=${item.id}`,
-									"_blank",
-								)
-							}
-						>
-							{item.name}
-						</h1>
-					</div>
+				key={item.id}
+				className="flex mb-2 flex-row items-center justify-between"
+			>
+				<div className="flex flex-row items-center gap-2">
 					{item.cargado ? (
 						<LoadingSpinner />
 					) : (
 						<Check className="text-green-300" size={20} />
 					)}
+			
+					<h1
+						className={`text-xl ${!item.cargado && " font-light hover:underline hover:cursor-pointer"}`}
+						onClick={() =>
+							window.open(
+								`/documento?id=${item.id}`,
+								"_blank",
+							)
+						}
+					>
+						{item.name}
+					</h1>
 				</div>
+				{!item.cargado && (
+					<X
+						className="text-red-300 hover:cursor-pointer"
+						onClick={() => {
+							dispatch(deleteElement(item.id));
+						}}
+						size={20}
+					/>
+				)}
+			</div>			
 			))}
 		</div>
 	);

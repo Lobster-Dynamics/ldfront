@@ -104,42 +104,36 @@ export default function FileExplorer() {
 		<div className="max-h-full flex-grow bg-white">
 			<div className="flex h-full w-full pt-4">
 				<div className="hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
-					<div className="relative flex h-20 w-full items-center justify-center ">
+					<div className="relative flex h-20 w-full items-center justify-center">
 						<NewButton directoryId={directoryId} />
 					</div>
-					<div className="my-3 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg  bg-[#F3F4F6] p-2">
+					<div className="my-3 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
 						<Accordion type="multiple">
-							{sidebardirectory &&
-								sidebardirectory.items.length > 0 &&
-								sidebardirectory.items.map((file, i) => {
-									{
-										if (file.type === "DIRECTORY")
-											return (
-												<SidebarFolder
-													key={file.id}
-													name={file.name}
-													id={file.id}
-													type={file.type}
-													ownerName={file.ownerName}
-													directoryId={
-														sidebardirectoryId
-													}
-												/>
-											);
-										else if (file.type === "DOCUMENT")
-											return (
-												<SidebarFile
-													key={file.id}
-													name={file.name}
-													type={file.type}
-													extension={file.extension}
-													id={file.id}
-													ownerName={file.ownerName}
-													directoryId={
-														sidebardirectoryId
-													}
-												/>
-											);
+							{sidebardirectory && sidebardirectory.items.length > 0 &&
+								sidebardirectory.items.map((file) => {
+									if (file.type === 'DIRECTORY') {
+										return (
+											<SidebarFolder
+												key={file.id}
+												name={file.name}
+												id={file.id}
+												type={file.type}
+												ownerName={file.ownerName}
+												directoryId={sidebardirectoryId}
+											/>
+										);
+									} else if (file.type === 'DOCUMENT') {
+										return (
+											<SidebarFile
+												key={file.id}
+												name={file.name}
+												type={file.type}
+												extension={file.extension}
+												id={file.id}
+												ownerName={file.ownerName}
+												directoryId={sidebardirectoryId}
+											/>
+										);
 									}
 								})}
 						</Accordion>

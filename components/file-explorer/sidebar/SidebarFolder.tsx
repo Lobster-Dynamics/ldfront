@@ -4,41 +4,30 @@ import useSWR from "swr";
 import { fetcher } from "@/config/fetcher";
 import { useEffect, useRef, useState } from "react";
 import SidebarFile from "@/components/file-explorer/sidebar/SidebarFile";
-import useAuth from "@/hooks/selectors/useAuth";
-import { useSearchParams } from "next/navigation";
-
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-    CurrentAccordionTrigger
-} from "@/components/ui/accordion"
-import { useRouter } from "next/navigation";  
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, CurrentAccordionTrigger } from "@/components/ui/accordion";
+import { useRouter, useSearchParams } from "next/navigation";
 import { loadDirectoryData } from "@/utils/loadData";
-
+import useAuth from "@/hooks/selectors/useAuth";
 
 interface SidebarFolderProps {
-	id: UUID;
+    id: UUID;
     type: "DIRECTORY" | "DOCUMENT";
-	name: string;
+    name: string;
     directoryId: UUID | undefined;
-	ownerName: string;
+    ownerName: string;
 }
 
 export default function SidebarFolder({
-	id,
+    id,
     type,
     name,
     directoryId,
-	ownerName
-}:SidebarFolderProps) {
+    ownerName
+}: SidebarFolderProps) {
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${id}`, fetcher);
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
     const fileRef = useRef<HTMLDivElement>(null);
-    const nameref = useRef<HTMLParagraphElement>(null);
     const router = useRouter();
-
     const { auth } = useAuth();
 	const searchParams = useSearchParams();
 	const currdir = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
@@ -49,28 +38,28 @@ export default function SidebarFolder({
 
     useEffect(() => {
         if (directoryUnparsed) {
-            setDirectory(loadDirectoryData(directoryUnparsed))
+            setDirectory(loadDirectoryData(directoryUnparsed));
         }
+    }, [directoryUnparsed]);
 
-        
-    }, [directoryUnparsed])
-
-	return ( 
-		<div ref={fileRef} className="ml-2 my-1 flex">
-            <AccordionItem value={`item-${id}`}>
+    return (
+        <div ref={fileRef} className="w-full pl-2 my-1 flex items-center">
+            <AccordionItem value={`item-${id}`} className="w-full">
                 {id === currdir ? (
                     <CurrentAccordionTrigger>
-                        
-                        <button onClick={openDocument}><p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
-                            {name}
-                        </p></button>
+                        <button onClick={openDocument} className="flex-1 min-w-0 px-2">
+                            <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+                                {name}
+                            </p>
+                        </button>
                     </CurrentAccordionTrigger>
                 ) : (
                     <AccordionTrigger>
-                        <button onClick={openDocument}
-                        ><p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
-                            {name}
-                        </p></button>
+                        <button onClick={openDocument} className="flex-1 min-w-0 px-2">
+                            <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+                                {name}
+                            </p>
+                        </button>
                     </AccordionTrigger>
                 )}
                 <AccordionContent>
@@ -101,5 +90,5 @@ export default function SidebarFolder({
                 </AccordionContent>
             </AccordionItem>
         </div>
-	)
+    );
 }
