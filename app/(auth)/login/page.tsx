@@ -20,6 +20,10 @@ export default function Login() {
 	const dispatch = useDispatch()
 	const router = useRouter()
 
+    const handleforgot = () => {
+        router.push("/forgot");
+    };
+
 	const handleLogin = async (e: any) => {
 		e.preventDefault()
 		try {
@@ -64,9 +68,12 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="mt-5 w-full text-start">
-                    <p className="justify-start text-xl font-bold text-purpleFrida-500 underline">
-                        ¿Olvidaste tu contraseña?
-                    </p>
+                    <button onClick={handleforgot}>
+                        <p className="justify-start text-xl font-bold text-purpleFrida-500 underline">
+                            ¿Olvidaste tu contraseña?
+                        </p>
+                    </button>
+                    
                 </div>
                 <button onClick={handleLogin} className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white">
 
