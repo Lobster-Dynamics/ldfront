@@ -17,11 +17,11 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
     const [ messages, setMessages] = useState<Chatword>({Chat: [
         {
             Message: "Hola, soy FRIDA Research Engine!",
-            role: "bot"
+            role: "chat"
         },
         {
             Message: "¿En que te puedo ayudar?",
-            role: "bot"
+            role: "chat"
         },
     ]})
 
@@ -60,12 +60,12 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
                     ...prevMessages.Chat, 
                     {
                         Message: botMessage,
-                        role: 'bot'
+                        role: 'chat'
                     }
                 ]
             }));
         } catch (error) {
-            console.error("Error fetching bot response:", error);
+            console.error("Error fetching chat response:", error);
         }
     };
 
@@ -77,7 +77,7 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col overflow-y-auto">
                 {messages.Chat.map((message, index) => (
-                    message.role === "bot" ? (
+                    message.role === "chat" ? (
                         <div className="flex flex-row w-full justify-start mt-2" key={index}>
                             <div className="bg-blueFrida-300 text-lg font-mono rounded-lg mx-4 p-3">
                                 {message.Message}
