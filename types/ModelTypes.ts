@@ -5,7 +5,7 @@ export interface Chatword {
 }
 
 export interface ChatDetails {
-	Message: string;
+	message: string;
 	role: string;
 }
 

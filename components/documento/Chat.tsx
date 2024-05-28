@@ -4,6 +4,7 @@ import { Chatword, ChatDetails } from '@/types/ModelTypes';
 import axiosClient from '@/config/axiosClient';
 import { UUID } from 'crypto';
 import { axiosConfig } from '@/config/axiosConfig';
+import { patchFetch } from 'next/dist/server/app-render/entry-base';
 
 interface ChatProps {
     Chat: Chatword;
@@ -14,16 +15,35 @@ interface ChatProps {
 export default function Chat({ Chat, id, userid}: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [ newInputValue, setNewInputValue ] = useState('');
-    const [ messages, setMessages] = useState<Chatword>({Chat: [
-        {
-            Message: "Hola, soy FRIDA Research Engine!",
-            role: "chat"
-        },
-        {
-            Message: "¿En que te puedo ayudar?",
-            role: "chat"
-        },
-    ]})
+    const [ messages, setMessages] = useState<Chatword>({ Chat: [ { message: "Hola, soy FRIDA Research Engine!", role: "chat" },
+    { message: "¿En qué te puedo ayudar?", role: "chat" }]})
+
+    const fetchMessages = async () => {
+        const config = axiosConfig();
+        if (!config) return;
+
+        try {
+            const response = await axiosClient.post(`/document/get_all_messages`,{id: id, userid : userid}, config);
+            const pastMessages = response.data; 
+
+            const historicMessages: Chatword = { 
+                Chat: [
+                    ...messages.Chat, 
+                    ...pastMessages
+                ]
+            };
+
+            setMessages(historicMessages);
+        } catch (error) {
+            console.error("Error fetching past messages:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchMessages();
+    }, [id, userid]);
+
+    
 
 
     const newMessage: React.FormEventHandler = async (e) => {
@@ -37,7 +57,7 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
             Chat: [
                 ...messages.Chat, 
                 {
-                    Message: userMessage,
+                    message: userMessage,
                     role: 'user'
                 }
             ]
@@ -59,7 +79,7 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
                 Chat: [
                     ...prevMessages.Chat, 
                     {
-                        Message: botMessage,
+                        message: botMessage,
                         role: 'chat'
                     }
                 ]
@@ -80,13 +100,13 @@ export default function Chat({ Chat, id, userid}: ChatProps) {
                     message.role === "chat" ? (
                         <div className="flex flex-row w-full justify-start mt-2" key={index}>
                             <div className="bg-blueFrida-300 text-lg font-mono rounded-lg mx-4 p-3">
-                                {message.Message}
+                                {message.message}
                             </div>
                         </div>
                     ) : (
                         <div className="flex flex-row w-full justify-end mt-2" key={index}>
                             <div className="bg-purpleFrida-700 text-lg font-mono text-white p-3 rounded-lg mx-4">
-                                {message.Message}
+                                {message.message}
                             </div>
                         </div>
                     )
