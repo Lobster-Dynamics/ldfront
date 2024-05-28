@@ -15,6 +15,7 @@ interface SidebarFolderProps {
     name: string;
     directoryId: UUID | undefined;
     ownerName: string;
+    pl: number;
 }
 
 export default function SidebarFolder({
@@ -22,7 +23,8 @@ export default function SidebarFolder({
     type,
     name,
     directoryId,
-    ownerName
+    ownerName,
+    pl
 }: SidebarFolderProps) {
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${id}`, fetcher);
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
@@ -43,7 +45,7 @@ export default function SidebarFolder({
     }, [directoryUnparsed]);
 
     return (
-        <div ref={fileRef} className="w-full pl-2 my-1 flex items-center">
+        <div ref={fileRef} className="w-full my-1 flex items-center" style={{ paddingLeft: `${pl}rem`}}>
             <AccordionItem value={`item-${id}`} className="w-full">
                 {id === currdir ? (
                     <CurrentAccordionTrigger>
@@ -73,6 +75,7 @@ export default function SidebarFolder({
                                     type={file.type}
                                     ownerName={file.ownerName}
                                     directoryId={directoryId}
+                                    pl={0.5}
                                 />
                             ) : (
                                 <SidebarFile
@@ -83,6 +86,7 @@ export default function SidebarFolder({
                                     id={file.id}
                                     ownerName={file.ownerName}
                                     directoryId={directoryId}
+                                    pl={0.5}
                                 />
                             )
                         ))

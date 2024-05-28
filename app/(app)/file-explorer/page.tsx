@@ -120,6 +120,7 @@ export default function FileExplorer() {
 												type={file.type}
 												ownerName={file.ownerName}
 												directoryId={sidebardirectoryId}
+												pl={0}
 											/>
 										);
 									} else if (file.type === 'DOCUMENT') {
@@ -132,6 +133,7 @@ export default function FileExplorer() {
 												id={file.id}
 												ownerName={file.ownerName}
 												directoryId={sidebardirectoryId}
+												pl={0}
 											/>
 										);
 									}
