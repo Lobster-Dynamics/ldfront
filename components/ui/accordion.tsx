@@ -54,7 +54,7 @@ const CurrentAccordionTrigger = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
     <AccordionPrimitive.Header className="flex w-full">
-        <div className="flex flex-1 items-center justify-start py-1 rounded-lg border border-purpleFrida-700 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10 px-2">
+        <div className="flex flex-1 items-center justify-start py-1 rounded-lg outline-none transition cursor-pointer bg-purpleFrida-700 bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10 px-2">
             <AccordionPrimitive.Trigger
                 ref={ref}
                 className={cn(
