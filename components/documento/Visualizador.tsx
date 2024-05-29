@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Paper from '@/components/documento/Paper';
@@ -8,7 +8,7 @@ import Container from '@/components/documento/DragandDrop/Container';
 import WordCloud from '@/components/documento/Wordcloud';
 import { chatData } from '@/utils/constants';
 import { Tab } from '@/types/AppTypes';
-import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow } from 'lucide-react';
+import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, X } from 'lucide-react';
 import Keywords from '@/components/documento/Keywords';
 import Chat from '@/components/documento/Chat';
 import Summary from '@/components/documento/Summary';
@@ -25,13 +25,25 @@ import useAuth from '@/hooks/selectors/useAuth';
 const Visualizador = () => {
     const searchParams = useSearchParams();
     const id = searchParams?.get("id") ?? "0";
-    const { data: document } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
+    const { data: documentData } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
     const [tabs, setTabs] = useState<{ [key: string]: Tab[] }>({
         left: [],
         rightTop: [],
         rightBottom: [],
     });
     const { auth } = useAuth()
+
+    const [leftContainerWidth, setleftContainerWidth] = useState<string | number>("50%");
+    const [rightContainerWidth, setRightContainerWidth] = useState<string | number>("50%");
+    const [topContainerHeight, setTopContainerHeight] = useState<string | number>("40%");
+    const [bottomContainerHeight, setBottomContainerHeight] = useState<string | number>("60%");
+    const verticalResizeRef = useRef<HTMLDivElement>(null);
+    const horizontalResizeRef = useRef<HTMLDivElement>(null);
+    const leftContainerRef = useRef<HTMLDivElement>(null);
+    const rightContainerRef = useRef<HTMLDivElement>(null);
+    const topContainerRef = useRef<HTMLDivElement>(null);
+    const bottomContainerRef = useRef<HTMLDivElement>(null);
+
 
     const [selectedTabs, setSelectedTabs] = useState<{
         [key: string]: string;
@@ -47,23 +59,77 @@ const Visualizador = () => {
                 {
                     id: 'left-1',
                     content: 'Documento',
-                    component: document ? <Paper title={document.name} parse={document.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
+                    component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
                     Icon: <ScrollText />
                 },
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
                 { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
-                { id: 'right-top-2', content: 'Resumen', component: document ?  <Summary summary={document?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
+                { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
 
             ],
             rightBottom: [
                 { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
-                { id: 'right-bottom-2', content: 'KeyConcepts', component: document ?  <Keywords documentId={id} keywords={document?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+                { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
 
             ],
         });
-    }, [document,id]);
+
+        const mouseDownVerticalHandler = (e: MouseEvent) => {
+			// @ts-ignore
+			const leftWidth = parseInt(leftContainerRef.current?.offsetWidth, 10);
+            // @ts-ignore
+            const rightWidth = parseInt(rightContainerRef.current?.offsetWidth, 10);
+			const x = e.clientX;
+
+			const mouseMoveHandler = (e: MouseEvent) => {
+				const dx = e.clientX - x;
+				setleftContainerWidth(`${leftWidth + dx}px`);
+                setRightContainerWidth(`${rightWidth - dx}px`);
+			};
+
+			const mouseUpHandler = () => {
+				document.removeEventListener("mousemove", mouseMoveHandler);
+				document.removeEventListener("mouseup", mouseUpHandler);
+			};
+
+			document.addEventListener("mousemove", mouseMoveHandler);
+			document.addEventListener("mouseup", mouseUpHandler);
+		};
+
+        const mouseDownHorizontalHandler = (e: MouseEvent) => {
+			// @ts-ignore
+			const topHeight = parseInt(topContainerRef.current?.offsetHeight, 10);
+            // @ts-ignore
+            const bottomHeight = parseInt(bottomContainerRef.current?.offsetHeight, 10);
+			const y = e.clientY;
+
+			const mouseMoveHandler = (e: MouseEvent) => {
+				const dy = e.clientY - y;
+				setTopContainerHeight(`${topHeight + dy}px`);
+                setBottomContainerHeight(`${bottomHeight - dy}px`);
+			};
+
+			const mouseUpHandler = () => {
+				document.removeEventListener("mousemove", mouseMoveHandler);
+				document.removeEventListener("mouseup", mouseUpHandler);
+			};
+
+			document.addEventListener("mousemove", mouseMoveHandler);
+			document.addEventListener("mouseup", mouseUpHandler);
+		};
+
+		const localVerticalResizeRef = verticalResizeRef.current;
+        const localHorizontalResizeRef = horizontalResizeRef.current;
+		if (localVerticalResizeRef) localVerticalResizeRef.addEventListener("mousedown", mouseDownVerticalHandler);
+        if (localHorizontalResizeRef) localHorizontalResizeRef.addEventListener("mousedown", mouseDownHorizontalHandler);
+
+		return () => {
+			if (localVerticalResizeRef) localVerticalResizeRef.removeEventListener("mousedown", mouseDownVerticalHandler);
+            if (localHorizontalResizeRef) localHorizontalResizeRef.removeEventListener("mousedown", mouseDownHorizontalHandler);
+		};
+    }, [documentData, id, auth?.uid]);
 
     const moveTab = useCallback((tab: Tab, targetContainerId: string) => {
         setTabs((prevTabs) => {
@@ -110,18 +176,20 @@ const Visualizador = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="flex flex-col h-screen bg-white">
-                <div className='flex w-full h-full pb-10 md:pb-20'>
-                    <div className="w-1/2 flex flex-col">
-                        <Container
+                <div className='flex gap-1 w-full h-full'>
+                    <div className="bg-green-300 ml-4 my-4" style={{width: leftContainerWidth}} ref={leftContainerRef}>
+                    {/* <div className="bg-green-300 ml-4 my-4 h-[600px]" ref={leftContainerRef}> */}
+                        {/* <Container
                             tabs={tabs.left}
                             onDrop={moveTab}
                             containerId="left"
                             selectTab={selectTab}
                             selectedTabId={selectedTabs.left}
-                        />
+                        /> */}
                     </div>
-                    <div className="w-1/2 flex flex-col">
-                        <div className='h-2/5 flex'>
+                    <div className='mt-4 w-[6px] bg-red-300 cursor-ew-resize' style={{height: `calc(100% - 32px)`}} ref={verticalResizeRef}></div>
+                    <div className="flex gap-1 flex-col mr-4 my-4" style={{width: rightContainerWidth}} ref={rightContainerRef}>
+                        <div style={{height: topContainerHeight}} ref={topContainerRef}>
                             <Container
                                 tabs={tabs.rightTop}
                                 onDrop={moveTab}
@@ -130,13 +198,16 @@ const Visualizador = () => {
                                 selectedTabId={selectedTabs.rightTop}
                             />
                         </div>
-                        <Container
-                            tabs={tabs.rightBottom}
-                            onDrop={moveTab}
-                            containerId="rightBottom"
-                            selectTab={selectTab}
-                            selectedTabId={selectedTabs.rightBottom}
-                        />
+                        <div className='h-[6px] w-full bg-red-300 cursor-ns-resize' ref={horizontalResizeRef}></div>
+                        <div style={{height: bottomContainerHeight}} ref={bottomContainerRef}>
+                            <Container
+                                tabs={tabs.rightBottom}
+                                onDrop={moveTab}
+                                containerId="rightBottom"
+                                selectTab={selectTab}
+                                selectedTabId={selectedTabs.rightBottom}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

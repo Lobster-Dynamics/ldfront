@@ -24,6 +24,7 @@ import FilesContainer from "@/components/file-explorer/files/FilesContainer";
 import { loadDirectoryData } from "@/utils/loadData";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { cn } from "@/lib/utils";
 
 export default function FileExplorer() {
 	const dispatch = useDispatch();
@@ -175,7 +176,10 @@ export default function FileExplorer() {
 						</div>
 						<div
 							{...getRootProps()}
-							className={`my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]  ${dropzoneisDragActive ? "border-4 border-purple-500" : ""} `}
+							// className={`my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868]  ${dropzoneisDragActive ? "border-4 border-purple-500" : ""} `}
+                            className={cn("my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868] border-2 border-transparent transition", 
+                                dropzoneisDragActive && "border-blueFrida-700"
+                            )}
 						>
 							<input {...getInputProps()} />
 							<FilesContainer

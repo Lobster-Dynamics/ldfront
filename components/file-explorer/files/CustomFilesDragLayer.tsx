@@ -72,6 +72,8 @@ export default function CustomFilesDragLayer() {
 		return () => clearTimeout(timer); // Limpiar el temporizador en desmontaje
 	}, [isDragging, item]);
 
+    if (!isDragging || itemType !== ReactDndItemTypes.FILE) return null;
+
 	return (
 		<div className="pointer-events-none fixed left-0 top-0 z-[100] h-full">
 			<div
