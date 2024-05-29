@@ -181,7 +181,7 @@ export default function FileExplorer() {
 					dropzoneisDragActive={dropzoneisDragActive}
 					directoryId={directoryId}
 				/>
-			</div>
+				</div>
 			<ModalAddFolder />
 			<UploadContainer />
 		</div>

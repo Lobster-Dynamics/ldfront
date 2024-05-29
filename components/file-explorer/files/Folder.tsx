@@ -97,6 +97,7 @@ export default function Folder({
 		preview(getEmptyImage(), { captureDraggingState: true });
 
 		const handleFolderClick = () => {    
+
 			router.push(`/file-explorer?id=${id}&shared=${isShared}`);
 		};
 
