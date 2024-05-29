@@ -16,6 +16,7 @@ interface SidebarFolderProps {
     directoryId: UUID | undefined;
     ownerName: string;
     pl: number;
+    isShared: boolean;
 }
 
 export default function SidebarFolder({
@@ -24,7 +25,8 @@ export default function SidebarFolder({
     name,
     directoryId,
     ownerName,
-    pl
+    pl,
+    isShared,
 }: SidebarFolderProps) {
     const { data: directoryUnparsed, isLoading } = useSWR<DirectoryDetails>(`/directory/get_directory/${id}`, fetcher);
     const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
@@ -35,7 +37,7 @@ export default function SidebarFolder({
 	const currdir = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
 
     const openDocument = () => {
-        router.push(`/file-explorer?id=${id}`);
+        router.push(`/file-explorer?id=${id}&shared=${isShared}`);
     };
 
     useEffect(() => {
@@ -76,6 +78,7 @@ export default function SidebarFolder({
                                     ownerName={file.ownerName}
                                     directoryId={directoryId}
                                     pl={0.5}
+                                    isShared={isShared}
                                 />
                             ) : (
                                 <SidebarFile
