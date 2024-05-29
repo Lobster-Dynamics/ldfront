@@ -12,9 +12,10 @@ interface SidebarProps {
     sidebardirectoryId: UUID | undefined;
     handleClick: (name: string) => void;
     selectedElement: string;
+    isShared: boolean;
 }
 
-export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleClick, selectedElement }: SidebarProps) {
+export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleClick, selectedElement, isShared }: SidebarProps) {
     return (
         <div className="my-3 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
             <SidebarElement Icon={<Home size={20} />} name="Mis Archivos"
@@ -41,6 +42,8 @@ export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleCl
                                     type={file.type}
                                     ownerName={file.ownerName}
                                     directoryId={sidebardirectoryId}
+                                    pl={0}
+                                    isShared={isShared}
                                 />
                             );
                         } else if (file.type === 'DOCUMENT') {
@@ -53,6 +56,7 @@ export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleCl
                                     id={file.id}
                                     ownerName={file.ownerName}
                                     directoryId={sidebardirectoryId}
+                                    pl={0}
                                 />
                             );
                         }

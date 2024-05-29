@@ -54,13 +54,21 @@ export default function FileExplorer() {
 			`/directory/get_directory/${directoryId}` : null,
 			fetcher,
 		);
-	const {
+
+	let {
 		data: sharedDirectoryUnparsed,
 		isLoading: isLoadingSharedDirectory,
 	} = useSWR<DirectoryDetails>(
+
 		shared ? `/directory/get_directory/${directoryId}` : null,
+
 		fetcher,
 	);
+
+    if (!sharedDirectoryUnparsed?.shared) {
+       sharedDirectoryUnparsed = undefined 
+    }
+
 	const { data: sharedInfo, isLoading: isLoadingShared } =
 		useSWR<DirectoryDetails>(`/directory/get_shared`, fetcher);
 
@@ -73,10 +81,7 @@ export default function FileExplorer() {
 	// Manejar la carga de directorios
 	useEffect(() => {
 
-		console.log(directoryUnparsed)
-		
 		if (selectedElement === "Compartidos" && sharedInfo && shared) {
-
 			if (shared && (sharedDirectoryUnparsed !== undefined) && (sharedDirectoryUnparsed !== directoryUnparsed)) {	
 				setShareDirectory(loadDirectoryData(sharedDirectoryUnparsed));
 				setSidebarDirectory(loadDirectoryData(sharedInfo));
@@ -214,6 +219,7 @@ const SidebarSection = ({
 			sidebardirectoryId={sidebardirectoryId}
 			handleClick={handleClick}
 			selectedElement={selectedElement}
+			isShared={selectedElement === "Compartidos"}
 		/>
 	</div>
 );
