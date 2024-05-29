@@ -36,6 +36,7 @@ export function loadDirectoryData(data: any): DirectoryDetails {
 		ownerId: data.owner_id,
 		ownerName: data.owner_name,
 		items: containedItems,
-		path: data.path
+		path: data.path,
+        shared: data.shared
 	};
 }

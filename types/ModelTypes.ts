@@ -49,6 +49,7 @@ export interface DirectoryDetails {
 	ownerName: string;
 	items: DirectoryItemDetails[];
 	path: PathItem[];
+    shared: boolean;
 }
 
 

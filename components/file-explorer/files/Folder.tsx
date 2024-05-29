@@ -22,6 +22,7 @@ interface FolderProps {
 	ownerName: string;
 	uploadDate: Date;
 	directoryId: string;
+    isShared: boolean;
 }
 
 const initialContextMenu = {
@@ -37,6 +38,7 @@ export default function Folder({
 	ownerName,
 	uploadDate,
 	directoryId,
+    isShared
 }: FolderProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
 	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
@@ -94,8 +96,8 @@ export default function Folder({
 		// This to use a custom drag preview
 		preview(getEmptyImage(), { captureDraggingState: true });
 
-		const handleFolderClick = () => {
-			router.push(`/file-explorer?id=${id}`);
+		const handleFolderClick = () => {    
+			router.push(`/file-explorer?id=${id}&shared=${isShared}`);
 		};
 
 		let localRef = directoryRef.current;
@@ -116,8 +118,7 @@ export default function Folder({
 				});
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [id, preview, router]);
 
 	if (viewMode === "grid") {
 		return (
@@ -180,6 +181,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						extension={null}
 						directoryId={directoryId}
+                        isShared={isShared}
 					/>
 				)}
 			</div>
@@ -242,6 +244,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						extension={null}
 						directoryId={directoryId}
+                        isShared={isShared}
 					/>
 				)}
 			</div>
