@@ -2,6 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import DraggableTab from "./DraggableTab";
 import { Tab } from "@/types/AppTypes";
+import { cn } from "@/lib/utils";
 
 interface ContainerProps {
 	tabs: Tab[];
@@ -9,7 +10,8 @@ interface ContainerProps {
 	containerId: string;
 	selectTab: (containerId: string, tabId: string) => void;
 	selectedTabId: string;
-	isHidden: boolean;
+	isVerticalHidden: boolean;
+	isHorizontalHidden: boolean;
 }
 
 const ItemTypes = {
@@ -22,7 +24,8 @@ const Container: React.FC<ContainerProps> = ({
 	containerId,
 	selectTab,
 	selectedTabId,
-	isHidden,
+	isVerticalHidden,
+	isHorizontalHidden,
 }: ContainerProps) => {
 	const [, dropRef] = useDrop({
 		accept: ItemTypes.TAB,
@@ -35,12 +38,39 @@ const Container: React.FC<ContainerProps> = ({
 
 	const selectedTab = tabs.find((tab) => tab.id === selectedTabId);
 
+	if (isVerticalHidden || isHorizontalHidden) {
+		return (
+			<div
+				// @ts-ignore
+				ref={dropRef}
+				className={cn(
+					"flex h-full max-h-full min-h-0 flex-col overflow-x-auto rounded-lg bg-gray-200",
+					{
+						"flex-row": isHorizontalHidden && !isVerticalHidden,
+					},
+				)}
+			>
+				{tabs.map((tab) => (
+					<DraggableTab
+						tab={tab}
+						key={tab.id}
+						selectedTabId={selectedTabId}
+						selectTab={(tabId) => selectTab(containerId, tabId)}
+						Icon={tab.Icon}
+						vertically={isVerticalHidden}
+					/>
+				))}
+			</div>
+		);
+	}
+
 	return (
-        // @ts-ignore
-		<div ref={dropRef} 
-			className="flex min-h-0 w-full max-h-full h-full flex-col rounded-lg bg-[#f8f8f9]"
+		<div
+			// @ts-ignore
+			ref={dropRef}
+			className="flex h-full max-h-full min-h-0 w-full flex-col rounded-lg bg-[#f8f8f9]"
 		>
-			<div className="flex overflow-x-auto rounded-lg bg-gray-200 ">
+			<div className="flex overflow-x-auto rounded-lg bg-gray-200">
 				{tabs.map((tab) => (
 					<DraggableTab
 						key={tab.id}
@@ -48,6 +78,7 @@ const Container: React.FC<ContainerProps> = ({
 						selectedTabId={selectedTabId}
 						selectTab={(tabId) => selectTab(containerId, tabId)}
 						Icon={tab.Icon}
+						vertically={false}
 					/>
 				))}
 			</div>
