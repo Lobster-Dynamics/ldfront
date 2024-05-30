@@ -16,6 +16,7 @@ import Graph from '@/components/documento/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
 import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
 import ModalDefinicion from '@/components/documento/ModalDefinition';
+import ModalExplicacionFragmento from './ModalExplicacionFragmento';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
 import { Document } from '@/types/ModelTypes';
@@ -143,7 +144,7 @@ const Visualizador = () => {
             <ModalBorrar />
             <ModalAdd />
             <ModalDefinicion />
-
+            <ModalExplicacionFragmento />
         </DndProvider>
     );
 };
