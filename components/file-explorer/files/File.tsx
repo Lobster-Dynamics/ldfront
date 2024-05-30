@@ -22,6 +22,7 @@ interface FileProps {
 	ownerName: string;
 	uploadDate: Date;
 	directoryId: string;
+    isShared: boolean;
 }
 
 const initialContextMenu = {
@@ -38,6 +39,7 @@ export default function File({
 	ownerName,
 	uploadDate,
 	directoryId,
+    isShared
 }: FileProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
 	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
@@ -110,8 +112,7 @@ export default function File({
 				});
 			}
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [id,preview]);
 
 
 	if (viewMode === "grid") {
@@ -227,6 +228,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						extension={extension}
 						directoryId={directoryId}
+                        isShared={isShared}
 					/>
 				)}
 			</div>
