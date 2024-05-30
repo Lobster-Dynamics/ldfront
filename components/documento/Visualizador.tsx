@@ -67,7 +67,7 @@ const Visualizador = () => {
                 { 
                     id: 'left-2', 
                     content: 'Grafo', 
-                    component: document ? <GraphViz key_concepts={document.key_concepts ?? []} relationships={document.relationships ?? []}/> : <h1>Cargando...</h1>, 
+                    component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
                     Icon: <Workflow /> 
                 },
             ],
