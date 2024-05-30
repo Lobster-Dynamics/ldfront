@@ -171,6 +171,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						extension={extension}
 						directoryId={directoryId}
+                        isShared={isShared}
 					/>
 				)}
 			</div>
