@@ -5,7 +5,7 @@ export interface Chatword {
 }
 
 export interface ChatDetails {
-	Message: string;
+	message: string;
 	role: string;
 }
 
@@ -49,6 +49,7 @@ export interface DirectoryDetails {
 	ownerName: string;
 	items: DirectoryItemDetails[];
 	path: PathItem[];
+    shared: boolean;
 }
 
 

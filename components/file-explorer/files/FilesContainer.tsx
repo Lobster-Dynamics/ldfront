@@ -9,12 +9,14 @@ interface FilesContainerProps {
 	viewMode: "list" | "grid";
 	directory: DirectoryDetails | null;
 	parentDirectoryId: string;
+    isShared: boolean;
 }
 
 export default function FilesContainer({
 	viewMode,
 	directory,
 	parentDirectoryId,
+    isShared
 }: FilesContainerProps) {
 	return (
 		<div
@@ -51,6 +53,7 @@ export default function FilesContainer({
                                 ownerName={file.ownerName}
                                 uploadDate={new Date()} // TODO: Cambiar por fecha real
                                 directoryId={parentDirectoryId}
+                                isShared={isShared}
                             />
                         );
                     else if (file.type === "DOCUMENT")
@@ -64,6 +67,7 @@ export default function FilesContainer({
                                 ownerName={file.ownerName}
                                 uploadDate={new Date()} // TODO: Cambiar por fecha real
                                 directoryId={parentDirectoryId}
+                                isShared={isShared}
                             />
                         );
 				})}

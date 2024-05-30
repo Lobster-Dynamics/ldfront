@@ -10,6 +10,7 @@ interface SidebarFileProps {
     name: string;
     directoryId: UUID | undefined;
     ownerName: string;
+    pl: number;
 }
 
 export default function SidebarFile({
@@ -18,7 +19,8 @@ export default function SidebarFile({
     type,
     name,
     directoryId,
-    ownerName
+    ownerName,
+    pl
 }: SidebarFileProps) {
     const fileRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,7 @@ export default function SidebarFile({
     }, [extension]);
 
     return (
-        <div ref={fileRef} className="w-full my-1 flex items-center pl-2 py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10">
+        <div ref={fileRef} style={{ paddingLeft: `${pl}rem`}} className="w-full my-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10">
             <Image
                 src={extensionType}
                 alt="fileicon"
