@@ -12,7 +12,7 @@ import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow } from 'luci
 import Keywords from '@/components/documento/Keywords';
 import Chat from '@/components/documento/Chat';
 import Summary from '@/components/documento/Summary';
-import Graph from '@/components/documento/Graph';
+import GraphViz from '@/components/graph/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
 import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
 import ModalDefinicion from '@/components/documento/ModalDefinition';
@@ -50,7 +50,12 @@ const Visualizador = () => {
                     component: document ? <Paper title={document.name} parse={document.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
                     Icon: <ScrollText />
                 },
-                { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
+                { 
+                    id: 'left-2', 
+                    content: 'Grafo', 
+                    component: document ? <GraphViz key_concepts={document.key_concepts ?? []} relationships={document.relationships ?? []}/> : <h1>Cargando...</h1>, 
+                    Icon: <Workflow /> 
+                },
             ],
             rightTop: [
                 { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },

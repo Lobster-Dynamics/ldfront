@@ -51,7 +51,12 @@ export interface DirectoryDetails {
 	path: PathItem[];
 }
 
-
+export interface Relationship {
+    id: string;
+    father_concept_id: string;
+    child_concept_id: string;
+    description: string;
+}
 
 export interface Document {
     bibliographic_info: BibliographicInfo | null; 
@@ -62,7 +67,7 @@ export interface Document {
     name: string;
     owner_id: string;
     parsed_llm_input: ParsedLLMInput; 
-    relationships: any[] | null; 
+    relationships: Relationship[]; 
     summary: Summary;
     users_with_access: any[]; 
 }
