@@ -15,6 +15,11 @@ export interface WordDefinition {
 }
 
 
+export interface ExplicacionFragmento{
+    [key: string]: any;
+    titulo: string;
+    texto: string;
+}
 
 export interface UserAuth {
 	token: string;

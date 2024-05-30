@@ -16,8 +16,18 @@ export const modalSlice = createSlice({
             documentId: "",
         },
         modalAñadirCarpeta: false,
+        modalExplicacionFragmento: {
+            isOpen: false,
+            explication: ""
+        },
     },
     reducers: {
+        toggleModalExplicacionFragmento: (state) => {
+            state.modalExplicacionFragmento.isOpen = !state.modalExplicacionFragmento.isOpen;
+        },
+        setModalExplicacionFragmento: (state, action: PayloadAction<{explication: string; }>) => {
+            state.modalExplicacionFragmento.explication =   action.payload.explication;
+        },
         toggleModalDefinicion: (state) => {
             state.modalDefinicion.isOpen = !state.modalDefinicion.isOpen;
         },
@@ -41,7 +51,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar, toggleModalExplicacionFragmento, setModalExplicacionFragmento } = modalSlice.actions;
 
 export default modalSlice.reducer
 

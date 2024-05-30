@@ -7,7 +7,7 @@ import Paper from '@/components/documento/Paper';
 import Container from '@/components/documento/DragandDrop/Container';
 import WordCloud from '@/components/documento/Wordcloud';
 import { Tab } from '@/types/AppTypes';
-import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow } from 'lucide-react';
+import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, Component, TextSearch } from 'lucide-react';
 import Keywords from '@/components/documento/Keywords';
 import Chat from '@/components/documento/Chat';
 import Summary from '@/components/documento/Summary';
@@ -15,11 +15,14 @@ import GraphViz from '@/components/graph/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
 import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
 import ModalDefinicion from '@/components/documento/ModalDefinition';
+import ModalExplicacionFragmento from './ModalExplicacionFragmento';
+import Explicacion from './Explicacion';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
 import { Document } from '@/types/ModelTypes';
 import { useSearchParams } from 'next/navigation';
 import useAuth from '@/hooks/selectors/useAuth';
+import { compose } from 'redux';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
@@ -70,6 +73,7 @@ const Visualizador = () => {
                     component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
                     Icon: <Workflow /> 
                 },
+                { id: 'left-3', content: 'Explicacion', component: <Explicacion id={id}/>,Icon: <TextSearch /> }
             ],
             rightTop: [
                 { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
@@ -315,7 +319,7 @@ const Visualizador = () => {
             <ModalBorrar />
             <ModalAdd />
             <ModalDefinicion />
-
+            <ModalExplicacionFragmento />
         </DndProvider>
     );
 };
