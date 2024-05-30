@@ -2,17 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Send } from "lucide-react";
 import { Chatword, ChatDetails } from '@/types/ModelTypes';
 import axiosClient from '@/config/axiosClient';
-import { UUID } from 'crypto';
 import { axiosConfig } from '@/config/axiosConfig';
-import { patchFetch } from 'next/dist/server/app-render/entry-base';
 
 interface ChatProps {
-    Chat: Chatword;
     id: string;
     userid: string | undefined;
 }
 
-export default function Chat({ Chat, id, userid}: ChatProps) {
+export default function Chat({ id, userid}: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [ newInputValue, setNewInputValue ] = useState('');
     const [ messages, setMessages] = useState<Chatword>({ Chat: [ { message: "Hola, soy FRIDA Research Engine!", role: "chat" },

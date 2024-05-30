@@ -6,7 +6,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Paper from '@/components/documento/Paper';
 import Container from '@/components/documento/DragandDrop/Container';
 import WordCloud from '@/components/documento/Wordcloud';
-import { chatData } from '@/utils/constants';
 import { Tab } from '@/types/AppTypes';
 import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow } from 'lucide-react';
 import Keywords from '@/components/documento/Keywords';
@@ -54,7 +53,7 @@ const Visualizador = () => {
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
-                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
+                { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
                 { id: 'right-top-2', content: 'Resumen', component: document ?  <Summary summary={document?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
 
             ],
