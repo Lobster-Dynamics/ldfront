@@ -33,17 +33,16 @@ const Visualizador = () => {
     });
     const { auth } = useAuth()
 
-    const [leftContainerWidth, setleftContainerWidth] = useState<string | number>("50%");
-    const [rightContainerWidth, setRightContainerWidth] = useState<string | number>("50%");
-    const [topContainerHeight, setTopContainerHeight] = useState<string | number>("40%");
-    const [bottomContainerHeight, setBottomContainerHeight] = useState<string | number>("60%");
     const verticalResizeRef = useRef<HTMLDivElement>(null);
     const horizontalResizeRef = useRef<HTMLDivElement>(null);
     const leftContainerRef = useRef<HTMLDivElement>(null);
     const rightContainerRef = useRef<HTMLDivElement>(null);
     const topContainerRef = useRef<HTMLDivElement>(null);
     const bottomContainerRef = useRef<HTMLDivElement>(null);
-
+    const [leftContainerWidth, setleftContainerWidth] = useState<string>("50%");
+    const [rightContainerWidth, setRightContainerWidth] = useState<string>("50%");
+    const [topContainerHeight, setTopContainerHeight] = useState<string>("calc(40% - 7px)");
+    const [bottomContainerHeight, setBottomContainerHeight] = useState<string>("calc(60% - 7px)");
 
     const [selectedTabs, setSelectedTabs] = useState<{
         [key: string]: string;
@@ -120,12 +119,22 @@ const Visualizador = () => {
 			document.addEventListener("mouseup", mouseUpHandler);
 		};
 
+        const handleWindowResize = () => {
+            setleftContainerWidth("50%");
+            setRightContainerWidth("50%");
+            setTopContainerHeight("calc(40% - 7px)");
+            setBottomContainerHeight("calc(60% - 7px)");
+        };
+
+        window.addEventListener('resize', handleWindowResize);
+
 		const localVerticalResizeRef = verticalResizeRef.current;
         const localHorizontalResizeRef = horizontalResizeRef.current;
 		if (localVerticalResizeRef) localVerticalResizeRef.addEventListener("mousedown", mouseDownVerticalHandler);
         if (localHorizontalResizeRef) localHorizontalResizeRef.addEventListener("mousedown", mouseDownHorizontalHandler);
 
 		return () => {
+            window.removeEventListener('resize', handleWindowResize);
 			if (localVerticalResizeRef) localVerticalResizeRef.removeEventListener("mousedown", mouseDownVerticalHandler);
             if (localHorizontalResizeRef) localHorizontalResizeRef.removeEventListener("mousedown", mouseDownHorizontalHandler);
 		};
@@ -173,21 +182,23 @@ const Visualizador = () => {
         }));
     }, []);
 
+    console.log(leftContainerWidth.substring(0, leftContainerWidth.length - 2))
+
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-col h-screen bg-white">
+            <div className="flex flex-col w-screen" style={{height: "calc(100vh - 64px)"}}>
                 <div className='flex gap-1 w-full h-full'>
-                    <div className="bg-green-300 ml-4 my-4" style={{width: leftContainerWidth}} ref={leftContainerRef}>
-                    {/* <div className="bg-green-300 ml-4 my-4 h-[600px]" ref={leftContainerRef}> */}
-                        {/* <Container
+                    <div className="ml-4 my-4" style={{width: leftContainerWidth}} ref={leftContainerRef}>
+                        <Container
                             tabs={tabs.left}
                             onDrop={moveTab}
                             containerId="left"
                             selectTab={selectTab}
                             selectedTabId={selectedTabs.left}
-                        /> */}
+                            isHidden={false}
+                        />
                     </div>
-                    <div className='mt-4 w-[6px] bg-red-300 cursor-ew-resize' style={{height: `calc(100% - 32px)`}} ref={verticalResizeRef}></div>
+                    <div className='grow-0 shrink-0 mt-4 w-[6px] bg-red-300 cursor-ew-resize' style={{height: `calc(100% - 32px)`}} ref={verticalResizeRef}></div>
                     <div className="flex gap-1 flex-col mr-4 my-4" style={{width: rightContainerWidth}} ref={rightContainerRef}>
                         <div style={{height: topContainerHeight}} ref={topContainerRef}>
                             <Container
@@ -196,6 +207,7 @@ const Visualizador = () => {
                                 containerId="rightTop"
                                 selectTab={selectTab}
                                 selectedTabId={selectedTabs.rightTop}
+                                isHidden={false}
                             />
                         </div>
                         <div className='h-[6px] w-full bg-red-300 cursor-ns-resize' ref={horizontalResizeRef}></div>
@@ -206,6 +218,7 @@ const Visualizador = () => {
                                 containerId="rightBottom"
                                 selectTab={selectTab}
                                 selectedTabId={selectedTabs.rightBottom}
+                                isHidden={false}
                             />
                         </div>
                     </div>

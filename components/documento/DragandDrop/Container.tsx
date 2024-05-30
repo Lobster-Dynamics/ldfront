@@ -9,6 +9,7 @@ interface ContainerProps {
 	containerId: string;
 	selectTab: (containerId: string, tabId: string) => void;
 	selectedTabId: string;
+	isHidden: boolean;
 }
 
 const ItemTypes = {
@@ -21,6 +22,7 @@ const Container: React.FC<ContainerProps> = ({
 	containerId,
 	selectTab,
 	selectedTabId,
+	isHidden,
 }: ContainerProps) => {
 	const [, dropRef] = useDrop({
 		accept: ItemTypes.TAB,
@@ -36,7 +38,7 @@ const Container: React.FC<ContainerProps> = ({
 	return (
         // @ts-ignore
 		<div ref={dropRef} 
-			className="flex min-h-0 w-full h-full flex-col rounded-lg bg-green-300"
+			className="flex min-h-0 w-full max-h-full h-full flex-col rounded-lg bg-[#f8f8f9]"
 		>
 			<div className="flex overflow-x-auto rounded-lg bg-gray-200 ">
 				{tabs.map((tab) => (
@@ -50,7 +52,6 @@ const Container: React.FC<ContainerProps> = ({
 				))}
 			</div>
 			<div className="h-full overflow-y-auto rounded shadow">
-                {/* <p className="text-2xl">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum veniam hic, repudiandae vero maiores harum deserunt consectetur numquam quae recusandae voluptatum similique tempora earum reprehenderit facere corporis officiis, delectus perferendis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae officiis explicabo et iure nostrum aspernatur nam porro numquam illo voluptatum earum hic culpa dicta, quam eius nihil ipsam asperiores? Cum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, repudiandae? Dolorum expedita vero magni autem suscipit voluptatibus, quo, doloremque excepturi ipsu Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium tenetur praesentium fugit nisi reiciendis a porro ipsa aliquid est! Quisquam sit eius corrupti a blanditiis facilis ipsam tenetur et placeat? Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit eum debitis provident adipisci reprehenderit! Quisquam mollitia enim inventore sed esse debitis, rem error saepe, quam laudantium dignissimos nobis quo voluptates? Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit nihil non iusto nam deleniti animi voluptatibus architecto ab atque repudiandae. Quae dignissimos deserunt praesentium maiores autem laboriosam ut, minima earum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore aperiam, reprehenderit tempora possimus eos sapiente similique, sint pariatur at, suscipit obcaecati tenetur explicabo odio fugit dolorum? Earum molestias quis amet!</p> */}
 				{selectedTab
 					? selectedTab.component
 					: "Selecciona un componente"}
