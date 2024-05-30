@@ -119,7 +119,7 @@ export default function Folder({
 				});
 			}
 		};
-	}, [id, preview, router]);
+	}, [id, preview, router, isShared]);
 
 	if (viewMode === "grid") {
 		return (

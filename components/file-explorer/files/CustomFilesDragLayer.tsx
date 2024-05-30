@@ -2,6 +2,7 @@ import { useDragLayer, XYCoord } from "react-dnd";
 import { ReactDndItemTypes } from "@/utils/constants";
 import FileDragLayer from "./FileDragLayer";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 function getItemStyles(
 	initialOffset: XYCoord | null,
@@ -42,6 +43,7 @@ export default function CustomFilesDragLayer() {
 			isDragging: monitor.isDragging(),
 		}));
 	const [isResized, setIsResized] = useState<boolean>(false);
+	const [isFinishedTransition, setIsFinishedTransition] = useState<boolean>(false);
 
 	const renderItem = () => {
 		switch (itemType) {
@@ -60,17 +62,27 @@ export default function CustomFilesDragLayer() {
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout;
+		let timerFinished: NodeJS.Timeout;
 		if (isDragging) {
 			// Iniciar el temporizador cuando comience el drag
 			timer = setTimeout(() => setIsResized(true), 100);
+			timerFinished = setTimeout(() => setIsFinishedTransition(true), 250);
 		} else {
 			// Limpiar el temporizador y restablecer el estado cuando termine el drag
 			//   @ts-ignore
 			clearTimeout(timer);
+			//   @ts-ignore
+			clearTimeout(timerFinished);
 			setIsResized(false);
+			setIsFinishedTransition(false);
 		}
-		return () => clearTimeout(timer); // Limpiar el temporizador en desmontaje
+		return () => {
+			clearTimeout(timer); // Limpiar el temporizador en desmontaje
+			clearTimeout(timerFinished); // Limpiar el temporizador en desmontaje
+		}
 	}, [isDragging, item]);
+
+    if (!isDragging || itemType !== ReactDndItemTypes.FILE) return null;
 
 	return (
 		<div className="pointer-events-none fixed left-0 top-0 z-[100] h-full">
@@ -81,7 +93,7 @@ export default function CustomFilesDragLayer() {
 					item?.draggedComponent.offsetWidth,
 					isResized,
 				)}
-				className="transition-all ease-out"
+				className={cn("transition-all ease-out", { "transition-none": isFinishedTransition })}
 			>
 				{renderItem()}
 			</div>
