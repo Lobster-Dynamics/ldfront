@@ -28,17 +28,20 @@ export default function SearchBarItem({
 			router.push(`/file-explorer?id=${id}`);
 		};
 
-		if (itemRef.current) {
+		let localRef = itemRef.current;
+		if (itemRef.current) localRef = itemRef.current;
+
+		if (localRef) {
 			if (extension === null)
-				itemRef.current.addEventListener("click", openDirectory);
-			else itemRef.current.addEventListener("click", openDocument);
+				localRef.addEventListener("click", openDirectory);
+			else localRef.addEventListener("click", openDocument);
 		}
 
 		return () => {
-			if (itemRef.current) {
+			if (localRef) {
 				if (extension === null)
-					itemRef.current.removeEventListener("click", openDirectory);
-				else itemRef.current.removeEventListener("click", openDocument);
+					localRef.removeEventListener("click", openDirectory);
+				else localRef.removeEventListener("click", openDocument);
 			}
 		};
 	}, [id, router, extension]);

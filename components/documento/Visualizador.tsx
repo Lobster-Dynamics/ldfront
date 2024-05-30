@@ -67,7 +67,7 @@ const Visualizador = () => {
                 { id: 'left-2', content: 'Grafo', component: <Graph />, Icon: <Workflow /> },
             ],
             rightTop: [
-                { id: 'right-top-1', content: 'Chat', component: <Chat Chat={chatData} id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
+                { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
                 { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
             ],
             rightBottom: [
