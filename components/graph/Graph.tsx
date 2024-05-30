@@ -3,8 +3,7 @@ import { GraphCanvas, InternalGraphNode } from "reagraph";
 
 import { KeyConcept, Relationship } from "@/types/ModelTypes";
 import { KeyConceptModal } from "./KeyConceptModal";
-
-import Modal from "@/components/ui/Modal";
+import { RelationshipModal } from "./RelationshipModal";
 
 export interface GraphProps  {
     key_concepts: KeyConcept[];
@@ -53,6 +52,7 @@ export default function GraphViz({
             {
                 id: keyConcept.id, 
                 label: keyConcept.name, 
+                fill: "#DBDEFF"
             }
         )
         conceptsMap.set(keyConcept.id, keyConcept);
@@ -66,14 +66,17 @@ export default function GraphViz({
                 id: relationship.id,
                 source: relationship.father_concept_id, 
                 target: relationship.child_concept_id,
-                label: ""
+                label: "",
+                minDistance: 1200,
+                size: 2 
             }
         )
         relationshipsMap.set(relationship.id, relationship);
     }
 
     return (
-        <>
+        <div className="custom-text-selection relative p-10 h-full w-full">
+
             <GraphCanvas
                 nodes={keyConceptNodes}
                 edges={graphEdges}
@@ -83,14 +86,18 @@ export default function GraphViz({
                     if (concept !== undefined) {
                         setCurrentlySelectedKeyConcept(concept);
                     }
-                    
+
                 }}
                 onEdgeClick={(edge, event) => {
-
+                    setGraphVizState(GraphVizState.VisualizingEdge);
+                    const relationship = relationshipsMap.get(edge.id);
+                    if (relationship !== undefined) {
+                        setCurrentlySelectedRelationship(relationship);
+                    }
                 }}
             />
 
-            {/*KEY CONCEPT MODAL*/}
+            {/** KEY CONCEPT MODAL*/}
             {currentlySelectedKeyConcept &&
                 (
                     <KeyConceptModal
@@ -105,7 +112,23 @@ export default function GraphViz({
                 )
             }
 
-            {/*RELATIONSHIP MODAL*/}
-        </>
+            {/** RELATIONSHIP MODAL*/}
+            {currentlySelectedRelationship &&
+                (
+                    <RelationshipModal 
+                        active={graphVizState == GraphVizState.VisualizingEdge}
+                        relationship={currentlySelectedRelationship}
+                        fatherConcept={conceptsMap.get(currentlySelectedRelationship.father_concept_id)!}
+                        childConcept={conceptsMap.get(currentlySelectedRelationship.child_concept_id)!}
+                        setActive={(some: boolean) => {
+                            if (!some) {
+                                setGraphVizState(GraphVizState.VisualizingGraph)
+                            }
+                        }}
+                    />
+                )
+
+            }
+        </div>
     );
 }

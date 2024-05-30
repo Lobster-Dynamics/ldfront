@@ -13,12 +13,12 @@ export const KeyConceptModal = ({keyConcept, active, setActive}: KeyConceptModal
     return (
         <>
             <Modal
+                className="w-[600px]"
                 active={active}
                 setActive={setActive}>
-                <div>
-                    <p>{keyConcept.name}</p>
-                    <p>{keyConcept.description}</p>
-                </div>
+                    <p className="text-2xl font-bold">{keyConcept.name}</p>
+                    <br></br>
+                    <p className="text-lg text-left">{keyConcept.description}</p>
             </Modal>
         </>
     );
