@@ -27,6 +27,7 @@ export function loadDirectoryData(data: any): DirectoryDetails {
 				name: item.name,
 				ownerId: item.owner_id,
 				ownerName: item.owner_name,
+				uploadDate: item.upload_date
 			};
 		},
 	);
@@ -37,6 +38,7 @@ export function loadDirectoryData(data: any): DirectoryDetails {
 		ownerName: data.owner_name,
 		items: containedItems,
 		path: data.path,
-        shared: data.shared
+        shared: data.shared,
+		uploadDate: data.upload_date
 	};
 }

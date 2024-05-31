@@ -37,7 +37,7 @@ export default function FilesContainer({
 					<p className="w-1/4">Propietario</p>
 					<div className="flex w-1/4 items-center justify-end gap-2">
 						<Calendar size="20px" />
-						<p>Fecha de subida</p>
+						<p>Fecha de creación</p>
 					</div>
 				</div>
 			)}
@@ -52,7 +52,7 @@ export default function FilesContainer({
                                 id={file.id}
                                 viewMode={viewMode}
                                 ownerName={file.ownerName}
-                                uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                uploadDate={file.uploadDate} // TODO: Cambiar por fecha real
                                 directoryId={parentDirectoryId}
                                 isShared={isShared}
                             />
@@ -66,7 +66,7 @@ export default function FilesContainer({
                                 id={file.id}
                                 viewMode={viewMode}
                                 ownerName={file.ownerName}
-                                uploadDate={new Date()} // TODO: Cambiar por fecha real
+                                uploadDate={file.uploadDate} // TODO: Cambiar por fecha real
                                 directoryId={parentDirectoryId}
                                 isShared={isShared}
                             />

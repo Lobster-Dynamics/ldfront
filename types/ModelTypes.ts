@@ -40,6 +40,7 @@ export interface DirectoryItemDetails {
 	name: string;
 	ownerId: string;
 	ownerName: string;
+    uploadDate: string;
 }
 
 export interface PathItem {
@@ -55,6 +56,7 @@ export interface DirectoryDetails {
 	items: DirectoryItemDetails[];
 	path: PathItem[];
     shared: boolean;
+    uploadDate: string;
 }
 
 export interface Relationship {
