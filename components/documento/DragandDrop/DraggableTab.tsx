@@ -46,7 +46,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, selectTab, selectedTab
 				{Icon}
 			</div>
 			<p
-				className={`${selectedTabId === tab.id ? "text-black" : "text-gray-400"}`}
+				className={cn("text-gray-400 text-nowrap", {"text-black" : selectedTabId === tab.id})}
 			>
 				{tab.content}
 			</p>

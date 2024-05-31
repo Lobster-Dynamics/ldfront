@@ -17,7 +17,7 @@ interface SidebarProps {
 
 export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleClick, selectedElement, isShared }: SidebarProps) {
     return (
-        <div className="my-3 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
+        <div className="my-4 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
             <SidebarElement Icon={<Home size={20} />} name="Mis Archivos"
                 onClick={() => {
                     handleClick("Mis Archivos");
@@ -30,6 +30,7 @@ export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleCl
                 }}
                 selected={selectedElement === 'Compartidos'}
             />
+            <span className="block mx-auto h-px w-11/12 bg-gray-400" aria-hidden="true" />
             <Accordion type="multiple">
                 {sidebardirectory && sidebardirectory.items.length > 0 &&
                     sidebardirectory.items.map((file) => {

@@ -23,6 +23,7 @@ export default function FilesContainer({
 			className="grid"
 			style={{
 				gridTemplateColumns:
+                    viewMode === "grid" && directory && directory.items.length <= 3 ? "repeat(3, 25%)" :
 					viewMode === "grid"
 						? "repeat(auto-fit,minmax(12rem, 1fr))"
 						: "minmax(0, 1fr)",

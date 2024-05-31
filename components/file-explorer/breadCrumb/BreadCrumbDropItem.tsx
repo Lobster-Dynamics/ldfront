@@ -8,11 +8,13 @@ import { useDrop } from "react-dnd";
 interface BreadCrumbDropItemProps {
 	name: string;
 	id: UUID;
+    isActive: boolean;
 }
 
 export default function BreadCrumbDropItem({
 	id,
 	name,
+    isActive
 }: BreadCrumbDropItemProps) {
 	const router = useRouter();
 
@@ -33,11 +35,12 @@ export default function BreadCrumbDropItem({
 		<BreadcrumbItem>
 			<BreadcrumbLink
 				className={cn(
-					"rounded-lg py-1 px-2 text-xl outline-none transition",
+					"rounded-lg px-2 py-1 outline-none transition md:text-xl hover:cursor-pointer",
 					{
 						"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
 							isOver,
 					},
+                    {"text-black": isActive},
 				)}
 				onClick={() => handleItemClick(id)}
 				// @ts-ignore

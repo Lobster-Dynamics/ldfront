@@ -211,8 +211,8 @@ const SidebarSection = ({
 	selectedElement,
 	directoryId,
 }: SidebarSectionProps) => (
-	<div className="hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
-		<div className="relative flex h-20 w-full items-center justify-center">
+	<div className="hidden h-full flex-col place-content-between justify-start px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
+		<div className="relative flex h-14 w-full items-center justify-center">
 			<NewButton directoryId={directoryId} />
 		</div>
 		<Sidebar
@@ -251,40 +251,33 @@ const MainContent = ({
 	directoryId,
 }: MainContentProps) => (
 	<div className="flex h-full w-full flex-col px-4 pb-16 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
-		<div className="flex items-center justify-between">
-			<h1 className="text-3xl">
-				{selectedElement === "Compartidos"
-					? shareDirectory?.name
-					: directory?.name}
-			</h1>
-			<div className="flex gap-3">
-				<ViewModeButton
-					mode="list"
-					currentMode={viewMode}
-					setViewMode={setViewMode}
-				/>
-				<ViewModeButton
-					mode="grid"
-					currentMode={viewMode}
-					setViewMode={setViewMode}
-				/>
-			</div>
-		</div>
 		<DndProvider backend={HTML5Backend}>
-			<div className="text-xl text-[#5C5868]">
-				<BreadCrumb
-					items={
-						selectedElement === "Compartidos"
-							? shareDirectory?.path
-							: directory?.path
-					}
-				/>
-			</div>
+            <div className="flex h-14 items-center justify-between">
+                <BreadCrumb
+                    items={
+                        selectedElement === "Compartidos"
+                            ? shareDirectory?.path
+                            : directory?.path
+                    }
+                />
+                <div className="flex gap-3">
+                    <ViewModeButton
+                        mode="list"
+                        currentMode={viewMode}
+                        setViewMode={setViewMode}
+                    />
+                    <ViewModeButton
+                        mode="grid"
+                        currentMode={viewMode}
+                        setViewMode={setViewMode}
+                    />
+                </div>
+            </div>
 			<div
 				{...getRootProps()}
 				className={cn("my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868] border-2 border-transparent transition", 
                   dropzoneisDragActive && "border-blueFrida-700"
-        )}
+                )}
 			>
 				<input {...getInputProps()} />
 				<FilesContainer

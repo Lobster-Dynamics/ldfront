@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { Settings } from "lucide-react";
+import NavbarProfileDropMenu from "./NavbarProfileDropMenu";
 
 interface NavbarProps {
 	isAuth: boolean
@@ -38,12 +39,13 @@ export default function Navbar({ isAuth }: NavbarProps) {
 								className="h-8 w-px bg-gray-400"
 								aria-hidden="true"
 							/>
-							<Link
+							{/* <Link
 								href="/profile"
 								className="text-lg transition hover:text-purpleFrida-300 focus:text-purpleFrida-300 focus:outline-none"
 							>
 								Cuenta
-							</Link>
+							</Link> */}
+                            <NavbarProfileDropMenu />
 						</div>
 					)}
 				</div>
