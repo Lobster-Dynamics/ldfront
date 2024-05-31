@@ -6,9 +6,9 @@
       "esnext"
     ],
     "allowJs": true,
-    "declaration": true,
+    "declaration": false,
     "outDir": "dist",
-    "declarationMap": true,
+    "declarationMap": false,
     "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
