@@ -52,17 +52,13 @@ export default function SidebarFolder({
                 {id === currdir ? (
                     <CurrentAccordionTrigger>
                         <button onClick={openDocument} className="flex-1 min-w-0 px-2">
-                            <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
-                                {name}
-                            </p>
+                            {name}
                         </button>
                     </CurrentAccordionTrigger>
                 ) : (
                     <AccordionTrigger>
                         <button onClick={openDocument} className="flex-1 min-w-0 px-2">
-                            <p className="overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
-                                {name}
-                            </p>
+                            {name}
                         </button>
                     </AccordionTrigger>
                 )}

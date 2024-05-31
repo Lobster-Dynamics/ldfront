@@ -20,7 +20,7 @@ interface FolderProps {
 	name: string;
 	viewMode: "list" | "grid";
 	ownerName: string;
-	uploadDate: Date;
+	uploadDate: string;
 	directoryId: string;
     isShared: boolean;
 }
@@ -232,7 +232,7 @@ export default function Folder({
 						<p>{ownerName}</p>
 					</div>
 					<div className="flex w-1/4 items-center justify-end">
-						<p>{uploadDate.toLocaleDateString("es-MX")}</p>
+						<p>{uploadDate}</p>
 					</div>
 				</div>
 				{menuVisible && (
