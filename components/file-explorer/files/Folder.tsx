@@ -13,7 +13,7 @@ import { ReactDndItemTypes } from "@/utils/constants";
 import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { cn } from "@/lib/utils";
-import handleItemDrop from "@/lib/requests/functions";
+import handleItemDrop from "@/services/Directory/handles";
 
 interface FolderProps {
 	id: UUID;
@@ -22,7 +22,7 @@ interface FolderProps {
 	ownerName: string;
 	uploadDate: string;
 	directoryId: string;
-    isShared: boolean;
+	isShared: boolean;
 }
 
 const initialContextMenu = {
@@ -38,7 +38,7 @@ export default function Folder({
 	ownerName,
 	uploadDate,
 	directoryId,
-    isShared
+	isShared,
 }: FolderProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
 	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
@@ -96,8 +96,7 @@ export default function Folder({
 		// This to use a custom drag preview
 		preview(getEmptyImage(), { captureDraggingState: true });
 
-		const handleFolderClick = () => {    
-
+		const handleFolderClick = () => {
 			router.push(`/file-explorer?id=${id}&shared=${isShared}`);
 		};
 
@@ -182,7 +181,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						extension={null}
 						directoryId={directoryId}
-                        isShared={isShared}
+						isShared={isShared}
 					/>
 				)}
 			</div>
@@ -190,7 +189,7 @@ export default function Folder({
 	} else if (viewMode === "list") {
 		return (
 			<div
-				className="h-16 border-t border-black border-opacity-30"
+				className="mb-2 h-16 border-t border-black border-opacity-30"
 				ref={(div) => {
 					setDragHelperRef(div);
 					// @ts-ignore
@@ -204,7 +203,7 @@ export default function Folder({
 			>
 				<div
 					className={cn(
-						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
+						"group mt-2 flex h-full justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
 						{ "opacity-30": isDragging },
 						{
 							"bg-blueFrida-500 bg-opacity-50 outline-2 outline-blueFrida-700":
@@ -214,25 +213,30 @@ export default function Folder({
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">
-						<div className="w-[50px] flex-shrink-0">
+						<div className="w-[35px] flex-shrink-0 md:w-[50px]">
 							<Image
 								src="/folder.png"
 								alt="folder"
 								width={50}
 								height={50}
-								className="m-auto self-center"
+								className="pointer-events-none m-auto self-center"
 							/>
 						</div>
-						<p className="overflow-hidden text-ellipsis whitespace-nowrap">
+						<p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm md:text-base">
 							{name}
 						</p>
 					</div>
 					<div className="flex w-1/4 items-center gap-2">
-						<CircleUserRound size="24px" />
-						<p>{ownerName}</p>
+						<CircleUserRound
+							size="24px"
+							className="hidden sm:block"
+						/>
+						<p className="overflow-hidden text-ellipsis whitespace-nowrap px-1 text-sm sm:px-0 md:text-base">
+							{ownerName}
+						</p>
 					</div>
 					<div className="flex w-1/4 items-center justify-end">
-						<p>{uploadDate}</p>
+						<p className="text-sm md:text-base">{uploadDate}</p>
 					</div>
 				</div>
 				{menuVisible && (
@@ -245,7 +249,7 @@ export default function Folder({
 						setContextMenu={setContextMenu}
 						extension={null}
 						directoryId={directoryId}
-                        isShared={isShared}
+						isShared={isShared}
 					/>
 				)}
 			</div>

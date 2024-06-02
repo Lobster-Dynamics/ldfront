@@ -12,7 +12,7 @@ import { ReactDndItemTypes } from "@/utils/constants";
 import { BreadCrumbDrop, FileItemDrag } from "@/types/AppTypes";
 import { cn } from "@/lib/utils";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import handleItemDrop from "@/lib/requests/functions";
+import handleItemDrop from "@/services/Directory/handles";
 
 interface FileProps {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
@@ -22,7 +22,7 @@ interface FileProps {
 	ownerName: string;
 	uploadDate: string;
 	directoryId: string;
-    isShared: boolean;
+	isShared: boolean;
 }
 
 const initialContextMenu = {
@@ -39,7 +39,7 @@ export default function File({
 	ownerName,
 	uploadDate,
 	directoryId,
-    isShared
+	isShared,
 }: FileProps) {
 	const [menuVisible, setMenuVisible] = useState<boolean>(false);
 	const [menuPosition, setMenuPosition] = useState<{ x: number; y: number }>({
@@ -112,8 +112,7 @@ export default function File({
 				});
 			}
 		};
-	}, [id,preview]);
-
+	}, [id, preview]);
 
 	if (viewMode === "grid") {
 		return (
@@ -125,8 +124,8 @@ export default function File({
 				tabIndex={0}
 				ref={(div) => {
 					setDragHelperRef(div);
-                    // @ts-ignore
-                    fileRef.current = div;
+					// @ts-ignore
+					fileRef.current = div;
 					dragRef(div);
 				}}
 				onContextMenu={(e) =>
@@ -171,7 +170,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						extension={extension}
 						directoryId={directoryId}
-                        isShared={isShared}
+						isShared={isShared}
 					/>
 				)}
 			</div>
@@ -179,11 +178,11 @@ export default function File({
 	} else if (viewMode === "list") {
 		return (
 			<div
-				className="h-16 border-t border-black border-opacity-30"
+				className="mb-2 h-16 border-t border-black border-opacity-30"
 				ref={(div) => {
 					setDragHelperRef(div);
-                    // @ts-ignore
-                    fileRef.current = div;
+					// @ts-ignore
+					fileRef.current = div;
 					dragRef(div);
 				}}
 				onContextMenu={(e) =>
@@ -192,31 +191,36 @@ export default function File({
 			>
 				<div
 					className={cn(
-						"group mt-2 flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10",
+						"group mt-2 flex h-full justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10",
 						{ "opacity-30": isDragging },
 					)}
 					tabIndex={0}
 				>
 					<div className="flex w-2/4 items-center gap-2">
-						<div className="w-[50px] flex-shrink-0">
+						<div className="w-[35px] flex-shrink-0 md:w-[50px]">
 							<Image
 								src={`/${cleanExtension}.png`}
 								alt="file icon"
-								width={40}
-								height={40}
-								className="m-auto w-10 self-center"
+								width={50}
+								height={50}
+								className="pointer-events-none m-auto self-center"
 							/>
 						</div>
-						<p className="overflow-hidden text-ellipsis whitespace-nowrap">
+						<p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm md:text-base">
 							{name}
 						</p>
 					</div>
 					<div className="flex w-1/4 items-center gap-2">
-						<CircleUserRound size="24px" />
-						<p>{ownerName}</p>
+						<CircleUserRound
+							size="24px"
+							className="hidden sm:block"
+						/>
+						<p className="overflow-hidden text-ellipsis whitespace-nowrap px-1 text-sm sm:px-0 md:text-base">
+							{ownerName}
+						</p>
 					</div>
 					<div className="flex w-1/4 items-center justify-end">
-						<p>{uploadDate}</p>
+						<p className="text-sm md:text-base">{uploadDate}</p>
 					</div>
 				</div>
 				{menuVisible && (
@@ -229,7 +233,7 @@ export default function File({
 						setContextMenu={setContextMenu}
 						extension={extension}
 						directoryId={directoryId}
-                        isShared={isShared}
+						isShared={isShared}
 					/>
 				)}
 			</div>

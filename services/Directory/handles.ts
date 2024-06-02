@@ -2,7 +2,7 @@ import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
 import { UUID } from "crypto";
 import { mutate } from "swr";
-import { ErrorAlert } from "../alerts/alerts";
+import { ErrorAlert } from "../../lib/alerts/alerts";
 
 export default async function handleItemDrop(
 	directoryId: UUID | string,
