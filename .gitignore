@@ -41,3 +41,6 @@ next-env.d.ts
 
 # Optimize images
 next.config.mjs
+
+# Log files
+*.log

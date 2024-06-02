@@ -1,15 +1,16 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import AuthWrapper from "@/components/AuthWrapper";
 import InitialContainer from "@/components/InitialContainer";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie";
 import { setAuth } from "@/redux/slices/authSlice";
 import { loadUserAuthData } from "@/utils/loadData";
+import { AcceptAlert, ErrorAlert } from "@/lib/alerts/alerts";
+import Link from "next/link";
 
 interface StepProps {
 	setStep: (step: number) => void;
@@ -43,11 +44,7 @@ export default function Create() {
 		e.preventDefault();
 
 		if (password !== repeatPassword) {
-			Swal.fire({
-				icon: "error",
-				title: "Oops...",
-				text: "Las contraseñas no coinciden",
-			});
+            ErrorAlert("Oops...", "Las contraseñas no coinciden");
 			return;
 		}
 
@@ -74,14 +71,10 @@ export default function Create() {
 			});
 
 			dispatch(setAuth(userData));
-
+            AcceptAlert("Cuenta creada correctamente", "success");
 			// router.push("/file-explorer");
 		} catch (err: any) {
-			Swal.fire({
-				icon: "error",
-				title: "Oops...",
-				text: err.response.data.message || "Ha ocurrido un error",
-			});
+			ErrorAlert("Oops...", "Ocurrió un error al crear la cuenta");
 		}
 	};
 
@@ -107,6 +100,12 @@ export default function Create() {
                         handleCreateAccount={handleCreateAccount}
 					/>
 				)}
+                <div className="mt-4 flex w-full flex-row text-start">
+                    <p className="text-base md:text-xl">¿Ya tienes cuenta?</p>
+                    <Link className="ml-2 text-base md:text-xl font-bold text-purpleFrida-500 underline hover:cursor-pointer" href="/login">
+                        Iniciar Sesión
+                    </Link>
+                </div>
 			</InitialContainer>
 		</AuthWrapper>
 	);
@@ -123,20 +122,20 @@ const Step1 = ({
 		<>
 			<input
 				type="text"
-				placeholder="Nombre(s)"
-				className="mt-10 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+				placeholder="Nombre"
+				className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
 			/>
 			<input
 				type="text"
-				placeholder="Apellido(s)"
-				className="mt-10 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+				placeholder="Apellido"
+				className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
 			/>
 			<button
-				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
+				className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white"
 				onClick={() => setStep(1)}
 			>
 				Continuar
@@ -160,27 +159,27 @@ const Step2 = ({
 				<input
 					type="text"
 					placeholder="Correo"
-					className=" mt-8 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+					className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 					value={user}
 					onChange={(e) => setUser(e.target.value)}
 				/>
 				<input
 					type="password"
 					placeholder="Contraseña"
-					className=" mt-12 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+					className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<input
 					type="password"
 					placeholder="Confirmar contraseña"
-					className=" mt-12 w-full border-b border-slate-300 text-3xl text-black outline-none focus:border-slate-600"
+					className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 					value={repeatPassword}
 					onChange={(e) => setRepeatPassword(e.target.value)}
 				/>
 			</div>
 			<button
-				className="mt-10 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white"
+				className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white"
 				onClick={handleCreateAccount}
 			>
 				Registrar

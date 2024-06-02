@@ -19,6 +19,13 @@ export const AceptAlert = async (message:string,type: SwalIcons = "success") => 
       });
 }
 
+export const AcceptAlert = async (message:string,type: SwalIcons = "success") => {
+    await Swal.fire({
+        icon: type,
+        title: message,
+    });
+}
+
 // Modal de carga 
 
 export const LoadingAlert = async (message:string) => {

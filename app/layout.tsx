@@ -25,7 +25,7 @@ export default function RootLayout({
 		<html lang="en">
 			<ReduxProvider>
 				<body className={anek_odia.className}>
-					<main className="relative flex h-screen flex-col overflow-y-clip">
+					<main className="relative flex min-h-[calc(100dvh)] flex-col overflow-y-clip">
 						{children}
 					</main>
 				</body>

@@ -17,7 +17,7 @@ interface SidebarProps {
 
 export default function Sidebar({ sidebardirectory, sidebardirectoryId, handleClick, selectedElement, isShared }: SidebarProps) {
     return (
-        <div className="my-4 h-screen w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
+        <div className="my-4 h-full w-full flex-wrap overflow-hidden overflow-y-auto scroll-smooth whitespace-nowrap rounded-lg bg-[#F3F4F6] p-2">
             <SidebarElement Icon={<Home size={20} />} name="Mis Archivos"
                 onClick={() => {
                     handleClick("Mis Archivos");

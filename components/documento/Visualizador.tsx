@@ -265,7 +265,7 @@ const Visualizador = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-col w-screen" style={{height: "calc(100vh - 64px)"}}>
+            <div className="flex flex-col w-screen" style={{height: "calc(100dvh - 64px)"}}>
                 <div className='flex gap-1 w-full h-full'>
                     <div className="ml-4 my-4" style={{width: leftContainerWidth}} ref={leftContainerRef}>
                         <Container
