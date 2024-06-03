@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -22,6 +23,7 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cypress": "^13.10.0",
     "dnd-core": "^16.0.1",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.365.0",

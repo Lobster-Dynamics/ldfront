@@ -74,6 +74,17 @@ Finalmente, para hacer deploy del proyecto en firebase, puedes correr el siguien
 firebase deploy
 ```
 
+## Hacer Testing con Cypress
+
+Instalar cypress y abrir la interfaz de cypress para poder correr pruebas en el directorio
+/cypress/e2e
+
+```bash
+npm install
+npx cypress install
+npm run cypress:open
+```
+
 # Langosta de la verdad
                              ,.---._
                    ,,,,     /       `,
