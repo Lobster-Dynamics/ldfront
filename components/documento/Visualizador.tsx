@@ -22,12 +22,14 @@ import { fetcher } from '@/config/fetcher';
 import { Document } from '@/types/ModelTypes';
 import { useSearchParams } from 'next/navigation';
 import useAuth from '@/hooks/selectors/useAuth';
+import { ExplicacionFragmento } from '@/types/ModelTypes';
 import { compose } from 'redux';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
     const id = searchParams?.get("id") ?? "0";
     const { data: documentData } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
+    const { data: explicaciones, error } = useSWR<ExplicacionFragmento[]>(`/document/get_explanations/${id}`, fetcher);
     const [tabs, setTabs] = useState<{ [key: string]: Tab[] }>({
         left: [],
         rightTop: [],
@@ -59,33 +61,63 @@ const Visualizador = () => {
     });
 
     useEffect(() => {
-        setTabs({
-            left: [
-                {
-                    id: 'left-1',
-                    content: 'Documento',
-                    component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
-                    Icon: <ScrollText />
-                },
-                { 
-                    id: 'left-2', 
-                    content: 'Grafo', 
-                    component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
-                    Icon: <Workflow /> 
-                },
-                { id: 'left-3', content: 'Explicacion', component: <Explicacion id={id}/>,Icon: <TextSearch /> }
-            ],
-            rightTop: [
-                { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
-                { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
-            ],
-            rightBottom: [
-                { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
-                { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+        if (explicaciones && explicaciones.length > 0) {
+            setTabs({
+                left: [
+                    {
+                        id: 'left-1',
+                        content: 'Documento',
+                        component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
+                        Icon: <ScrollText />
+                    },
+                    { 
+                        id: 'left-2', 
+                        content: 'Grafo', 
+                        component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
+                        Icon: <Workflow /> 
+                    },
+                    { id: 'left-3', content: 'Explicacion', component: <Explicacion explicaciones={explicaciones} id={id}/>,Icon: <TextSearch /> }
+                ],
+                rightTop: [
+                    { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
+                    { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
+                ],
+                rightBottom: [
+                    { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
+                    { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+    
+                ],
+            });
+        } else {
+            setTabs({
+                left: [
+                    {
+                        id: 'left-1',
+                        content: 'Documento',
+                        component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
+                        Icon: <ScrollText />
+                    },
+                    { 
+                        id: 'left-2', 
+                        content: 'Grafo', 
+                        component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
+                        Icon: <Workflow /> 
+                    },
+                ],
+                rightTop: [
+                    { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
+                    { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
+                ],
+                rightBottom: [
+                    { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
+                    { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
+    
+                ],
+            });
+        }
 
-            ],
-        });
-    }, [documentData, id, auth?.uid]);
+        
+    }, [documentData, id, auth?.uid, explicaciones]);
 
     useEffect(() => {
         const mouseDownVerticalHandler = (e: MouseEvent) => {
