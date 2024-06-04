@@ -52,6 +52,7 @@ export default function Login() {
         <AuthWrapper>
             <InitialContainer title="Iniciar sesión">
                 <input
+                    data-test-id="usernameInputLogin"
                     type="text"
                     placeholder="Usuario"
                     className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
@@ -59,6 +60,7 @@ export default function Login() {
                     onChange={(e) => setUser(e.target.value)}
                 />
                 <input
+                    data-test-id="passwordInputLogin"
                     type="password"
                     placeholder="Contraseña"
                     className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
@@ -73,7 +75,12 @@ export default function Login() {
                     </button>
                     
                 </div>
-                <button onClick={handleLogin} className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white">
+                <button 
+                    onClick={handleLogin} 
+                    className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white"
+                    data-test-id="loginButton"
+                >
+
                     Continuar
                 </button>
                 <div className="mt-4 flex w-full flex-row text-start">

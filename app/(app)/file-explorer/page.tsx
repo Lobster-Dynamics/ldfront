@@ -31,7 +31,7 @@ export default function FileExplorer() {
 	const searchParams = useSearchParams();
 
 	// Variables de estado
-	const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+	const [viewMode, setViewMode] = useState<"list" | "grid">(localStorage.getItem("viewMode") ? localStorage.getItem("viewMode") as "list" | "grid" : "grid");
 	const [selectedElement, setSelectedElement] =
 		useState<string>("Mis Archivos");
 	const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
@@ -309,7 +309,10 @@ const ViewModeButton = ({
 	currentMode,
 	setViewMode,
 }: ViewModeButtonProps) => (
-	<button onClick={() => setViewMode(mode)}>
+	<button onClick={() => {
+		setViewMode(mode);
+		localStorage.setItem("viewMode", mode);
+	}}>
 		{mode === "list" ? (
 			<List
 				size="40px"
