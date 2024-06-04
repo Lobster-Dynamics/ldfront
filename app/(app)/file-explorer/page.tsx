@@ -11,7 +11,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DirectoryDetails } from "@/types/ModelTypes";
 import { fetcher } from "@/config/fetcher";
 import useAuth from "@/hooks/selectors/useAuth";
-import { loadDirectoryData } from "@/utils/loadData";
 import { CreateDocument } from "@/services/Document/DocumentManagment";
 import NewButton from "@/components/file-explorer/sidebar/NewButton";
 import ModalAddFolder from "@/components/file-explorer/sidebar/ModalAddFolder";
@@ -19,6 +18,8 @@ import PageLoader from "@/components/PageLoader/PageLoader";
 import UploadContainer from "@/components/file-explorer/UploadContainer";
 import BreadCrumb from "@/components/file-explorer/breadCrumb/BreadCrumb";
 import FilesContainer from "@/components/file-explorer/files/FilesContainer";
+import { loadDirectoryData } from "@/utils/loadData";
+import { cn } from "@/lib/utils";
 import Sidebar from "@/components/file-explorer/sidebar/Sidebar";
 import { UUID } from "crypto";
 
@@ -153,10 +154,7 @@ export default function FileExplorer() {
 		noKeyboard: true,
 	});
 
-	// Renderizar estado de carga
-	if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;
-
-     const handleClick = (name: string) => {
+    const handleClick = (name: string) => {
         if (name === "Compartidos") {
             router.push(`/file-explorer?shared=true`);
         }else{
@@ -165,8 +163,12 @@ export default function FileExplorer() {
         setSelectedElement(name);
     }
 
+
+	// Renderizar estado de carga
+	if (isLoadingDirectory && isLoadingSidebar) return <PageLoader />;
+
 	return (
-		<div className="max-h-full flex-grow bg-white">
+		<div className="max-h-full flex-grow bg-white" style={{height: "calc(100dvh - 64px)"}}>
 			<div className="flex h-full w-full pt-4">
 				<SidebarSection
 					sidebardirectory={sidebardirectory}
@@ -186,7 +188,7 @@ export default function FileExplorer() {
 					dropzoneisDragActive={dropzoneisDragActive}
 					directoryId={directoryId}
 				/>
-				</div>
+            </div>
 			<ModalAddFolder />
 			<UploadContainer />
 		</div>
@@ -210,8 +212,8 @@ const SidebarSection = ({
 	selectedElement,
 	directoryId,
 }: SidebarSectionProps) => (
-	<div className="hidden h-full flex-col place-content-between justify-start gap-3 px-4 pb-16 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
-		<div className="relative flex h-20 w-full items-center justify-center">
+	<div className="hidden h-full flex-col place-content-between justify-start px-4 text-[#5C5868] md:flex md:w-2/6 lg:w-3/12 xl:w-2/12">
+		<div className="relative flex h-14 w-full items-center justify-center">
 			<NewButton directoryId={directoryId} />
 		</div>
 		<Sidebar
@@ -249,39 +251,34 @@ const MainContent = ({
 	dropzoneisDragActive,
 	directoryId,
 }: MainContentProps) => (
-	<div className="flex h-full w-full flex-col px-4 pb-16 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
-		<div className="flex items-center justify-between">
-			<h1 className="text-3xl">
-				{selectedElement === "Compartidos"
-					? shareDirectory?.name
-					: directory?.name}
-			</h1>
-			<div className="flex gap-3">
-				<ViewModeButton
-					mode="list"
-					currentMode={viewMode}
-					setViewMode={setViewMode}
-				/>
-				<ViewModeButton
-					mode="grid"
-					currentMode={viewMode}
-					setViewMode={setViewMode}
-				/>
-			</div>
-		</div>
+	<div className="flex h-full w-full flex-col px-4 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
 		<DndProvider backend={HTML5Backend}>
-			<div className="text-xl text-[#5C5868]">
-				<BreadCrumb
-					items={
-						selectedElement === "Compartidos"
-							? shareDirectory?.path
-							: directory?.path
-					}
-				/>
-			</div>
+            <div className="flex h-14 items-center justify-between">
+                <BreadCrumb
+                    items={
+                        selectedElement === "Compartidos"
+                            ? shareDirectory?.path
+                            : directory?.path
+                    }
+                />
+                <div className="flex gap-3">
+                    <ViewModeButton
+                        mode="list"
+                        currentMode={viewMode}
+                        setViewMode={setViewMode}
+                    />
+                    <ViewModeButton
+                        mode="grid"
+                        currentMode={viewMode}
+                        setViewMode={setViewMode}
+                    />
+                </div>
+            </div>
 			<div
 				{...getRootProps()}
-				className={`my-4 h-screen overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868] ${dropzoneisDragActive ? "border-4 border-purple-500" : ""}`}
+				className={cn("my-4 h-full overflow-y-auto rounded-lg bg-gray-100 p-4 text-[#5C5868] border-2 border-transparent transition", 
+                  dropzoneisDragActive && "border-blueFrida-700"
+                )}
 			>
 				<input {...getInputProps()} />
 				<FilesContainer

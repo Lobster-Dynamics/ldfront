@@ -92,4 +92,21 @@
     input {
         @apply focus:border-purpleFrida-300 focus:outline-none;
     }
-  }
+
+    
+    ::-webkit-scrollbar {
+        width: 0.75em;
+        height: 0.75em;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #d4d4d4;
+        border-radius: 100vw;
+        /* margin-block: 0.5em; */
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #52525b;
+        border-radius: 100vw;
+    }
+}

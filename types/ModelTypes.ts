@@ -15,6 +15,11 @@ export interface WordDefinition {
 }
 
 
+export interface ExplicacionFragmento{
+    [key: string]: any;
+    titulo: string;
+    texto: string;
+}
 
 export interface UserAuth {
 	token: string;
@@ -35,6 +40,7 @@ export interface DirectoryItemDetails {
 	name: string;
 	ownerId: string;
 	ownerName: string;
+    uploadDate: string;
 }
 
 export interface PathItem {
@@ -50,9 +56,15 @@ export interface DirectoryDetails {
 	items: DirectoryItemDetails[];
 	path: PathItem[];
     shared: boolean;
+    uploadDate: string;
 }
 
-
+export interface Relationship {
+    id: string;
+    father_concept_id: string;
+    child_concept_id: string;
+    description: string;
+}
 
 export interface Document {
     bibliographic_info: BibliographicInfo | null; 
@@ -63,7 +75,7 @@ export interface Document {
     name: string;
     owner_id: string;
     parsed_llm_input: ParsedLLMInput; 
-    relationships: any[] | null; 
+    relationships: Relationship[]; 
     summary: Summary;
     users_with_access: any[]; 
 }

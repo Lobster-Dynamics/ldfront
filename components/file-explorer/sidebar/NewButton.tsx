@@ -108,14 +108,14 @@ export default function NewButton({ directoryId }: NewButtonProps) {
     }, [menuRef]);
 
     return (
-        <div>
+        <div className="h-full">
             <button
                 onClick={() => setMenu(true)}
-                className="flex items-center self-center"
+                className="flex items-center self-center h-full"
             >
-                <label className="flex h-14 cursor-pointer items-center self-center rounded-lg border-2 border-black bg-[#F3F4F6] p-4 transition hover:bg-purpleFrida-700 hover:bg-opacity-10">
-                    <Plus size={30} />
-                    <p className="lg:text-md min-[0px]:hidden lg:block xl:text-2xl">
+                <label className="flex cursor-pointer items-center self-center rounded-lg shadow-md shadow-gray-400 bg-[#F3F4F6] transition p-2 hover:bg-purpleFrida-700 hover:bg-opacity-10">
+                    <Plus size={20} />
+                    <p className="lg:text-md min-[0px]:hidden lg:block xl:text-xl">
                         Nuevo
                     </p>
                 </label>

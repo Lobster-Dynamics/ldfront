@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 export interface ModalProps {
     active: boolean;
-    setActive: React.Dispatch<React.SetStateAction<boolean>>;
+    setActive: any;
     children?: React.ReactNode;
     className?: string;
 }

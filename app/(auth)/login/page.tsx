@@ -6,12 +6,11 @@ import axiosClient from "@/config/axiosClient";
 import jsCookie from "js-cookie"
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import Swal from "sweetalert2";
 import { setAuth } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
 import { errorHandler } from "@/utils/errorHandler";
 import { loadUserAuthData } from "@/utils/loadData";
+import Link from "next/link";
 
 export default function Login() {
 
@@ -49,11 +48,11 @@ export default function Login() {
 	}
 
 
-        return (
+    return (
         <AuthWrapper>
             <InitialContainer title="Iniciar sesión">
-                <hr className="my-4 h-0.5 w-full border-0 bg-slate-500" />
                 <input
+                    data-test-id="usernameInputLogin"
                     type="text"
                     placeholder="Usuario"
                     className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
@@ -61,6 +60,7 @@ export default function Login() {
                     onChange={(e) => setUser(e.target.value)}
                 />
                 <input
+                    data-test-id="passwordInputLogin"
                     type="password"
                     placeholder="Contraseña"
                     className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
@@ -69,23 +69,25 @@ export default function Login() {
                 />
                 <div className="mt-5 w-full text-start">
                     <button onClick={handleforgot}>
-                        <p className="justify-start text-xl font-bold text-purpleFrida-500 underline">
+                        <p className="justify-start text-base md:text-xl font-bold text-purpleFrida-500 underline">
                             ¿Olvidaste tu contraseña?
                         </p>
                     </button>
                     
                 </div>
-                <button onClick={handleLogin} className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-2xl text-white">
+                <button 
+                    onClick={handleLogin} 
+                    className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white"
+                    data-test-id="loginButton"
+                >
 
                     Continuar
                 </button>
                 <div className="mt-4 flex w-full flex-row text-start">
-                    <p className="text-xl">¿No tienes una cuenta?</p>
-                    <p className="ml-2 text-xl font-bold text-purpleFrida-500 underline hover:cursor-pointer"
-                        onClick={() => (window.location.href = "/create-account")}
-                    >
+                    <p className="text-base md:text-xl">¿No tienes cuenta?</p>
+                    <Link className="ml-2 text-base md:text-xl font-bold text-purpleFrida-500 underline hover:cursor-pointer" href="/create-account">
                         Registrarse
-                    </p>
+                    </Link>
                 </div>
             </InitialContainer>
         </AuthWrapper>
