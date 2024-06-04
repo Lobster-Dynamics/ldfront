@@ -3,6 +3,7 @@ import { Plus, X } from "lucide-react";
 import { KeyConcept } from "@/types/ModelTypes";
 import { useDispatch } from "react-redux";
 import { setModalBorrarDetails } from "@/redux/slices/modalSlice";
+import { setModalAñadirConceptoDetails } from "@/redux/slices/modalSlice";
 
 interface KeywordsProps {
 	keywords: KeyConcept[];
@@ -20,6 +21,7 @@ export default function Keywords({ keywords, documentId }: KeywordsProps) {
 				<Keyword keyword={keyword.name} documentId={documentId} id={keyword.id} key={keyword.id} />))}
 			<button className="my-2 rounded-3xl bg-gray-200 p-2 hover:bg-blueFrida-300"
             onClick={() => {
+                dispatch(setModalAñadirConceptoDetails({documentId: documentId}))
                 dispatch(toggleModalAñadirConcepto())
             }}
             >

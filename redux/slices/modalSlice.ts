@@ -4,13 +4,16 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export const modalSlice = createSlice({
     name: "modal",
     initialState: {
-        modalDefinicion:{
+        modalDefinicion: {
             isOpen: false,
             word: "",
             language: "",
         },
-        modalAñadirConcepto: false,
-        modalBorrar:{
+        modalAñadirConcepto: {
+            isOpen: false,
+            documentId: "",
+        },
+        modalBorrar: {
             isOpen: false,
             id: "",
             documentId: "",
@@ -21,12 +24,15 @@ export const modalSlice = createSlice({
         toggleModalDefinicion: (state) => {
             state.modalDefinicion.isOpen = !state.modalDefinicion.isOpen;
         },
-         setModalDefinicionDetails: (state, action: PayloadAction<{ word: string; language: string; }>) => {
+        setModalDefinicionDetails: (state, action: PayloadAction<{ word: string; language: string; }>) => {
             state.modalDefinicion.word = action.payload.word;
             state.modalDefinicion.language = action.payload.language;
         },
-        toggleModalAñadirConcepto: (state: { modalAñadirConcepto: boolean; }) => {
-            state.modalAñadirConcepto = !state.modalAñadirConcepto;
+        setModalAñadirConceptoDetails: (state, action: PayloadAction<{ documentId: string; }>) => {
+            state.modalAñadirConcepto.documentId = action.payload.documentId;
+        },
+        toggleModalAñadirConcepto: (state) => {
+            state.modalAñadirConcepto.isOpen = !state.modalAñadirConcepto.isOpen;
         },
         toggleModalBorrar: (state) => {
             state.modalBorrar.isOpen = !state.modalBorrar.isOpen;
@@ -41,7 +47,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar } = modalSlice.actions;
+export const { setModalBorrarDetails, setModalDefinicionDetails, toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar,setModalAñadirConceptoDetails} = modalSlice.actions;
 
 export default modalSlice.reducer
 
