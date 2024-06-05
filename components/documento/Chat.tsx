@@ -6,10 +6,9 @@ import { axiosConfig } from '@/config/axiosConfig';
 
 interface ChatProps {
     id: string;
-    userid: string | undefined;
 }
 
-export default function Chat({ id, userid }: ChatProps) {
+export default function Chat({ id }: ChatProps) {
     const bottomRef = useRef<HTMLDivElement | null>(null);
     const [ newInputValue, setNewInputValue ] = useState('');
     const [ messages, setMessages] = useState<Chatword>({ Chat: [ { message: "Hola, soy FRIDA Research Engine!", role: "chat" },
@@ -20,7 +19,7 @@ export default function Chat({ id, userid }: ChatProps) {
         if (!config) return;
 
         try {
-            const response = await axiosClient.post(`/document/get_all_messages`,{id: id, userid : userid}, config);
+            const response = await axiosClient.post(`/document/get_all_messages`,{id: id}, config);
             const pastMessages = response.data; 
 
             const historicMessages: Chatword = { 
@@ -38,7 +37,7 @@ export default function Chat({ id, userid }: ChatProps) {
 
     useEffect(() => {
         fetchMessages();
-    }, [id, userid]);
+    }, [id]);
 
     
 
@@ -64,12 +63,11 @@ export default function Chat({ id, userid }: ChatProps) {
         const config = axiosConfig();
         if (!config) return;
     
-        const data = { id: id, userid: userid,query: userMessage };
+        const data = { id: id, query: userMessage };
         console.log(data);
     
         try {
             const response = await axiosClient.post("/document/get_message", data, config);
-            console.log(response.data["msg"]);
             const botMessage = response.data["msg"];
     
             setMessages(prevMessages => ({

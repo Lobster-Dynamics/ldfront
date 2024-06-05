@@ -6,9 +6,9 @@ import { scaleLog } from '@visx/scale';
 import Wordcloud from '@visx/wordcloud/lib/Wordcloud';
 
 interface WordCloudProps {
-  uuid: string;
   width: number;
   height: number;
+  documentId: string;
 }
 
 export interface Word {
@@ -22,9 +22,9 @@ export interface WordData {
   value: number;
 }
 
-export default function WordCloud({ uuid, width, height }: WordCloudProps) {
+export default function WordCloud({ documentId , width, height }: WordCloudProps) {
   // Use SWR to fetch data from the endpoint
-  const { data, error } = useSWR<Word[]>(`/document/generate_word_cloud/${uuid}`, fetcher);
+  const { data, error } = useSWR<Word[]>(`/document/generate_word_cloud/${documentId}`, fetcher);
 
   // State for spiral type and rotation
   const [spiralType, setSpiralType] = useState<'archimedean' | 'rectangular'>('archimedean');

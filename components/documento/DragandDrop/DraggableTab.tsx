@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Tab } from "@/types/AppTypes";
+import { LucideIcon } from "lucide-react";
 import React from "react";
 import { useDrag } from "react-dnd";
 
@@ -7,7 +8,7 @@ interface DraggableTabProps {
     tab: Tab;
     selectTab: (tabId: string) => void;
     selectedTabId: string;
-    Icon: JSX.Element;
+    Icon: LucideIcon;
     vertically: boolean;
 }
 
@@ -43,7 +44,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, selectTab, selectedTab
                     { "mb-2 ml-4 rotate-90": vertically}
 				)}
 			>
-				{Icon}
+				<Icon />
 			</div>
 			<p
 				className={cn("text-gray-400 text-nowrap", {"text-black" : selectedTabId === tab.id})}

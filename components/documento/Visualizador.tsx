@@ -3,27 +3,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Paper from '@/components/documento/Paper';
 import Container from '@/components/documento/DragandDrop/Container';
-import WordCloud from '@/components/documento/Wordcloud';
 import { Tab } from '@/types/AppTypes';
-import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, Component, TextSearch } from 'lucide-react';
-import Keywords from '@/components/documento/Keywords';
-import Chat from '@/components/documento/Chat';
-import Summary from '@/components/documento/Summary';
-import GraphViz from '@/components/graph/Graph';
 import ModalBorrar from '@/components/documento/KeyWords/ModalBorrar';
 import ModalAdd from '@/components/documento/KeyWords/ModalAdd';
 import ModalDefinicion from '@/components/documento/ModalDefinition';
 import ModalExplicacionFragmento from './ModalExplicacionFragmento';
-import Explicacion from './Explicacion';
 import useSWR from 'swr';
 import { fetcher } from '@/config/fetcher';
 import { Document } from '@/types/ModelTypes';
 import { useSearchParams } from 'next/navigation';
-import useAuth from '@/hooks/selectors/useAuth';
 import { ExplicacionFragmento } from '@/types/ModelTypes';
-import { compose } from 'redux';
+import { loadSelectedTab, loadTabsData } from '@/utils/loadData';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
@@ -35,7 +26,9 @@ const Visualizador = () => {
         rightTop: [],
         rightBottom: [],
     });
-    const { auth } = useAuth()
+    const [selectedTabs, setSelectedTabs] = useState<{
+        [key: string]: string;
+    }>(loadSelectedTab());
 
     const verticalResizeRef = useRef<HTMLDivElement>(null);
     const horizontalResizeRef = useRef<HTMLDivElement>(null);
@@ -52,72 +45,10 @@ const Visualizador = () => {
     const [isBottomContainerHidden, setIsBottomContainerHidden] = useState<boolean>(false);
     const [isTopContainerHidden, setIsTopContainerHidden] = useState<boolean>(false);
 
-    const [selectedTabs, setSelectedTabs] = useState<{
-        [key: string]: string;
-    }>({
-        left: 'left-1',
-        rightTop: 'right-top-1',
-        rightBottom: 'right-bottom-1',
-    });
 
     useEffect(() => {
-        if (explicaciones && explicaciones.length > 0) {
-            setTabs({
-                left: [
-                    {
-                        id: 'left-1',
-                        content: 'Documento',
-                        component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
-                        Icon: <ScrollText />
-                    },
-                    { 
-                        id: 'left-2', 
-                        content: 'Grafo', 
-                        component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
-                        Icon: <Workflow /> 
-                    },
-                    { id: 'left-3', content: 'Explicacion', component: <Explicacion explicaciones={explicaciones} id={id}/>,Icon: <TextSearch /> }
-                ],
-                rightTop: [
-                    { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
-                    { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
-                ],
-                rightBottom: [
-                    { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
-                    { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
-    
-                ],
-            });
-        } else {
-            setTabs({
-                left: [
-                    {
-                        id: 'left-1',
-                        content: 'Documento',
-                        component: documentData ? <Paper title={documentData.name} parse={documentData.parsed_llm_input.content} /> : <h1>Cargando...</h1>,
-                        Icon: <ScrollText />
-                    },
-                    { 
-                        id: 'left-2', 
-                        content: 'Grafo', 
-                        component: documentData ? <GraphViz key_concepts={documentData.key_concepts} relationships={documentData.relationships}/> : <h1>Cargando...</h1>, 
-                        Icon: <Workflow /> 
-                    },
-                ],
-                rightTop: [
-                    { id: 'right-top-1', content: 'Chat', component: <Chat id={id} userid={auth?.uid} />, Icon: <MessageSquare /> },
-                    { id: 'right-top-2', content: 'Resumen', component: documentData ?  <Summary summary={documentData?.summary.secctions} />  : <h1>Cargando...</h1> , Icon: <BookOpen /> },
-                ],
-                rightBottom: [
-                    { id: 'right-bottom-1', content: 'Word Cloud', component: <WordCloud uuid={id} width={500} height={500}/>, Icon: <Cloud /> },
-                    { id: 'right-bottom-2', content: 'KeyConcepts', component: documentData ?  <Keywords documentId={id} keywords={documentData?.key_concepts} /> : <h1>Cargando...</h1>, Icon: <List /> },
-    
-                ],
-            });
-        }
-
-        
-    }, [documentData, id, auth?.uid, explicaciones]);
+        setTabs(loadTabsData(documentData, explicaciones, id));
+    }, [id, documentData, explicaciones]);
 
     useEffect(() => {
         const mouseDownVerticalHandler = (e: MouseEvent) => {
@@ -279,6 +210,26 @@ const Visualizador = () => {
                 ...prevSelectedTabs,
                 [targetContainerId]: tab.id,
             }));
+            // Save the selected tabs in the local storage
+            localStorage.setItem("selectedTabs", JSON.stringify((prevSelectedTabs: any) => ({
+                ...prevSelectedTabs,
+                [targetContainerId]: tab.id,
+            })));
+
+            // Save the new tabs in the local storage
+            const newTabs = JSON.parse(JSON.stringify({
+                ...prevTabs,
+                [sourceContainerId]: sourceTabs,
+                [targetContainerId]: targetTabs,
+            }));
+            
+            for (let key in newTabs) {
+                newTabs[key].forEach((tab: any) => {
+                    delete tab.component;
+                    delete tab.Icon;
+                });
+            }
+            localStorage.setItem("tabs", JSON.stringify(newTabs));
 
             return {
                 ...prevTabs,
@@ -289,10 +240,17 @@ const Visualizador = () => {
     }, [setSelectedTabs]);
 
     const selectTab = useCallback((containerId: string, tabId: string) => {
-        setSelectedTabs((prevSelectedTabs) => ({
-            ...prevSelectedTabs,
-            [containerId]: tabId,
-        }));
+        setSelectedTabs((prevSelectedTabs) => {
+            localStorage.setItem("selectedTabs", JSON.stringify({
+                ...prevSelectedTabs,
+                [containerId]: tabId,
+            }));
+            
+            return {
+                ...prevSelectedTabs,
+                [containerId]: tabId,
+            }
+        });
     }, []);
 
     return (
