@@ -5,6 +5,7 @@ export interface Chatword {
 }
 
 export interface ChatDetails {
+    mes_id: string;
 	message: string;
 	role: string;
 }
