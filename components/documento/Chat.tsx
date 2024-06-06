@@ -91,6 +91,23 @@ export default function Chat({ id }: ChatProps) {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    const handleReferenceButton = async (mes_id: string) => {
+        const config = axiosConfig();
+        if (!config) return;
+    
+        const data = { doc_id: id, id: mes_id };
+        console.log(data);
+
+        try {
+            const response = await axiosClient.post("/document/get_highlights", data, config);
+            const highlights = response.data;
+            console.log(highlights)
+
+        } catch (error) {
+            console.error("Error fetching chat response:", error);
+        }
+    }
+
     return (
         <div className="flex flex-col justify-between h-full">
             <div className="flex flex-col overflow-y-auto">
@@ -101,7 +118,7 @@ export default function Chat({ id }: ChatProps) {
                                 {message.message}
                                 {" "}
                                 {message.mes_id != "" && (
-                                <button className="hover:text-purple-500 flex items-center">
+                                <button className="hover:text-purple-500 flex items-center" onClick={() => handleReferenceButton(message.mes_id)}>
                                     <ScanSearch />
                                 </button>
                                 )}
