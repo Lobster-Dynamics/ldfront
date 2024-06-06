@@ -1,14 +1,10 @@
-import Swal from "sweetalert2";
 import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
 import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
-import { RequestResponse, errorHandler } from "@/utils/errorHandler";
-import { AxiosError } from "axios";
 
 export const handleFileShare = async (
     extension: ".docx" | ".pdf" | ".pptx" | null,
     uuid: string,
-    directoryId: string,
     onClose: () => void
 ) => {
     const config = axiosConfig();
@@ -21,7 +17,7 @@ export const handleFileShare = async (
                 await axiosClient.put(
                     "/directory/share_directory",
                     {
-                        directory_id: directoryId,
+                        directory_id: uuid,
                         shared_email: email,
                         priority: "EDIT",
                     },
