@@ -50,7 +50,7 @@ if(error?.code === "ERR_BAD_REQUEST"){
             ErrorAlert("Sin permiso", error?.response?.data?.msg ?? "No tienes permiso para acceder a este recurso, tu token ha caducado ","warning")
 
         case 404:
-            ErrorAlert("No encontrado", error?.response?.data?.msg ?? "No se encontro el recurso solicitado ","warning")
+             ErrorAlert("No encontrado", error?.response?.data?.msg ?? "No se encontro el recurso solicitado ","warning")
 
         case 500:
             ErrorAlert("Error interno", error?.response?.data?.msg ?? "Ocurrio un error interno")

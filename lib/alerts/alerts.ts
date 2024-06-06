@@ -66,13 +66,13 @@ export const InputAlert = async (title:string, preConfirmCallback: (...args: any
         preConfirm: preConfirmCallback, 
         allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                icon: type,
-                title: confirmTitle,
-                text: confirmMessage, 
-            })
-        }
+        //if (result.isConfirmed) {
+         //   Swal.fire({
+          //      icon: type,
+           //     title: confirmTitle,
+            //    text: confirmMessage, 
+           // })
+       // }
     })
 }
 

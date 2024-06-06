@@ -265,8 +265,7 @@ export default function SubMenu({
                         <p>Renombrar</p>
                     </button>
                     <button className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
-                        onClick={() => handleFileShare(extension, uuid, directoryId, onClose)}
-
+                        onClick={async () => await handleFileShare(extension, uuid, directoryId, onClose)}
                     >
                         <UserRoundPlus />
                         <p>Compartir</p>
