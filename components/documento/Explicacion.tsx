@@ -1,67 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
-import ComboBox from "./ComboBox";
-import { openContextMenuButton } from "@/utils/contextMenuFunctions";
+import React, { useState } from "react";
 import { ExplicacionFragmento } from "@/types/ModelTypes";
-import { fetcher } from '@/config/fetcher';
-import useSWR from "swr";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
 
+  
 interface ExplicacionProps {
     id: string;
+    explicaciones: ExplicacionFragmento[];
 }
 
-export default function Explicacion({ id }: ExplicacionProps) {
-    const [menuVisible, setMenuVisible] = useState<boolean>(false);
-    const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
+    const [explicacion, setExplicacion] = useState<ExplicacionFragmento>(explicaciones[0]);
 
-    const { data: explicaciones, error } = useSWR<ExplicacionFragmento[]>(`/document/get_explanations/${id}`, fetcher);
 
-    const [explicacion, setExplicacion] = useState<ExplicacionFragmento>({ titulo: "No has solicitado explicaciones.", texto: "" });
-
-    useEffect(() => {
-        if (explicaciones && explicaciones.length > 0) {
-            setExplicacion(explicaciones[0]);
-        } else {
-            setExplicacion({ titulo: "No has solicitado explicaciones.", texto: "" });
-        }
-    }, [explicaciones]);
-
-    const buttonRef = useRef<HTMLButtonElement>(null);
-
-    const handleCloseMenu = (): void => {
-        setMenuVisible(false);
-    };
-
-    const handleOpenContextMenu = (): void => {
-        if (explicaciones && explicaciones.length > 0) {
-            openContextMenuButton(buttonRef, setMenuVisible, setMenuPosition);
-        }
+    const handleClickbutton = (explicacion: ExplicacionFragmento): void => {
+        setExplicacion(explicacion);
     };
 
     return (
-        <div className="p-10 overflow-y-auto w-full">
-            <button 
-                ref={buttonRef} 
-                onClick={() => openContextMenuButton(
-                    buttonRef,
-                    setMenuVisible,
-                    setMenuPosition,)
-                }
-                className="w-auto flex items-center bg-gray-200 rounded-lg justify-start gap-2 px-2 py-2 hover:bg-purple-200">
-                Fragmentos
-            </button>
-            {menuVisible && (
-                <ComboBox 
-                    visible={menuVisible} 
-                    x={menuPosition.x} 
-                    y={menuPosition.y} 
-                    onClose={handleCloseMenu} 
-                    explicaciones={explicaciones} 
-                    setExplicacion={setExplicacion} 
-                />
-            )}
-            <h2 className="font-bold font-mono text-2xl mt-4 mb-10">{explicacion.titulo}</h2>
-            <p className="text-xl font-mono mb-4">{explicacion.texto}</p>
+        <div className="overflow-y-auto w-full h-full flex flex-row relative">
+            <div className="w-1/5 relative">
+                <ScrollArea className="h-full">
+                    <ul className="rounded-md p-2 w-full relative space-y-2">
+                        {explicaciones.map((explicacion, index) => (
+                            <TooltipProvider key={index}>
+                                <Tooltip>
+                                    <TooltipTrigger
+                                        asChild>
+                                            <li
+                                            className="cursor-pointer w-full rounded-md px-4 py-2 hover:bg-purple-200 overflow-hidden text-ellipsis whitespace-nowrap"
+                                            onClick={() => handleClickbutton(explicacion)}
+                                        >
+                                            {explicacion.titulo}
+                                        </li>
+                                    </TooltipTrigger>
+                            
+                                    <TooltipContent>
+                                        <p>{explicacion.titulo}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        ))}
+                    </ul>
+                </ScrollArea>
+                <div className="absolute inset-y-0 right-0 w-px bg-gray-300"></div>
+            </div>
+            <div className="w-4/5 px-5 h-full">
+                <ScrollArea className="h-full">
+                    <h2 className="font-bold font-mono text-2xl mt-4 mb-10">{explicacion.titulo}</h2>
+                    <p className="text-xl font-mono mb-4">{explicacion.texto}</p>
+                </ScrollArea>
+                
+            </div>
         </div>
     );
 }
+

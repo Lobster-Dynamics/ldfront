@@ -5,6 +5,7 @@ import { toggleModalDefinicion,setModalDefinicionDetails,toggleModalExplicacionF
 import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
 import { useSearchParams } from "next/navigation";
+import { mutate } from "swr";
 
 interface ContextMenuProps {
     visible: boolean;
@@ -61,6 +62,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
             dispatch(toggleModalExplicacionFragmento());
             dispatch(setModalExplicacionFragmento({explication: explicacion}));
+            mutate(`/document/get_explanations/${docid}`)
             onClose();
         } catch (error) {
             console.error("Error fetching explication:", error);
