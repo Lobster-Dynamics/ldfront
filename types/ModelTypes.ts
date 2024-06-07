@@ -79,6 +79,7 @@ export interface Document {
     relationships: Relationship[]; 
     summary: Summary;
     users_with_access: any[]; 
+    document_url: string;
 }
 
 export interface BibliographicInfo {
