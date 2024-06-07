@@ -1,8 +1,9 @@
 import { Tab } from "@/types/AppTypes";
 import { DirectoryDetails, DirectoryItemDetails, UserAuth, Document, ExplicacionFragmento } from "@/types/ModelTypes";
-import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component } from "lucide-react";
+import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component, FileText } from "lucide-react";
 import { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion } from "@/components/documento";
 import { UUID } from "crypto";
+import FileViewer from "@/components/documento/FileViewer";
 
 function _parseJWT(token: string) {
 	return JSON.parse(atob(token.split(".")[1]));
@@ -59,7 +60,7 @@ export function loadSelectedTab(): {
 			JSON.stringify({
 				left: "Documento",
 				rightTop: "Chat",
-				rightBottom: "Word Cloud",
+				rightBottom: "Nube de Palabras",
 			}),
 		);
 	}
@@ -83,15 +84,16 @@ export function loadTabsData(
 				left: [
 					{ id: "Documento", content: "Documento" },
 					{ id: "Grafo", content: "Grafo" },
-					{ id: "Explicación", content: "Explicación" },
+                    { id: "Visualizador", content: "Visualizador" },
+					{ id: "Explicación", content: "Explicación" }
 				],
 				rightTop: [
 					{ id: "Chat", content: "Chat" },
 					{ id: "Resumen", content: "Resumen" },
 				],
 				rightBottom: [
-					{ id: "Word Cloud", content: "Word Cloud" },
-					{ id: "KeyConcepts", content: "KeyConcepts" },
+					{ id: "Nube de Palabras", content: "Nube de Palabras" },
+					{ id: "Conceptos", content: "Conceptos" },
 				],
 			}),
 		);
@@ -136,10 +138,12 @@ function _getTabIcon(componentName: string): LucideIcon {
 			return MessageSquare;
 		case "Resumen":
 			return BookOpen;
-		case "Word Cloud":
+		case "Nube de Palabras":
 			return Cloud;
-		case "KeyConcepts":
+		case "Conceptos":
 			return List;
+        case "Visualizador":
+            return FileText
 		default:
 			return Component;
 	}
@@ -180,17 +184,19 @@ function _getTabComponent(
 			return <Chat id={documentId} />;
 		case "Resumen":
 			return <Summary summary={documentData?.summary.secctions} />;
-		case "Word Cloud":
+		case "Nube de Palabras":
 			return (
 				<WordCloud documentId={documentId} width={500} height={500} />
 			);
-		case "KeyConcepts":
+		case "Conceptos":
 			return (
 				<Keywords
 					documentId={documentId}
 					keywords={documentData?.key_concepts}
 				/>
 			);
+        case "Visualizador":
+            return <FileViewer documentUrl={documentData.document_url} />
 		default:
 			return <></>;
 	}
