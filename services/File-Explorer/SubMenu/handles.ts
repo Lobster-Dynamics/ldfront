@@ -1,6 +1,6 @@
 import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
-import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
+import { AcceptAlert, ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
 
 export const handleFileShare = async (
     extension: ".docx" | ".pdf" | ".pptx" | null,
@@ -14,7 +14,7 @@ export const handleFileShare = async (
     if (extension == null) {
         InputAlert("Ingrese el correo", async (email) => {
             try {
-                await axiosClient.put(
+                const  response = await axiosClient.put(
                     "/directory/share_directory",
                     {
                         directory_id: uuid,
@@ -23,6 +23,14 @@ export const handleFileShare = async (
                     },
                     config,
                 );
+
+                if (response) {
+
+                    AcceptAlert("Se ha compartido la carpeta !");
+
+
+                }
+
             } catch (error: any) {
                 await ErrorAlert("Error al compartir el documento", error?.response?.data?.msg ?? "No se encontro el recurso solicitado");
             }
