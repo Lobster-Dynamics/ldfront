@@ -79,7 +79,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
         <div
             ref={menuRef}
             style={{ position: "fixed", top: `${y}px`, left: `${x}px` }}
-            className="relative"
+            className="relative z-10"
         >
             <ul className="rounded border bg-white shadow-lg">
                 {selectedText.trim() !== "" && (

@@ -1,8 +1,9 @@
 import { Tab } from "@/types/AppTypes";
 import { DirectoryDetails, DirectoryItemDetails, UserAuth, Document, ExplicacionFragmento } from "@/types/ModelTypes";
-import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component } from "lucide-react";
+import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component, FileText } from "lucide-react";
 import { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion } from "@/components/documento";
 import { UUID } from "crypto";
+import FileViewer from "@/components/documento/FileViewer";
 
 function _parseJWT(token: string) {
 	return JSON.parse(atob(token.split(".")[1]));
@@ -83,7 +84,8 @@ export function loadTabsData(
 				left: [
 					{ id: "Documento", content: "Documento" },
 					{ id: "Grafo", content: "Grafo" },
-					{ id: "Explicación", content: "Explicación" },
+                    { id: "Viewer", content: "Viewer" },
+					{ id: "Explicación", content: "Explicación" }
 				],
 				rightTop: [
 					{ id: "Chat", content: "Chat" },
@@ -140,6 +142,8 @@ function _getTabIcon(componentName: string): LucideIcon {
 			return Cloud;
 		case "KeyConcepts":
 			return List;
+        case "Viewer":
+            return FileText
 		default:
 			return Component;
 	}
@@ -191,6 +195,8 @@ function _getTabComponent(
 					keywords={documentData?.key_concepts}
 				/>
 			);
+        case "Viewer":
+            return <FileViewer />
 		default:
 			return <></>;
 	}
