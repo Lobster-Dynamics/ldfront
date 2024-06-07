@@ -50,16 +50,16 @@ export function loadDirectoryData(data: any): DirectoryDetails {
 export function loadSelectedTab(): {
 	[key: string]: string;
 } {
-	const selectedTabStorage = localStorage.getItem("selectedTab");
+	const selectedTabStorage = localStorage.getItem("selectedTabs");
 
 	if (selectedTabStorage === null) {
         // Save the selected tab in localStorage
 		localStorage.setItem(
 			"selectedTabs",
 			JSON.stringify({
-				left: "left-1",
-				rightTop: "right-top-1",
-				rightBottom: "right-bottom-1",
+				left: "Documento",
+				rightTop: "Chat",
+				rightBottom: "Word Cloud",
 			}),
 		);
 	}
@@ -81,17 +81,17 @@ export function loadTabsData(
 			"tabs",
 			JSON.stringify({
 				left: [
-					{ id: "left-1", content: "Documento" },
-					{ id: "left-2", content: "Grafo" },
-					{ id: "left-3", content: "Explicación" },
+					{ id: "Documento", content: "Documento" },
+					{ id: "Grafo", content: "Grafo" },
+					{ id: "Explicación", content: "Explicación" },
 				],
 				rightTop: [
-					{ id: "right-top-1", content: "Chat" },
-					{ id: "right-top-2", content: "Resumen" },
+					{ id: "Chat", content: "Chat" },
+					{ id: "Resumen", content: "Resumen" },
 				],
 				rightBottom: [
-					{ id: "right-bottom-1", content: "Word Cloud" },
-					{ id: "right-bottom-2", content: "KeyConcepts" },
+					{ id: "Word Cloud", content: "Word Cloud" },
+					{ id: "KeyConcepts", content: "KeyConcepts" },
 				],
 			}),
 		);
@@ -103,9 +103,9 @@ export function loadTabsData(
 
 	// Remove Explanation tab if there are no explanations
 	if (explanation && explanation.length === 0) {
-		tabs.left = tabs.left.filter(
-			(tab: Tab) => tab.content !== "Explicación",
-		);
+        for (const key in tabs) {
+            tabs[key] = tabs[key].filter((tab: Tab) => tab.content !== "Explicación");
+        }
 	}
 
 	// Add icons to tabs and its components with its data

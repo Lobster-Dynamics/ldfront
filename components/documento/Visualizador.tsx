@@ -15,12 +15,13 @@ import { Document } from '@/types/ModelTypes';
 import { useSearchParams } from 'next/navigation';
 import { ExplicacionFragmento } from '@/types/ModelTypes';
 import { loadSelectedTab, loadTabsData } from '@/utils/loadData';
+import PageLoader from '../PageLoader/PageLoader';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
     const id = searchParams?.get("id") ?? "0";
-    const { data: documentData } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
-    const { data: explicaciones, error } = useSWR<ExplicacionFragmento[]>(`/document/get_explanations/${id}`, fetcher);
+    const { data: documentData, isLoading: isDocumentDataLoading } = useSWR<Document>(`/document/get_document/${id}`, fetcher);
+    const { data: explicaciones, isLoading: isExplanationLoading } = useSWR<ExplicacionFragmento[]>(`/document/get_explanations/${id}`, fetcher);
     const [tabs, setTabs] = useState<{ [key: string]: Tab[] }>({
         left: [],
         rightTop: [],
@@ -199,22 +200,32 @@ const Visualizador = () => {
 
             // Select the first tab in the source container
             if (sourceTabs.length > 0) {
-                setSelectedTabs((prevSelectedTabs) => ({
-                    ...prevSelectedTabs,
-                    [sourceContainerId]: sourceTabs[0].id,
-                }));
+                setSelectedTabs((prevSelectedTabs) => {
+                    // Save the selected tabs in the local storage
+                    localStorage.setItem("selectedTabs", (JSON.stringify({
+                        ...prevSelectedTabs,
+                        [sourceContainerId]: sourceTabs[0].id,
+                    })));
+
+
+                    return {
+                        ...prevSelectedTabs,
+                        [sourceContainerId]: sourceTabs[0].id,
+                }});
             }
 
             // Select the moved tab in the target container
-            setSelectedTabs((prevSelectedTabs) => ({
-                ...prevSelectedTabs,
-                [targetContainerId]: tab.id,
-            }));
-            // Save the selected tabs in the local storage
-            localStorage.setItem("selectedTabs", JSON.stringify((prevSelectedTabs: any) => ({
-                ...prevSelectedTabs,
-                [targetContainerId]: tab.id,
-            })));
+            setSelectedTabs((prevSelectedTabs) => {
+                // Save the selected tabs in the local storage
+                localStorage.setItem("selectedTabs", (JSON.stringify({
+                    ...prevSelectedTabs,
+                    [targetContainerId]: tab.id,
+                })));
+
+                return {
+                    ...prevSelectedTabs,
+                    [targetContainerId]: tab.id,
+            }});
 
             // Save the new tabs in the local storage
             const newTabs = JSON.parse(JSON.stringify({
@@ -237,7 +248,7 @@ const Visualizador = () => {
                 [targetContainerId]: targetTabs,
             };
         });
-    }, [setSelectedTabs]);
+    }, []);
 
     const selectTab = useCallback((containerId: string, tabId: string) => {
         setSelectedTabs((prevSelectedTabs) => {
@@ -252,6 +263,8 @@ const Visualizador = () => {
             }
         });
     }, []);
+
+    if (isDocumentDataLoading || isExplanationLoading) return <PageLoader />;
 
     return (
         <DndProvider backend={HTML5Backend}>
