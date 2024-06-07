@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ExplicacionFragmento } from "@/types/ModelTypes";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
     Tooltip,
     TooltipContent,
@@ -47,6 +47,7 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
                             </TooltipProvider>
                         ))}
                     </ul>
+                    <ScrollBar />
                 </ScrollArea>
                 <div className="absolute inset-y-0 right-0 w-px bg-gray-300"></div>
             </div>
@@ -54,6 +55,7 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
                 <ScrollArea className="h-full">
                     <h2 className="font-bold font-mono text-2xl mt-4 mb-10">{explicacion.titulo}</h2>
                     <p className="text-xl font-mono mb-4">{explicacion.texto}</p>
+                    <ScrollBar />
                 </ScrollArea>
                 
             </div>
