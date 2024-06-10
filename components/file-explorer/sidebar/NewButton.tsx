@@ -2,10 +2,9 @@ import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
 import { Plus } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import useAuth from "@/hooks/selectors/useAuth";
-import { ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
+import { AcceptAlert, ErrorAlert, InputAlert } from "@/lib/alerts/alerts";
 import { mutate } from "swr";
 import { errorHandler } from "@/utils/errorHandler";
 import { Stack } from "@/types/ReduxTypes";
@@ -60,6 +59,14 @@ export default function NewButton({ directoryId }: NewButtonProps) {
 
     const handleFolderCreate = async () => {
         const request = async (name: string) => {
+            if (name.length < 2) {
+                await ErrorAlert(
+                    "Error al crear la carpeta",
+                    "El nombre debe tener al menos 2 caracteres",
+                );
+                return;
+            }
+
             const config = axiosConfig();
             if (!config) return;
 
@@ -72,6 +79,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                     config,
                 );
                 mutate(`/directory/get_directory/${directoryId}`);
+                await AcceptAlert("Carpeta creada correctamente!!");
             } catch (error) {
                 await ErrorAlert(
                     "Error al crear la carpeta",
@@ -125,7 +133,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                     ref={menuRef}
                     className="absolute right-0 top-1/2 z-10 -mr-20  rounded-lg border border-gray-300 bg-white"
                 >
-                    <label className="mb-2 block w-full px-4 py-2 text-start text-2xl hover:bg-blueFrida-500">
+                    <label className="mb-2 block w-full px-4 py-2 text-start text-base font-semibold hover:bg-blueFrida-500">
                         Archivo
                         <input
                             type="file"
@@ -135,7 +143,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                         />
                     </label>
                     <button
-                        className="block px-4 py-2 text-start text-2xl hover:bg-blueFrida-500"
+                        className="block px-4 py-2 text-start text-base font-semibold hover:bg-blueFrida-500"
                         onClick={handleFolderCreate}
                     >
                         {" "}

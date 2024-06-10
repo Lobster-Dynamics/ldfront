@@ -29,16 +29,6 @@ export default function Navbar({ isAuth }: NavbarProps) {
 					</div>
 					{!isAuth && (
 						<div className="hidden md:flex items-center gap-3">
-							<Link
-								href="/settings"
-								className="group transition-none focus:outline-none"
-							>
-								<Settings className="h-8 transition hover:text-purpleFrida-300 group-focus:text-purpleFrida-300" />
-							</Link>
-							<span
-								className="h-8 w-px bg-gray-400"
-								aria-hidden="true"
-							/>
 							{/* <Link
 								href="/profile"
 								className="text-lg transition hover:text-purpleFrida-300 focus:text-purpleFrida-300 focus:outline-none"
