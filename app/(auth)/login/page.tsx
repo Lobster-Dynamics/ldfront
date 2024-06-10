@@ -68,7 +68,7 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="mt-5 w-full text-start">
-                    <button onClick={handleforgot}>
+                    <button onClick={handleforgot} data-test-id="forgotPasswordLink">
                         <p className="justify-start text-base md:text-xl font-bold text-purpleFrida-500 underline">
                             ¿Olvidaste tu contraseña?
                         </p>

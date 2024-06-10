@@ -51,9 +51,6 @@ export default function Create() {
 		if (!validateEmail(user)) {
 			ErrorAlert("Oops...", "El correo no es válido");
 			return;
-		} else if (password !== repeatPassword) {
-			ErrorAlert("Oops...", "Las contraseñas no coinciden");
-			return;
 		} else if (
 			password.length < 6 ||
 			!/[a-z]/.test(password) ||
@@ -66,7 +63,10 @@ export default function Create() {
 				"La contraseña no cumple con el formato requerido",
 			);
 			return;
-		}
+		} else if (password !== repeatPassword) {
+			ErrorAlert("Oops...", "Las contraseñas no coinciden");
+			return;
+        }
 
 		try {
 			const { data } = await axiosClient.post(
@@ -90,7 +90,7 @@ export default function Create() {
 				secure: true,
 			});
 
-			AcceptAlert("Cuenta creada correctamente", "success").then(() =>
+			AcceptAlert("Cuenta creada correctamente").then(() =>
 				dispatch(setAuth(userData)),
 			);
 		} catch (err: any) {
@@ -167,6 +167,7 @@ const Step1 = ({
 				className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 				value={name}
 				onChange={(e) => setName(e.target.value)}
+                data-test-id="signupInputName"
 			/>
 			<input
 				type="text"
@@ -174,10 +175,12 @@ const Step1 = ({
 				className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 				value={lastname}
 				onChange={(e) => setLastname(e.target.value)}
+                data-test-id="signupInputLastname"
 			/>
 			<button
 				className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl text-white md:text-2xl"
 				onClick={handleContinue}
+                data-test-id="signupButtonContinue"
 			>
 				Continuar
 			</button>
@@ -208,15 +211,16 @@ const Step2 = ({
 					className="w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 					value={user}
 					onChange={(e) => setUser(e.target.value)}
+                    data-test-id="signupInputMail"
 				/>
 				<StrongPassword
-					id="passwordInputCreate"
+					id="signupInputPassword"
 					placeholder="Contraseña"
 					value={password}
 					setValue={setPassword}
 				/>
 				<StrongPassword
-					id="repeatPasswordInputCreate"
+					id="signupInputRepeatPassword"
 					placeholder="Confirmar contraseña"
 					value={repeatPassword}
 					setValue={setRepeatPassword}
@@ -225,6 +229,7 @@ const Step2 = ({
 			<button
 				className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl text-white md:text-2xl"
 				onClick={handleCreateAccount}
+                data-test-id="signupButtonCreate"
 			>
 				Registrar
 			</button>

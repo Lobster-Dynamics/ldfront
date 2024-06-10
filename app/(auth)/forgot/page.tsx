@@ -4,6 +4,7 @@ import AuthWrapper from "@/components/AuthWrapper";
 import InitialContainer from "@/components/InitialContainer";
 import axiosClient from "@/config/axiosClient";
 import { AcceptAlert, ErrorAlert } from "@/lib/alerts/alerts";
+import { validateEmail } from "@/utils/functions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,7 +16,7 @@ export default function Forgot() {
 	const handleSendEmail = async (e: any) => {
 		e.preventDefault();
 
-		if (email === "") {
+		if (email === "" || !validateEmail(email)) {
 			ErrorAlert("Oops...", "Tienes que escribir un correo válido");
 			return;
 		}
@@ -25,7 +26,7 @@ export default function Forgot() {
 				email: email,
 			});
 
-			AcceptAlert("Se envió el correo correctamente", "success");
+			AcceptAlert("Se envió el correo correctamente");
 			router.push("/login");
 		} catch (err: any) {
 			ErrorAlert("Oops...", "Ocurrió un error al enviar el correo");
@@ -45,10 +46,12 @@ export default function Forgot() {
 					className="mt-5 w-full border-b border-slate-300 text-xl text-black outline-none focus:border-slate-600"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+                    data-test-id="forgotPasswordInputMail"
 				/>
 				<button
 					className="mt-5 rounded-lg bg-purpleFrida-500 px-8 py-2 text-xl md:text-2xl text-white"
 					onClick={handleSendEmail}
+                    data-test-id="forgotPasswordButtonSend"
 				>
 					Restablecer
 				</button>
