@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { axiosConfig } from "@/config/axiosConfig";
 import axiosClient from "@/config/axiosClient";
 import { mutate } from "swr";
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FolderOpen } from "lucide-react";
 import { UserRoundPlus } from "lucide-react";
 import { TextCursorInput } from "lucide-react";
@@ -11,6 +11,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ReactDOM from "react-dom";
 import { handleFileShare } from "@/services/File-Explorer/SubMenu/handles";
+import { AcceptAlert } from "@/lib/alerts/alerts";
 
 
 interface SubMenuProps {
@@ -76,11 +77,7 @@ export default function SubMenu({
                 allowOutsideClick: () => !Swal.isLoading(),
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire({
-                        title: "¡Eliminado!",
-                        text: "Tu carpeta ha sido eliminado con todos sus elementos.",
-                        icon: "success",
-                    });
+                    AcceptAlert("¡Eliminado!", "Tu carpeta ha sido eliminado junto con todos sus elementos.")
                     mutate(`/directory/get_directory/${directoryId}`);
                 }
             });

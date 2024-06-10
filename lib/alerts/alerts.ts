@@ -19,10 +19,11 @@ export const AceptAlert = async (message:string,type: SwalIcons = "success") => 
       });
 }
 
-export const AcceptAlert = async (message:string,type: SwalIcons = "success") => {
+export const AcceptAlert = async (message:string, text: string = "", type: SwalIcons = "success") => {
     await Swal.fire({
         icon: type,
         title: message,
+        text: text,
     });
 }
 

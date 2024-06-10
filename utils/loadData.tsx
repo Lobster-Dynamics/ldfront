@@ -1,9 +1,18 @@
 import { Tab } from "@/types/AppTypes";
 import { DirectoryDetails, DirectoryItemDetails, UserAuth, Document, ExplicacionFragmento } from "@/types/ModelTypes";
 import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component, FileText } from "lucide-react";
-import { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion } from "@/components/documento";
 import { UUID } from "crypto";
-import FileViewer from "@/components/documento/FileViewer";
+import dynamic from "next/dynamic";
+
+// Imports for dynamic imports (Only when client-side rendering)
+const Paper = dynamic(() => import('@/components/documento').then(mod => mod.Paper), { ssr: false});
+const GraphViz = dynamic(() => import('@/components/documento').then(mod => mod.GraphViz), { ssr: false});
+const Summary = dynamic(() => import('@/components/documento').then(mod => mod.Summary), { ssr: false});
+const WordCloud = dynamic(() => import('@/components/documento').then(mod => mod.WordCloud), { ssr: false});
+const Keywords = dynamic(() => import('@/components/documento').then(mod => mod.Keywords), { ssr: false});
+const Chat = dynamic(() => import('@/components/documento').then(mod => mod.Chat), { ssr: false});
+const Explicacion = dynamic(() => import('@/components/documento').then(mod => mod.Explicacion), { ssr: false });
+const FileViewer = dynamic(() => import('@/components/documento').then(mod => mod.FileViewer), { ssr: false });
 
 function _parseJWT(token: string) {
 	return JSON.parse(atob(token.split(".")[1]));
@@ -105,10 +114,27 @@ export function loadTabsData(
 
 	// Remove Explanation tab if there are no explanations
 	if (explanation && explanation.length === 0) {
-        for (const key in tabs) {
+        for (const key in tabs)
             tabs[key] = tabs[key].filter((tab: Tab) => tab.content !== "Explicación");
-        }
 	}
+    // Remove Visualizador tab if the document is not a pdf
+    if (data && data.document_url.split('/')[5].split('?')[0].split('.').pop() !== "pdf") {
+        for (const key in tabs)
+            tabs[key] = tabs[key].filter((tab: Tab) => tab.content !== "Visualizador");
+    }
+
+    // If tab "Explicación" was removed, and now there are explanations, add it back
+    if (explanation && explanation.length > 0) {
+        for (const key in tabs)
+            if (!tabs[key].find((tab: Tab) => tab.content === "Explicación"))
+                tabs[key].push({ id: "Explicación", content: "Explicación" } as Tab);
+    }
+    // // If tab "Visualizador" was removed, and now there is support for it (File format), add it back
+    if (data && data.document_url.split('/')[5].split('?')[0].split('.').pop() === "pdf") {
+        for (const key in tabs)
+            if (!tabs[key].find((tab: Tab) => tab.content === "Visualizador"))
+                tabs[key].push({ id: "Visualizador", content: "Visualizador" } as Tab);
+    }
 
 	// Add icons to tabs and its components with its data
 	for (const key in tabs) {

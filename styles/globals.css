@@ -110,7 +110,7 @@
         border-radius: 100vw;
     }
 
-    .react-pdf__Page__textContent span {
+    /* .react-pdf__Page__textContent span {
         opacity: 0.1;
     }
     
@@ -120,5 +120,5 @@
     
     .react-pdf__Document {
         line-height: initial;
-    }
+    } */
 }

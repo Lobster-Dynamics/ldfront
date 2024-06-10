@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Anek_Odia, Inter } from "next/font/google";
 import "@/styles/globals.css";
 import ReduxProvider from "@/redux/ReduxProvider";
+import PrelineScript from "@/components/ui/PrelineScript";
 
 // const anek_odia = Anek_Odia({ subsets: ["latin"] });
 const anek_odia = Inter({ subsets: ["latin"] });
@@ -30,6 +31,7 @@ export default function RootLayout({
 					</main>
 				</body>
 			</ReduxProvider>
+            <PrelineScript />
 		</html>
 	);
 }
