@@ -22,6 +22,7 @@ export default function FilesContainer({
 }: FilesContainerProps) {
 	return (
 		<div
+            data-test-id="files-container"
 			className={cn(
 				viewMode === "grid" &&
 					directory &&

@@ -9,6 +9,7 @@ import { mutate } from "swr";
 import { errorHandler } from "@/utils/errorHandler";
 import { Stack } from "@/types/ReduxTypes";
 import { addElement } from "@/redux/slices/stackSlice";
+import Swal from "sweetalert2";
 
 interface NewButtonProps {
     directoryId: string;
@@ -60,10 +61,15 @@ export default function NewButton({ directoryId }: NewButtonProps) {
     const handleFolderCreate = async () => {
         const request = async (name: string) => {
             if (name.length < 2) {
-                await ErrorAlert(
-                    "Error al crear la carpeta",
-                    "El nombre debe tener al menos 2 caracteres",
-                );
+                Swal.showValidationMessage(`
+El nombre debe tener al menos 2 caracteres
+              `);
+                return;
+            }
+            if (name.length > 35) {
+                Swal.showValidationMessage(`
+El nombre debe tener al menos 2 caracteres
+              `);
                 return;
             }
 
@@ -119,6 +125,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
         <div className="h-full">
             <button
                 onClick={() => setMenu(true)}
+                data-test-id="newButton"
                 className="flex items-center self-center h-full"
             >
                 <label className="flex cursor-pointer items-center self-center rounded-lg shadow-md shadow-gray-400 bg-[#F3F4F6] transition p-2 hover:bg-purpleFrida-700 hover:bg-opacity-10">
@@ -143,6 +150,7 @@ export default function NewButton({ directoryId }: NewButtonProps) {
                         />
                     </label>
                     <button
+                        data-test-id="createFolder"
                         className="block px-4 py-2 text-start text-base font-semibold hover:bg-blueFrida-500"
                         onClick={handleFolderCreate}
                     >

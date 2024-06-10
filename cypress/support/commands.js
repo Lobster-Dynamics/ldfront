@@ -35,3 +35,12 @@
 //     }
 //   }
 // }
+//
+//
+Cypress.Commands.add('login',(email, password) => {
+  cy.visit('http://localhost:3000/file-explorer', { failOnStatusCode: false });
+  cy.get('input[data-test-id="usernameInputLogin"]').click().type(email);
+  cy.get('input[data-test-id="passwordInputLogin"]').click().type(password);
+  cy.get('button[data-test-id="loginButton"]').click();
+});
+

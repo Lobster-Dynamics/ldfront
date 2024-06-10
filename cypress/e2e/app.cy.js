@@ -1,4 +1,4 @@
-describe('Navigation', () => {
+describe('Login', () => {
     it('should navigate to the about page', () => {
       // login
       cy.visit('http://localhost:3000/file-explorer', { failOnStatusCode: false })
