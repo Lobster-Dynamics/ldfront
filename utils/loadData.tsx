@@ -1,9 +1,18 @@
 import { Tab } from "@/types/AppTypes";
 import { DirectoryDetails, DirectoryItemDetails, UserAuth, Document, ExplicacionFragmento } from "@/types/ModelTypes";
 import { ScrollText, MessageSquare, List, Cloud, BookOpen, Workflow, TextSearch, LucideIcon, Component, FileText } from "lucide-react";
-import { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion } from "@/components/documento";
 import { UUID } from "crypto";
-import FileViewer from "@/components/documento/FileViewer";
+import dynamic from "next/dynamic";
+
+// Imports for dynamic imports (Only when client-side rendering)
+const Paper = dynamic(() => import('@/components/documento').then(mod => mod.Paper), { ssr: false});
+const GraphViz = dynamic(() => import('@/components/documento').then(mod => mod.GraphViz), { ssr: false});
+const Summary = dynamic(() => import('@/components/documento').then(mod => mod.Summary), { ssr: false});
+const WordCloud = dynamic(() => import('@/components/documento').then(mod => mod.WordCloud), { ssr: false});
+const Keywords = dynamic(() => import('@/components/documento').then(mod => mod.Keywords), { ssr: false});
+const Chat = dynamic(() => import('@/components/documento').then(mod => mod.Chat), { ssr: false});
+const Explicacion = dynamic(() => import('@/components/documento').then(mod => mod.Explicacion), { ssr: false });
+const FileViewer = dynamic(() => import('@/components/documento').then(mod => mod.FileViewer), { ssr: false });
 
 function _parseJWT(token: string) {
 	return JSON.parse(atob(token.split(".")[1]));

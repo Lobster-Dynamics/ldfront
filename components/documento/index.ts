@@ -5,5 +5,6 @@ import WordCloud from "./Wordcloud";
 import Keywords from "./Keywords";
 import Chat from "./Chat";
 import Explicacion from "./Explicacion";
+import FileViewer from "./FileViewer";
 
-export { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion };
+export { Paper, GraphViz, Summary, WordCloud, Keywords, Chat, Explicacion, FileViewer };
