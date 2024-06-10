@@ -85,7 +85,7 @@ export default function Login() {
                 </button>
                 <div className="mt-4 flex w-full flex-row text-start">
                     <p className="text-base md:text-xl">¿No tienes cuenta?</p>
-                    <Link className="ml-2 text-base md:text-xl font-bold text-purpleFrida-500 underline hover:cursor-pointer" href="/create-account">
+                    <Link className="ml-2 text-base md:text-xl font-bold text-purpleFrida-500 underline hover:cursor-pointer" href="/create-account" data-test-id="signupLink">
                         Registrarse
                     </Link>
                 </div>

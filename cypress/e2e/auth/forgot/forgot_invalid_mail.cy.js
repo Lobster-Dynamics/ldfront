@@ -1,14 +1,11 @@
 describe("Forgot password invalid mail", () => {
 	beforeEach(() => {
-		cy.visit("http://localhost:3000/forgot", {
-            failOnStatusCode: false,
-        });
+		cy.visit("http://localhost:3000/login");
+		cy.get('button[data-test-id="forgotPasswordLink"]').click();
 	});
 
 	it("navigate to forgot password page", () => {
-		cy.visit("http://localhost:3000/login", {
-			failOnStatusCode: false,
-		});
+		cy.visit("http://localhost:3000/login");
 		cy.get('button[data-test-id="forgotPasswordLink"]').click();
 		cy.url().should("include", "/forgot");
 	});
@@ -26,7 +23,7 @@ describe("Forgot password invalid mail", () => {
 		cy.get('button[data-test-id="forgotPasswordButtonSend"]').click();
 	});
 
-	it("assert error message", () => {
+	it("error message is displayed", () => {
 		cy.get('input[data-test-id="forgotPasswordInputMail"]')
 			.click()
 			.type("hola@123");
