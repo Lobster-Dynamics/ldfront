@@ -55,6 +55,13 @@ export const handleFileShare = async (
                     },
                     config,
                 );
+                if (response) {
+
+                    AcceptAlert("Se ha compartido la carpeta !");
+
+
+                }
+
 
 
             } catch (error: any) {
