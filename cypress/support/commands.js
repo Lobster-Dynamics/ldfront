@@ -88,4 +88,27 @@ Cypress.Commands.add('deleteFolder', (folderName) => {
     cy.contains('button', 'OK').click();
 });
 
+Cypress.Commands.add('uploadFile', (filePath) => {
+    cy.intercept('POST', '/document/upload_document').as('uploadFile');
+    cy.contains('button', 'Nuevo').click();
+    cy.wait(500);
+    cy.get('label')
+        .contains('Archivo')
+        .within(() => {
+            cy.get('input[type="file"]').selectFile(filePath, { force: true });
+        });
+    cy.wait('@uploadFile').its('response.statusCode').should('eq', 200);
+    cy.get('.absolute.bottom-0.right-0').should('be.visible');
+    cy.get('[data-test-id="upload-item"]').contains('prueba.pdf').should('be.visible');
+    cy.get('[data-test-id="upload-item"]').within(() => {
+        cy.get('svg.animate-spin').should('be.visible');
+    });
+    cy.wait(1000);
+    cy.get('[data-test-id="upload-item"]').within(() => {
+        cy.get('svg.animate-spin', { timeout: 30000 }).should('not.exist');
+        cy.get('[data-test-id="check"]').should('be.visible');
+    });
+    cy.wait(1000);
+    cy.get('div[data-test-id="files-container"]').contains('p', 'prueba.pdf').should('be.visible');
+});
 
