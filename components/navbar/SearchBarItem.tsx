@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { UUID } from "crypto";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -47,7 +46,7 @@ export default function SearchBarItem({
 	}, [id, router, extension]);
 
 	return (
-		<div className="border-t border-black border-opacity-30">
+		<div className="border-t border-black border-opacity-30" data-test-id="searchBarItem">
 			<div
 				className="group flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
 				tabIndex={0}

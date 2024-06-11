@@ -61,7 +61,7 @@ export default function WordCloud({ documentId , width, height }: WordCloudProps
   const fixedValueGenerator = () => Math.random();
 
   return (
-    <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto">
+    <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto" data-test-id="wordcloudComponent">
       <Wordcloud
         words={words}
         width={width}

@@ -75,8 +75,7 @@ export default function GraphViz({
     }
 
     return (
-        <div className="custom-text-selection relative p-10 h-full w-full">
-
+        <div className="custom-text-selection relative p-10 h-full w-full" data-test-id="graphComponent">
             <GraphCanvas
                 nodes={keyConceptNodes}
                 edges={graphEdges}

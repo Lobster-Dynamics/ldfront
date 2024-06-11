@@ -109,7 +109,7 @@ export default function Chat({ id }: ChatProps) {
     }
 
     return (
-        <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-between h-full" data-test-id="chatComponent">
             <div className="flex flex-col overflow-y-auto">
                 {messages.Chat.map((message, index) => (
                     message.role === "chat" ? (

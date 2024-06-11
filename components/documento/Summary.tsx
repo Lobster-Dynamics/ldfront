@@ -8,7 +8,7 @@ interface SummaryProps {
 
 export default function Summary({ summary }: SummaryProps) {
   return (
-    <div className="p-10 overflow-y-auto w-full">
+    <div className="p-10 overflow-y-auto w-full" data-test-id="summaryComponent">
       {summary.map((section, index) => (
         <div key={index} className="mb-4">
           <h2 className="text-2xl font-bold font-mono">{section.title}</h2>

@@ -109,7 +109,7 @@ export default function FileViewer({ documentUrl } : FileViewerProps) {
 	};
 
 	return (
-		<div onContextMenu={handleRightClick} className="relative w-full">
+		<div onContextMenu={handleRightClick} className="relative w-full" data-test-id="fileviewerComponent">
 			<div>
 				<div className="sticky top-0 z-20 flex h-6 w-full justify-around gap-2 bg-[#f8f8f9]">
                 <div className="flex">

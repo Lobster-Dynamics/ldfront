@@ -24,17 +24,17 @@ export default function NavbarProfileDropMenu() {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
+			<DropdownMenuTrigger asChild id="navbarDropdownmenuTrigger">
 				<UserRound className="h-8 transition hover:text-purpleFrida-300" />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="mr-4 w-40">
 				<DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={() => window.location.assign("/profile")}>
+				<DropdownMenuItem onClick={() => window.location.assign("/profile")} id="navbarProfileLink">
                     <UserRound className="mr-2 h-4" />
                     <span>Perfil</span>
 				</DropdownMenuItem>
-				<DropdownMenuItem onClick={handleLogout}>
+				<DropdownMenuItem onClick={handleLogout} id="navbarLogoutButton">
 					<LogOut className="mr-2 h-4 text-redFrida-400" />
 					<span className="text-redFrida-400">Cerrar sesión</span>
 				</DropdownMenuItem>

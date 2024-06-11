@@ -47,7 +47,7 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
     };
 
     return (
-        <div ref={textAreaRef} className="custom-text-selection relative p-10 overflow-y-auto w-full" onContextMenu={handleRightClick}>
+        <div ref={textAreaRef} className="custom-text-selection relative p-10 overflow-y-auto w-full" onContextMenu={handleRightClick} data-test-id="paperComponent">
             <ContextMenu visible={menuVisible} x={menuPosition.x} y={menuPosition.y} onClose={handleCloseMenu} selectedText={selectedText} />
             <div className="absolute top-0 right-0 mr-4 flex flex-col items-center mb-3">
                 <label htmlFor="Imagenes" className="text-gray-500 mb-2">Imágenes</label>
