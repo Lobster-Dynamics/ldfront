@@ -33,6 +33,12 @@ describe("Create Folder", () => {
 
         cy.wait(1000)
         cy.get('div[data-test-id="files-container"]').contains('p','Lobster Foldedwr').should('be.visible');
+
+        // Borrar directorio una vez creado
+        const folderName = "Lobster Foldedwr";
+        cy.deleteFolder(folderName);
+
+        
     })
 
     it('Cancels a create folder',  () => {

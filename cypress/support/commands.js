@@ -59,3 +59,33 @@ Cypress.Commands.add('createFolder', (folderName) => {
   cy.get('div[data-test-id="files-container"]').contains('p', folderName).should('be.visible');
 });
 
+Cypress.Commands.add('openSubMenu', (folderName) => {
+    	cy.get('div[data-test-id="folder"]')
+			.contains("p", folderName)
+			.then(($folder) => {
+				cy.wrap($folder)
+					.parents('div[data-test-id="folder"]')
+					.find('button[data-test-id="folder-context-menu-botton"]')
+					.click();
+			});
+
+    cy.get('div[data-test-id="context-menu"]').should('be.visible');
+});
+
+Cypress.Commands.add('deleteFolder', (folderName) => {
+    cy.openSubMenu(folderName);
+
+    cy.intercept("GET", "/directory/delete_directory/**").as("deleteFolder");
+
+    cy.get('button[data-test-id="delete"]')
+        .should("be.visible")
+        .click();
+    
+    cy.contains('button', '¡Confirmar!').click();
+
+    cy.wait("@deleteFolder").its("response.statusCode").should("eq", 200);
+
+    cy.contains('button', 'OK').click();
+});
+
+

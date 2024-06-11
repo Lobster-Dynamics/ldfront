@@ -190,7 +190,7 @@ export default function FileExplorer() {
 				/>
             </div>
 			<ModalAddFolder />
-			<UploadContainer />
+			<UploadContainer/>
 		</div>
 	);
 }

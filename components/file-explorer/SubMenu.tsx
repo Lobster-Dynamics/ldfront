@@ -13,7 +13,6 @@ import ReactDOM from "react-dom";
 import { handleFileShare } from "@/services/File-Explorer/SubMenu/handles";
 import { AcceptAlert } from "@/lib/alerts/alerts";
 
-
 interface SubMenuProps {
     show: boolean;
     x: number;
@@ -39,7 +38,7 @@ export default function SubMenu({
     setContextMenu,
     extension,
     directoryId,
-    isShared
+    isShared,
 }: SubMenuProps) {
     const router = useRouter();
     const menuRef = useRef<HTMLDivElement>(null);
@@ -58,6 +57,7 @@ export default function SubMenu({
                 confirmButtonColor: "#7B20C3",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "¡Confirmar!",
+                cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,
                 preConfirm: async () => {
                     try {
@@ -77,11 +77,13 @@ export default function SubMenu({
                 allowOutsideClick: () => !Swal.isLoading(),
             }).then((result) => {
                 if (result.isConfirmed) {
-                    AcceptAlert("¡Eliminado!", "Tu carpeta ha sido eliminado junto con todos sus elementos.")
+                    AcceptAlert(
+                        "¡Eliminado!",
+                        "Tu carpeta ha sido eliminado junto con todos sus elementos.",
+                    );
                     mutate(`/directory/get_directory/${directoryId}`);
                 }
             });
-
         } else {
             const config = axiosConfig(true);
             if (!config) return;
@@ -125,9 +127,6 @@ export default function SubMenu({
         }
     };
 
-
-
-
     const handleFileRename = async () => {
         if (extension === null) {
             const config = axiosConfig(true);
@@ -141,9 +140,23 @@ export default function SubMenu({
                 confirmButtonColor: "#7B20C3",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Renombrar",
+                cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,
                 preConfirm: async (new_name) => {
                     try {
+                        if (new_name.length < 2) {
+                            Swal.showValidationMessage(`
+El nombre debe tener al menos 2 caracteres
+              `);
+                            return;
+                        }
+                        if (new_name.length > 35) {
+                            Swal.showValidationMessage(`
+El nombre debe tener al menos 2 caracteres
+              `);
+                            return;
+                        }
+
                         await axiosClient.get(
                             `/document/rename_document/${uuid}/${new_name}/FOLDER`,
                             config,
@@ -224,12 +237,17 @@ export default function SubMenu({
         document.addEventListener("contextmenu", handleClickOutside, true);
         return () => {
             document.removeEventListener("click", handleClickOutside, true);
-            document.removeEventListener("contextmenu", handleClickOutside, true);
+            document.removeEventListener(
+                "contextmenu",
+                handleClickOutside,
+                true,
+            );
         };
     }, [onClose]);
 
     return ReactDOM.createPortal(
         <div
+            data-test-id="context-menu"
             ref={menuRef}
             className={cn(
                 "items-left border-gray absolute z-20 w-40 justify-start rounded-sm border bg-white  opacity-0 transition",
@@ -247,7 +265,7 @@ export default function SubMenu({
                         onClose();
                     }
                 }}
-                className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+                className="flex w-full items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
             >
                 <FolderOpen />
                 <p>Abrir</p>
@@ -255,14 +273,19 @@ export default function SubMenu({
             {!isShared && (
                 <>
                     <button
-                        className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+                        data-test-id="rename"
+                        className="flex w-full items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
                         onClick={handleFileRename}
                     >
                         <TextCursorInput />
                         <p>Renombrar</p>
                     </button>
-                    <button className="w-full flex items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
-                        onClick={async () => await handleFileShare(extension, uuid, onClose)}
+                    <button
+                        data-test-id="share"
+                        className="flex w-full items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+                        onClick={async () =>
+                            await handleFileShare(extension, uuid, onClose)
+                        }
                     >
                         <UserRoundPlus />
                         <p>Compartir</p>
@@ -270,7 +293,8 @@ export default function SubMenu({
 
                     <hr />
                     <button
-                        className="w-full flex items-center text-red-500 justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+                        data-test-id="delete"
+                        className="flex w-full items-center justify-start gap-2 px-2 py-2 text-red-500 hover:bg-purple-200"
                         onClick={handleFileDelete}
                     >
                         <Trash2 />
