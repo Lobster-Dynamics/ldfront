@@ -123,6 +123,7 @@ export default function Folder({
 	if (viewMode === "grid") {
 		return (
 			<div
+                data-test-id="folder"
 				className={cn(
 					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
 					{ "opacity-30": isDragging },
@@ -155,6 +156,7 @@ export default function Folder({
 						{name}
 					</p>
 					<button
+                        data-test-id="folder-context-menu-botton"
 						onClick={() =>
 							openContextMenuButton(
 								buttonRef,

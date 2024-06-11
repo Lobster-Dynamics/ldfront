@@ -44,3 +44,18 @@ Cypress.Commands.add('login',(email, password) => {
   cy.get('button[data-test-id="loginButton"]').click();
 });
 
+Cypress.Commands.add('createFolder', (folderName) => {
+  cy.intercept('POST', '/directory/create_directory').as('createFolder');
+  cy.contains('button', 'Nuevo').click();
+  cy.wait(500); 
+  cy.get('button[data-test-id="createFolder"]').click();
+  cy.get('input[id="swal2-input"]').should('be.visible').type(`${folderName}{enter}`); 
+  cy.wait('@createFolder').its('response.statusCode').should('eq', 200);
+  cy.get('h2[class="swal2-title"]').last().should('have.text','Carpeta creada correctamente!!');
+  cy.contains('button', 'OK').click();
+
+  // Verify that the folder exists
+  cy.wait(1000);
+  cy.get('div[data-test-id="files-container"]').contains('p', folderName).should('be.visible');
+});
+
