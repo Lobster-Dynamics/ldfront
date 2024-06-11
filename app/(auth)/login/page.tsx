@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { errorHandler } from "@/utils/errorHandler";
 import { loadUserAuthData } from "@/utils/loadData";
 import Link from "next/link";
+import { ErrorAlert } from "@/lib/alerts/alerts";
 
 export default function Login() {
 
@@ -43,8 +44,8 @@ export default function Login() {
 
 			router.push("/file-explorer")
 		} catch (err: any) {
-            errorHandler(err)
-				}
+            ErrorAlert("Oops...", "Contraseña o usuario incorrectos");
+		}
 	}
 
 

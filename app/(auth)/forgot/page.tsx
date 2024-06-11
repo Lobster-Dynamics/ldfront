@@ -55,7 +55,7 @@ export default function Forgot() {
 				>
 					Restablecer
 				</button>
-                <Link href="/login" className="mt-2 -mb-5 text-blueFrida-700 font-semibold p-2">Cancelar</Link>
+                <Link href="/login" className="mt-2 -mb-5 text-blueFrida-700 font-semibold p-2" data-test-id="loginLink">Cancelar</Link>
 			</InitialContainer>
 		</AuthWrapper>
 	);
