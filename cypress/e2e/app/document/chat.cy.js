@@ -1,4 +1,4 @@
-describe("Document View", () => {
+describe("Chat", () => {
 	beforeEach(() => {
 		cy.login("a01284917@tec.mx", "123456");
 		cy.wait(500);

@@ -86,6 +86,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                     <li
                         className="cursor-pointer px-4 py-2 hover:bg-blueFrida-300"
                         onClick={copyToClipboard}
+                        data-test-id="copyToClipboardButton"
                     >
                         Copiar
                     </li>
@@ -94,6 +95,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                     <li
                         className="cursor-pointer px-4 py-2 hover:bg-blueFrida-300"
                         onClick={() => setVerSignificado(!verSignificado)}
+                        data-test-id="viewDefinitionButton"
                     >
                         Definiciones
                     </li>)
@@ -102,6 +104,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                     <li 
                         className="cursor-pointer px-4 py-2 hover:bg-blueFrida-300"
                         onClick={handleModalExplicacion}
+                        data-test-id="viewExplanationButton"
                     >
                         Explicar
                     </li>
@@ -111,10 +114,13 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                 <ul
                     className="absolute top-16 left-28 rounded border bg-white "
                 >
-                    <li className="cursor-pointer hover:bg-blueFrida-300 px-4 py-2" onClick={() => {
-                        dispatch(toggleModalDefinicion())
-                        dispatch(setModalDefinicionDetails({ word: selectedText, language: "es" }))
-                    }}> Español </li>
+                    <li 
+                        className="cursor-pointer hover:bg-blueFrida-300 px-4 py-2"     
+                        onClick={() => {
+                            dispatch(toggleModalDefinicion())
+                            dispatch(setModalDefinicionDetails({ word: selectedText, language: "es" }))
+                        }}
+                    > Español </li>
                     <li className="cursor-pointer hover:bg-blueFrida-300 px-4 py-2" onClick={() => {
                         
                         dispatch(toggleModalDefinicion())
