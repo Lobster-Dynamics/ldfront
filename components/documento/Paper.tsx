@@ -55,6 +55,7 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
                     checked={images}
                     onChange={toggleImages}
                     className={`switch ${images ? `bg-purple-600` : "bg-gray-200"} relative inline-flex h-6 w-11 items-center rounded-full`}
+                    data-test-id="paperDisableImages"
                 >
                     <span className={`${images ? "translate-x-6" : "translate-x-1"
                         } inline-block h-4 w-4 transform rounded-full bg-white transition`}

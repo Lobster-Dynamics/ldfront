@@ -113,11 +113,11 @@ export default function FileViewer({ documentUrl } : FileViewerProps) {
 			<div>
 				<div className="sticky top-0 z-20 flex h-6 w-full justify-around gap-2 bg-[#f8f8f9]">
                 <div className="flex">
-						<button onClick={prevPage} disabled={currentPage === 1}>
+						<button onClick={prevPage} disabled={currentPage === 1} data-test-id="fileViewerPreviousPage">
                             <ChevronLeft size={18} className={cn({ "opacity-30": currentPage === 1 })} />
                         </button>
                         <p className="mx-2">{currentPage} / {numPages}</p>
-						<button onClick={nextPage} disabled={currentPage === numPages}>
+						<button onClick={nextPage} disabled={currentPage === numPages} data-test-id="fileViewerNextPage">
                             <ChevronRight size={18} className={cn({ "opacity-30": currentPage === numPages })} />
                         </button>
 					</div>
@@ -132,6 +132,7 @@ export default function FileViewer({ documentUrl } : FileViewerProps) {
 								})
 							}
 							disabled={scale >= 1.5}
+                            data-test-id="fileViewerZoomIn"
 						>
 							<ZoomIn
 								size={24}
@@ -148,6 +149,7 @@ export default function FileViewer({ documentUrl } : FileViewerProps) {
 								})
 							}
 							disabled={scale <= 1}
+                            data-test-id="fileViewerZoomOut"
 						>
 							<ZoomOut
 								size={24}

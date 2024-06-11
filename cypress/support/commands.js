@@ -139,4 +139,34 @@ Cypress.Commands.add('deleteFile', (fileName) => {
     cy.contains('button', 'OK').click();
 });
 
+Cypress.Commands.add('selectText', (element, text) => {
+    cy.get(element).then($el => {
+        const document = $el[0].ownerDocument;
+        const win = document.defaultView;
+        const range = document.createRange();
+        const selection = win.getSelection();
 
+        // Find the text node and offset for the specified text
+        let startNode, startOffset, endNode, endOffset;
+        $el.contents().each((index, node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const nodeText = node.textContent;
+                const startIndex = nodeText.indexOf(text);
+                if (startIndex !== -1) {
+                    startNode = node;
+                    startOffset = startIndex;
+                    endNode = node;
+                    endOffset = startIndex + text.length;
+                    return false; // Stop iteration
+                }
+            }
+        });
+
+        if (startNode && endNode) {
+            range.setStart(startNode, startOffset);
+            range.setEnd(endNode, endOffset);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    });
+});
