@@ -97,6 +97,7 @@ export default function SubMenu({
                 confirmButtonColor: "#7B20C3",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "¡Confirmar!",
+                cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,
                 preConfirm: async () => {
                     try {
@@ -193,6 +194,7 @@ El nombre debe tener al menos 2 caracteres
                 confirmButtonColor: "#7B20C3",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Renombrar",
+                cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,
                 preConfirm: async (new_name) => {
                     try {

@@ -49,4 +49,13 @@ describe("Create Document", () => {
 
     });
 
+    it("Deletes file", () => {
+		cy.deleteFile("prueba.pdf");
+        cy.wait(1000);
+        cy.get('div[data-test-id="files-container"]').contains('p', 'prueba.pdf').should('not.exist');
+	});
+
+
+
+
 });

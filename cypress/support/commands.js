@@ -72,6 +72,19 @@ Cypress.Commands.add('openSubMenu', (folderName) => {
     cy.get('div[data-test-id="context-menu"]').should('be.visible');
 });
 
+Cypress.Commands.add('openSubMenuFile', (fileName) => {
+    	cy.get('div[data-test-id="file"]')
+			.contains("p", fileName)
+			.then(($file) => {
+				cy.wrap($file)
+					.parents('div[data-test-id="file"]')
+					.find('button[data-test-id="context-button-file"]')
+					.click();
+			});
+
+    cy.get('div[data-test-id="context-menu"]').should('be.visible');
+});
+
 Cypress.Commands.add('deleteFolder', (folderName) => {
     cy.openSubMenu(folderName);
 
@@ -111,4 +124,19 @@ Cypress.Commands.add('uploadFile', (filePath) => {
     cy.wait(1000);
     cy.get('div[data-test-id="files-container"]').contains('p', 'prueba.pdf').should('be.visible');
 });
+
+Cypress.Commands.add('deleteFile', (fileName) => {
+    cy.openSubMenuFile(fileName);
+
+    cy.intercept("GET", "/document/delete_document/**").as("deleteFile");
+
+    cy.get('button[data-test-id="delete"]').should("be.visible").click();
+
+    cy.contains("button", "¡Confirmar!").click();
+
+    cy.wait("@deleteFile").its("response.statusCode").should("eq", 200);
+
+    cy.contains('button', 'OK').click();
+});
+
 

@@ -117,6 +117,7 @@ export default function File({
 	if (viewMode === "grid") {
 		return (
 			<div
+                data-test-id="file"
 				className={cn(
 					"group relative flex flex-col rounded-lg p-2 pt-4 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-700 hover:bg-opacity-10 focus:bg-purpleFrida-700 focus:bg-opacity-10",
 					{ "opacity-30": isDragging },
@@ -144,6 +145,7 @@ export default function File({
 						{name}
 					</p>
 					<button
+                        data-test-id="context-button-file"
 						onClick={() =>
 							openContextMenuButton(
 								buttonRef,
