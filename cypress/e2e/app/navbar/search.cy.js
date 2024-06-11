@@ -22,5 +22,9 @@ describe("Search", () => {
 
 		// Check if the search results are displayed
 		cy.get('div[data-test-id="searchBarItem"').should("have.length", 2);
+
+        // Delete created folders
+        cy.deleteFolder("Test Folder for Search 1");
+        cy.deleteFolder("Test Folder for Search 2");
 	});
 });

@@ -41,8 +41,6 @@ export default function Chat({ id }: ChatProps) {
     }, [id]);
 
     
-
-
     const newMessage: React.FormEventHandler = async (e) => {
         e.preventDefault();
         const userMessage = newInputValue;
@@ -113,7 +111,7 @@ export default function Chat({ id }: ChatProps) {
             <div className="flex flex-col overflow-y-auto">
                 {messages.Chat.map((message, index) => (
                     message.role === "chat" ? (
-                        <div className="flex flex-row w-full justify-start mt-2" key={index}>
+                        <div className="flex flex-row w-full justify-start mt-2" key={index} data-test-id="chatMessageItem" >
                             <div className="bg-blueFrida-300 text-lg font-mono rounded-lg mx-4 p-3">
                                 {message.message}
                                 {" "}
@@ -127,7 +125,7 @@ export default function Chat({ id }: ChatProps) {
                             
                         </div>
                     ) : (
-                        <div className="flex flex-row w-full justify-end mt-2" key={index}>
+                        <div className="flex flex-row w-full justify-end mt-2" key={index} data-test-id="chatMessageItem" >
                             <div className="bg-purpleFrida-700 text-lg font-mono text-white p-3 rounded-lg mx-4">
                                 {message.message}
                             </div>
@@ -145,6 +143,7 @@ export default function Chat({ id }: ChatProps) {
                         className="w-full rounded-lg border-2 border-gray-100 py-2 pl-5 pr-10 transition"
                         value={newInputValue}
                         onChange={e => setNewInputValue(e.currentTarget.value)}
+                        data-test-id="chatInput"
                     />
                     <button type="submit"><Send className="absolute bottom-0 right-3 top-0 m-auto h-8" /></button>
                 </form>
