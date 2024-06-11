@@ -5,6 +5,7 @@ describe("Document View", () => {
 		cy.visit(
 			"http://localhost:3000/documento?id=98c4ea5c-7145-435c-ae57-a171ed98f9af",
 		);
+        cy.wait(500);
 	});
 
 	it("open file", () => {
