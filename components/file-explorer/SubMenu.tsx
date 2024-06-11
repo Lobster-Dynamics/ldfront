@@ -268,6 +268,7 @@ El nombre debe tener al menos 2 caracteres
                     }
                 }}
                 className="flex w-full items-center justify-start gap-2 px-2 py-2 hover:bg-purple-200"
+                data-test-id="open"
             >
                 <FolderOpen />
                 <p>Abrir</p>
