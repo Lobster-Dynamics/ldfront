@@ -41,7 +41,7 @@ const Keyword = ({ keyword,id, documentId }: KeywordProps) => {
     const dispatch = useDispatch();
 	return (
 		<>
-			<div className="group my-2 mr-4 flex flex-row items-start rounded-2xl bg-gray-200 px-3 py-2 font-mono font-medium shadow-sm hover:bg-blueFrida-300">
+			<div className="group my-2 mr-4 flex flex-row items-start rounded-2xl bg-gray-200 px-3 py-2 font-mono font-medium shadow-sm hover:bg-blueFrida-300" data-test-id="keywordsComponent">
 				<button className="text-black hover:underline" 
 				onClick={() => {
 					dispatch(toggleModalDefinicion())

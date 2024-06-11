@@ -69,8 +69,9 @@ const Container: React.FC<ContainerProps> = ({
 			// @ts-ignore
 			ref={dropRef}
 			className="flex h-full max-h-full min-h-0 w-full flex-col rounded-lg bg-[#f8f8f9]"
+            data-test-id={`dropZone${containerId}`}
 		>
-			<div className="flex overflow-x-auto rounded-lg bg-gray-200">
+			<div className="flex overflow-x-auto rounded-lg bg-gray-200" data-test-id={`dragContainer${containerId}`}>
 				{tabs.map((tab) => (
 					<DraggableTab
 						key={tab.id}

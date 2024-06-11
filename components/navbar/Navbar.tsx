@@ -13,7 +13,7 @@ export default function Navbar({ isAuth }: NavbarProps) {
 			<header className="border-b border-gray-200 px-4">
 				<div className="flex h-16 items-center justify-between">
 					<div className="flex items-center md:gap-3 lg:flex-grow">
-						<Link href="/">
+						<Link href="/" data-test-id="navbarHomeLink">
 							<div className="flex gap-2 text-2xl lg:text-3xl">
 								<h1 className="text-purpleFrida-300">FRIDA</h1>
 								<h1 className="text-black">Research Engine</h1>

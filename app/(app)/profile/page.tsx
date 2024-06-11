@@ -1,13 +1,13 @@
 "use client";
 
 import { logOut } from "@/redux/slices/authSlice";
-import { Eye, EyeOff, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import jsCookie from "js-cookie";
 import axiosClient from "@/config/axiosClient";
 import { axiosConfig } from "@/config/axiosConfig";
-import { AceptAlert, ErrorAlert } from "@/lib/alerts/alerts";
+import { AcceptAlert, ErrorAlert } from "@/lib/alerts/alerts";
 import { loadAuth } from "@/redux/thunks/authThunk";
 import useAuth from "@/hooks/selectors/useAuth";
 
@@ -35,6 +35,11 @@ export default function Profile() {
 	};
 
     const handleProfileUpdate = async (e: any) => {
+        if (name.length < 2 || lastname.length < 2 || name.length > 15 || lastname.length > 15) {
+		    ErrorAlert("Oops...", "El nombre y Apellido deben tener al menos 2 caracteres y menos de 15");
+		    return;
+		}
+
         const config = axiosConfig();
         if (!config) return;
 
@@ -42,7 +47,7 @@ export default function Profile() {
 
         try {
             await axiosClient.post("/user/update_profile", data, config)
-            AceptAlert("Usuario actualizado correctamente")
+            AcceptAlert("Usuario actualizado correctamente")
             dispatch(loadAuth());
         } catch (error) {
             await ErrorAlert("Error al actualizar usuario", "Por favor, intenta nuevamente")
@@ -60,10 +65,9 @@ export default function Profile() {
 			<div className="mx-auto w-full max-w-screen-lg px-2.5 md:px-28">
 				<div className="flex items-center justify-between">
 					<p className="text-2xl">Cuenta</p>
-					<button className="group transition-none focus:outline-none">
+					<button className="group transition-none focus:outline-none" onClick={handleLogout} data-test-id="profileButtonLogout">
 						<LogOut
 							className="h-8 transition hover:text-redFrida-400 group-focus:text-redFrida-400"
-							onClick={handleLogout}
 						/>
 					</button>
 				</div>
@@ -76,6 +80,7 @@ export default function Profile() {
 								value={name}
 								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 								onChange={(e) => setName(e.target.value)}
+                                data-test-id="profileUpdateInputName"
 							/>
 						</div>
 						<div className="flex w-full flex-col">
@@ -85,6 +90,7 @@ export default function Profile() {
 								value={lastname}
 								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black"
 								onChange={(e) => setLastname(e.target.value)}
+                                data-test-id="profileUpdateInputLastname"
 							/>
 						</div>
 					</div>
@@ -94,12 +100,12 @@ export default function Profile() {
 							<input
 								type="email"
 								value={auth?.email}
-								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black disabled:bg-gray-300"
+								className="mt-2 rounded-lg bg-zinc-200 p-2 placeholder:text-black hover:cursor-not-allowed"
                                 disabled={true}
 							/>
 						</div>
 					</div>
-					<div className="flex justify-between gap-16">
+					{/* <div className="flex justify-between gap-16">
 						<div className="relative flex w-full flex-col">
 							<label htmlFor="name">Contraseña</label>
 							<input
@@ -136,10 +142,11 @@ export default function Profile() {
 								/>
 							)}
 						</div>
-					</div>
+					</div> */}
 					<button
 						className="mx-auto mt-8 block rounded-lg bg-purpleFrida-300 px-8 py-2 text-white transition hover:bg-purpleFrida-500 focus:bg-purpleFrida-500"
 						onClick={handleProfileUpdate}
+                        data-test-id="profileUpdateButton"
 					>
 						Guardar cambios
 					</button>

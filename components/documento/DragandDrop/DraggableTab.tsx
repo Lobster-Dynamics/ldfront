@@ -36,6 +36,7 @@ const DraggableTab: React.FC<DraggableTabProps> = ({ tab, selectTab, selectedTab
 				writingMode: vertically ? "vertical-rl" : "horizontal-tb",
 			}}
 			className="mx-1 flex cursor-pointer flex-row items-center  p-2 font-mono text-2xl"
+            data-test-id={`draggableTab${tab.id}`}
 		>
 			<div
 				className={cn(

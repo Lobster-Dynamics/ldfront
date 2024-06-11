@@ -23,7 +23,7 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
     };
 
     return (
-        <div className="overflow-y-auto w-full h-full flex flex-row relative">
+        <div className="overflow-y-auto w-full h-full flex flex-row relative" data-test-id="explanationComponent">
             <div className="w-1/5 relative">
                 <ScrollArea className="h-full">
                     <ul className="rounded-md p-2 w-full relative space-y-2">

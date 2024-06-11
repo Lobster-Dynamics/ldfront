@@ -85,6 +85,7 @@ export default function SearchBar() {
                     onClick={() => setIsActive(true)}
                     onChange={(e) => setSearchValue(e.target.value)}
                     value={searchValue}
+                    data-test-id="searchBarInput"
 				/>
                 {isActive && (
                     <div className="absolute w-full rounded-b-lg bg-white shadow-md">

@@ -94,7 +94,7 @@ export function loadTabsData(
 					{ id: "Documento", content: "Documento" },
 					{ id: "Grafo", content: "Grafo" },
                     { id: "Visualizador", content: "Visualizador" },
-					{ id: "Explicación", content: "Explicación" }
+					{ id: "Explanation", content: "Explicación" }
 				],
 				rightTop: [
 					{ id: "Chat", content: "Chat" },
@@ -125,15 +125,13 @@ export function loadTabsData(
 
     // If tab "Explicación" was removed, and now there are explanations, add it back
     if (explanation && explanation.length > 0) {
-        for (const key in tabs)
-            if (!tabs[key].find((tab: Tab) => tab.content === "Explicación"))
-                tabs[key].push({ id: "Explicación", content: "Explicación" } as Tab);
+        if (!tabs["left"].find((tab: Tab) => tab.content === "Explicación"))
+            tabs["left"].push({ id: "Explicación", content: "Explicación" } as Tab);
     }
     // // If tab "Visualizador" was removed, and now there is support for it (File format), add it back
     if (data && data.document_url.split('/')[5].split('?')[0].split('.').pop() === "pdf") {
-        for (const key in tabs)
-            if (!tabs[key].find((tab: Tab) => tab.content === "Visualizador"))
-                tabs[key].push({ id: "Visualizador", content: "Visualizador" } as Tab);
+        if (!tabs["left"].find((tab: Tab) => tab.content === "Visualizador"))
+            tabs["left"].push({ id: "Visualizador", content: "Visualizador" } as Tab);
     }
 
 	// Add icons to tabs and its components with its data
