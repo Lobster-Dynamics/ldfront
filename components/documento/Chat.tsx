@@ -120,7 +120,7 @@ export default function Chat({ id }: ChatProps) {
                                 {message.message}
                                 {" "}
                                 {message.mes_id != "" && (
-                                <button className="hover:text-purple-500 flex items-center" onClick={() => handleReferenceButton(message.mes_id)}>
+                                <button className="hover:text-purple-500 flex items-center" onClick={() => handleReferenceButton(message.mes_id)} data-test-id="chatButtonHighlight">
                                     <ScanSearch />
                                 </button>
                                 )}

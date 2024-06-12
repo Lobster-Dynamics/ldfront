@@ -25,4 +25,18 @@ describe("Chat", () => {
 			.its("length")
 			.should("be.gt", 2);
 	});
+
+	it("highlight context chunk in paper", () => {
+        // Wait for chat to load and scroll to the bottom
+        cy.wait(500);
+
+		// Highlight context chunk in paper
+		cy.get('button[data-test-id="chatButtonHighlight"]').last().click();
+
+		// Check if the context chunk is highlighted
+		cy.get('p[data-test-id="paperItemParagraph"]')
+			.filter(".bg-blueFrida-300")
+			.its("length")
+			.should("be.gt", 0);
+	});
 });

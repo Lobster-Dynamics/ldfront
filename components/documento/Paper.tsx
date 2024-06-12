@@ -74,7 +74,7 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
                     !isUrl(paragraph) && (
                         <p key={index} className={cn("text-xl font-mono mb-4", {
                             "bg-blueFrida-300": highlightSection?.some(item => item.index === index)
-                        })}>
+                        })} data-test-id={`paperItemParagraph`}>
                             {paragraph}
                         </p>
                     )
