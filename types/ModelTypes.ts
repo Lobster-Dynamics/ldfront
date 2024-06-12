@@ -10,6 +10,11 @@ export interface ChatDetails {
 	role: string;
 }
 
+export interface ChatHighlight {
+    content: string;
+    index: number;   
+}
+
 export interface WordDefinition {
 	Definition: string;
 	examples: string[];

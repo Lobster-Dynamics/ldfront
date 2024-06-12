@@ -2,7 +2,9 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { Switch } from "@headlessui/react";
 import ContextMenu from './ContextMenu'; 
-import ModalDefinicion from "./ModalDefinition";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { cn } from "@/lib/utils";
 interface PaperProps {
     title: string;
     parse: string[];
@@ -14,7 +16,7 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
     const [menuPosition, setMenuPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
     const [selectedText, setSelectedText] = useState<string>('');
     const textAreaRef = useRef<HTMLDivElement>(null);
-
+    const { highlightSection } = useSelector((state: RootState) => state.highlight);
 
     const toggleImages = (): void => {
         setImages(!images);
@@ -70,7 +72,9 @@ const Paper: React.FC<PaperProps> = ({ title, parse }) => {
                     </div>
                 ) : (
                     !isUrl(paragraph) && (
-                        <p key={index} className="text-xl font-mono mb-4">
+                        <p key={index} className={cn("text-xl font-mono mb-4", {
+                            "bg-blueFrida-300": highlightSection?.some(item => item.index === index)
+                        })}>
                             {paragraph}
                         </p>
                     )

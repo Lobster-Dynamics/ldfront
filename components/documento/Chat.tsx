@@ -4,6 +4,8 @@ import { Chatword, ChatDetails } from '@/types/ModelTypes';
 import axiosClient from '@/config/axiosClient';
 import { axiosConfig } from '@/config/axiosConfig';
 import { ScanSearch } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { setHighlights } from '@/redux/slices/highlightSlice';
 
 interface ChatProps {
     id: string;
@@ -14,6 +16,8 @@ export default function Chat({ id }: ChatProps) {
     const [ newInputValue, setNewInputValue ] = useState('');
     const [ messages, setMessages] = useState<Chatword>({ Chat: [ {mes_id:"", message: "Hola, soy FRIDA Research Engine!", role: "chat" },
     { mes_id:"", message: "¿En qué te puedo ayudar?", role: "chat" }]})
+    
+    const dispatch = useDispatch();
 
     const fetchMessages = async () => {
         const config = axiosConfig();
@@ -99,8 +103,8 @@ export default function Chat({ id }: ChatProps) {
         try {
             const response = await axiosClient.post("/document/get_highlights", data, config);
             const highlights = response.data;
-            console.log(highlights)
-
+            
+            dispatch(setHighlights(highlights));
         } catch (error) {
             console.error("Error fetching chat response:", error);
         }
