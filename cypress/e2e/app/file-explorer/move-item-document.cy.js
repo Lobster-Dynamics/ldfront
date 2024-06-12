@@ -1,6 +1,6 @@
 describe("Drag and Drop Folder on File", () => {
     beforeEach(() => {
-        cy.login("a01284650@tec.mx", "123456");
+        cy.login("test1@test.com", "123Aa/");
         cy.url().should("include", "/file-explorer");
     });
 

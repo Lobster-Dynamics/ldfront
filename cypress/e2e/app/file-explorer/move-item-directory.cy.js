@@ -1,7 +1,7 @@
 // cypress/integration/drag_and_drop_spec.js
 describe("Drag and Drop Folder on Folder", () => {
     beforeEach(() => {
-        cy.login("a01284650@tec.mx", "123456");
+        cy.login("test1@test.com", "123Aa/");
         cy.url().should("include", "/file-explorer");
     });
 

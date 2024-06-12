@@ -13,20 +13,20 @@ describe("Forgot password valid mail", () => {
 	it("input valid mail", () => {
 		cy.get('input[data-test-id="forgotPasswordInputMail"]')
 			.click()
-			.type("a01284917@tec.mx");
+			.type("test1@test.com");
 	});
 
 	it("click on send button", () => {
 		cy.get('input[data-test-id="forgotPasswordInputMail"]')
 			.click()
-			.type("a01284917@tec.mx");
+			.type("test1@test.com");
 		cy.get('button[data-test-id="forgotPasswordButtonSend"]').click();
 	});
 
 	it("success message is displayed", () => {
 		cy.get('input[data-test-id="forgotPasswordInputMail"]')
 			.click()
-			.type("a01284917@tec.mx");
+			.type("test1@test.com");
 		cy.get('button[data-test-id="forgotPasswordButtonSend"]').click();
 		cy.get('h2[id="swal2-title"]')
 			.last()

@@ -11,20 +11,20 @@ describe("Login", () => {
 		// Input mail and password
 		cy.get('input[data-test-id="usernameInputLogin"]')
 			.click()
-			.type("adrian.hernandez.p0@gmail.com");
+			.type("test1@test.com");
 		cy.get('input[data-test-id="passwordInputLogin"]')
 			.click()
-			.type("cocoloco");
+			.type("123Aa/");
 	});
 
 	it("click on login button", () => {
 		// Input mail and password
 		cy.get('input[data-test-id="usernameInputLogin"]')
 			.click()
-			.type("adrian.hernandez.p0@gmail.com");
+			.type("test1@test.com");
 		cy.get('input[data-test-id="passwordInputLogin"]')
 			.click()
-			.type("cocoloco");
+			.type("123Aa/");
 
 		// Click on login button
 		cy.get('button[data-test-id="loginButton"]').click();
@@ -34,10 +34,10 @@ describe("Login", () => {
 		// Input mail and password
 		cy.get('input[data-test-id="usernameInputLogin"]')
 			.click()
-			.type("adrian.hernandez.p0@gmail.com");
+			.type("test1@test.com");
 		cy.get('input[data-test-id="passwordInputLogin"]')
 			.click()
-			.type("cocoloco");
+			.type("123Aa/");
 
 		// Click on login button
 		cy.get('button[data-test-id="loginButton"]').click();

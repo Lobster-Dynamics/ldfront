@@ -1,7 +1,7 @@
 describe("Share Folder", () => {
 
     beforeEach(() => {
-        cy.login('a01284650@tec.mx','123456');
+        cy.login("test1@test.com", "123Aa/");
         cy.url().should('include', '/file-explorer');
     });
 
@@ -28,7 +28,7 @@ describe("Share Folder", () => {
         cy.intercept('PUT', '/directory/share_directory').as('shareFolder');
 
         cy.contains('button', 'Compartir').click();
-        cy.get('input[id="swal2-input"]').should('be.visible').type('a01284917@tec.mx{enter}');
+        cy.get('input[id="swal2-input"]').should('be.visible').type('test2@test.com{enter}');
 
         cy.wait('@shareFolder').its('response.statusCode').should('eq', 200);
         cy.contains('button', 'OK').click();

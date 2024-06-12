@@ -63,10 +63,10 @@ describe("Create account", () => {
 
 	it("success message is displayed & navigate to file-explorer", () => {
         // Genera tres números aleatorios
-        const randomNumbers = Math.floor(100 + Math.random() * 900); // Asegura que sean tres dígitos
+        const randomNumbers = Math.floor(1000000 + Math.random() * 9000000);
 
         // Construye el correo electrónico con los números aleatorios
-        const randomEmail = `a011940${randomNumbers}@tec.mx`;
+        const randomEmail = `test${randomNumbers}@test.com`;
 
 		// Input data name and lastname
 		cy.get('input[data-test-id="signupInputName"]').click().type("Rodrigo");
