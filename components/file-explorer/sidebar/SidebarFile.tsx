@@ -40,7 +40,7 @@ export default function SidebarFile({
     }, [extension]);
 
     return (
-        <div ref={fileRef} style={{ paddingLeft: `${pl}rem`}} className="w-full my-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10">
+        <div ref={fileRef} data-test-id={`sidebarFile-${name}`} style={{ paddingLeft: `${pl}rem`}} className="w-full my-1 flex items-center py-1 rounded-lg outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10">
             <Image
                 src={extensionType}
                 alt="fileicon"

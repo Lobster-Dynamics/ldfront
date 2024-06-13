@@ -47,10 +47,10 @@ export default function SidebarFolder({
     }, [directoryUnparsed]);
 
     return (
-        <div ref={fileRef} className="w-full my-1 flex items-center" style={{ paddingLeft: `${pl}rem`}}>
+        <div ref={fileRef} data-test-id={`sidebarFolder-${name}`} className="w-full my-1 flex items-center" style={{ paddingLeft: `${pl}rem`}}>
             <AccordionItem value={`item-${id}`} className="w-full">
                 {id === currdir ? (
-                    <CurrentAccordionTrigger>
+                    <CurrentAccordionTrigger data-test-id={`sidebarFolderTrigger-${name}`}>
                         <button onClick={openDocument} className="flex-1 min-w-0 px-2">
                             {name}
                         </button>
