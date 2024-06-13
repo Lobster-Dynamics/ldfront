@@ -44,3 +44,8 @@ next.config.mjs
 
 # Log files
 *.log
+
+# cypress reports
+reports/
+screenshots/
+downloads/

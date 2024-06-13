@@ -42,6 +42,7 @@ Cypress.Commands.add('login',(email, password) => {
   cy.get('input[data-test-id="usernameInputLogin"]').click().type(email);
   cy.get('input[data-test-id="passwordInputLogin"]').click().type(password);
   cy.get('button[data-test-id="loginButton"]').click();
+  cy.wait(1500);
 });
 
 Cypress.Commands.add('createFolder', (folderName) => {

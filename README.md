@@ -83,6 +83,7 @@ Instalar cypress y abrir la interfaz de cypress para poder correr pruebas en el 
 npm install
 npx cypress install
 npm run cypress:open
+npx cypress run --headed --browser chrome
 ```
 
 # Langosta de la verdad
