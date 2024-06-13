@@ -24,7 +24,7 @@ export const RelationshipModal = ({
                 className="w-[600px]"
                 active={active}
                 setActive={setActive}>
-                <div className="flex items-center text-2xl font-bold">
+                <div className="flex items-center text-2xl font-bold" data-test-id="graphRelationshipModalContent">
                     <p>{fatherConcept.name}</p>
                     <br></br>
                     <ArrowRight size={70}/>
