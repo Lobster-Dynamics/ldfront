@@ -61,14 +61,20 @@ const Visualizador = () => {
 
 			const mouseMoveHandler = (e: MouseEvent) => {
 				const dx = e.clientX - x;
-                if (leftWidth + dx <= 50)
+                if (leftWidth + dx <= 50) {
                     setIsLeftContainerHidden(true);
+                    setleftContainerWidth("50px");
+                    setRightContainerWidth("calc(100% - 23px)");
+                }
                 else if (rightWidth - dx >= 50) {
                     setIsLeftContainerHidden(false);
                     setleftContainerWidth(`${leftWidth + dx}px`);
                 }
-                if (rightWidth - dx <= 50)
+                if (rightWidth - dx <= 50) {
                     setIsRightContainerHidden(true);
+                    setRightContainerWidth("50px");
+                    setleftContainerWidth("calc(100% - 23px)");
+                }
                 else if (leftWidth + dx >= 50) {
                     setIsRightContainerHidden(false);
                     if (tabs.rightTop.length > 0) setIsTopContainerHidden(false);
@@ -95,14 +101,20 @@ const Visualizador = () => {
 
 			const mouseMoveHandler = (e: MouseEvent) => {
 				const dy = e.clientY - y;
-                if (topHeight + dy <= 50)
+                if (topHeight + dy <= 50) {
                     setIsTopContainerHidden(true);
+                    setTopContainerHeight("50px");
+                    setBottomContainerHeight("calc(100% - 57px)");
+                }
                 else if (bottomHeight - dy >= 50) {
                     setIsTopContainerHidden(false);
                     setTopContainerHeight(`${topHeight + dy}px`);
                 }
-                if (bottomHeight - dy <= 50)
+                if (bottomHeight - dy <= 50) {
                     setIsBottomContainerHidden(true);
+                    setBottomContainerHeight("50px");
+                    setTopContainerHeight("calc(100% - 57px)");
+                }
                 else if (topHeight + dy >= 50) {
                     setIsBottomContainerHidden(false);
                     setBottomContainerHeight(`${bottomHeight - dy}px`);
@@ -281,7 +293,7 @@ const Visualizador = () => {
                             isHorizontalHidden={false}
                         />
                     </div>
-                    <div className='flex items-center justify-center grow-0 shrink-0 mt-4 w-[6px] cursor-ew-resize hover:bg-blueFrida-500 rounded-lg transition' style={{height: `calc(100% - 32px)`}} ref={verticalResizeRef}>
+                    <div className='flex items-center justify-center grow-0 shrink-0 mt-4 w-[6px] cursor-ew-resize hover:bg-blueFrida-500 rounded-lg transition' style={{height: `calc(100% - 32px)`}} ref={verticalResizeRef} data-test-id="verticalResizeHandle">
                         <span
                             className="block h-8 w-[2px] bg-gray-400"
                             aria-hidden="true"
@@ -299,7 +311,7 @@ const Visualizador = () => {
                                 isHorizontalHidden={isTopContainerHidden}
                             />
                         </div>
-                        <div className='flex items-center justify-center h-[6px] w-full cursor-ns-resize hover:bg-blueFrida-500 rounded-lg transition' ref={horizontalResizeRef}>
+                        <div className='flex items-center justify-center h-[6px] w-full cursor-ns-resize hover:bg-blueFrida-500 rounded-lg transition' ref={horizontalResizeRef} data-test-id="horizontalResizeHandle">
                             <span
                                 className="block h-[2px] w-8 bg-gray-400"
                                 aria-hidden="true"

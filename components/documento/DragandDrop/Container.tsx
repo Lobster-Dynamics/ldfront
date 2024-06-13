@@ -83,7 +83,7 @@ const Container: React.FC<ContainerProps> = ({
 					/>
 				))}
 			</div>
-			<div className="h-full overflow-y-auto rounded shadow">
+			<div className="h-full overflow-y-auto rounded shadow" data-test-id={`container${containerId}`}>
 				{selectedTab
 					? selectedTab.component
 					: "Selecciona un componente"}
