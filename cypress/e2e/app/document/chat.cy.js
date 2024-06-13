@@ -7,6 +7,11 @@ describe("Chat", () => {
 		);
 	});
 
+	it("chat container visible", () => {
+		cy.get('div[data-test-id="draggableTabChat').click();
+		cy.get('div[data-test-id="chatComponent"]').should("be.visible");
+	});
+
 	it("get past messages", () => {
 		cy.intercept("POST", "/document/get_all_messages").as("getMessages");
 		cy.wait("@getMessages").its("response.statusCode").should("eq", 200);
@@ -27,8 +32,8 @@ describe("Chat", () => {
 	});
 
 	it("highlight context chunk in paper", () => {
-        // Wait for chat to load and scroll to the bottom
-        cy.wait(500);
+		// Wait for chat to load and scroll to the bottom
+		cy.wait(500);
 
 		// Highlight context chunk in paper
 		cy.get('button[data-test-id="chatButtonHighlight"]').last().click();

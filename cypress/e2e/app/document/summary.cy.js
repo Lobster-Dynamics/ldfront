@@ -1,4 +1,4 @@
-describe("Select Tab", () => {
+describe("Summary", () => {
 	beforeEach(() => {
 		cy.login("test1@test.com", "123Aa/");
 		cy.wait(500);
@@ -7,7 +7,7 @@ describe("Select Tab", () => {
 		);
 	});
 
-	it("select tab", () => {
+	it("summary container visible", () => {
 		cy.get('div[data-test-id="draggableTabResumen').click();
 		cy.get('div[data-test-id="summaryComponent"]').should("be.visible");
 	});

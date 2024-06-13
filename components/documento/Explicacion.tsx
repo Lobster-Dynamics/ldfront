@@ -54,7 +54,7 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
 		>
 			<div className="relative w-4/12" ref={toolTipRef}>
 				<ScrollArea className="h-full">
-					<ul className="relative w-full space-y-2 rounded-md">
+					<ul className="relative w-full space-y-2 rounded-md" data-test-id="explanationTooltip">
 						{explicaciones.map((explicacion, index) => (
 							<TooltipProvider key={index}>
 								<Tooltip>
@@ -68,11 +68,11 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
 											width: `${toolTipWidth}px`,
 										}}
 									>
-										<li>{explicacion.titulo}</li>
+										<li data-test-id="explanationToolTipTrigger">{explicacion.titulo}</li>
 									</TooltipTrigger>
 
 									<TooltipContent>
-										<p>{explicacion.titulo}</p>
+										<p data-test-id="explanationToolTipContent">{explicacion.titulo}</p>
 									</TooltipContent>
 								</Tooltip>
 							</TooltipProvider>
@@ -84,10 +84,10 @@ export default function Explicacion({ id, explicaciones }: ExplicacionProps) {
 			</div>
 			<div className="h-full w-8/12 pl-5">
 				<ScrollArea className="h-full">
-					<h2 className="mx-2 mb-10 mt-4 font-mono text-2xl font-bold">
+					<h2 className="mx-2 mb-10 mt-4 font-mono text-2xl font-bold" data-test-id="explanationContentTitle">
 						{explicacion.titulo}
 					</h2>
-					<p className="mx-2 mb-4 font-mono text-xl">
+					<p className="mx-2 mb-4 font-mono text-xl" data-test-id="explanationContentText">
 						{explicacion.texto}
 					</p>
 					<ScrollBar />

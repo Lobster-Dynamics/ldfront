@@ -10,7 +10,7 @@ describe("File viewer", () => {
 		cy.wait(2500);
 	});
 
-	it("pdf is visible", () => {
+	it("pdf (file viewer) container is visible", () => {
 		cy.get(".react-pdf__message.react-pdf__message--error").should(
 			"not.exist",
 		);
@@ -47,6 +47,9 @@ describe("File viewer", () => {
 	});
 
 	it("get explanation", () => {
+		cy.get('div[data-test-id="draggableTabVisualizador"]').click();
+		cy.wait(3000);
+
 		cy.contains(
 			"The Simulation Argument posed by Bostrom suggests that we may be living inside a",
 		)
@@ -61,6 +64,34 @@ describe("File viewer", () => {
 				cy.wrap($el).rightclick();
 			});
 
+		// Click on the get explanation button
 		cy.get("li[data-test-id='viewExplanationButton']").click();
+
+		// Check if the explanation is displayed
+		cy.get('p[data-test-id="explanationItemParagraph"]')
+			.its("length")
+			.should("be.gt", 0);
+	});
+
+	it("get english definition", () => {
+		cy.get('div[data-test-id="draggableTabVisualizador"]').click();
+		cy.wait(3000);
+
+		cy.contains("Simulation")
+			.should("exist")
+			.then(($el) => {
+				cy.selectText($el, "Simulation");
+
+				// Trigger a right-click event on the element
+				cy.wrap($el).rightclick();
+			});
+
+		cy.get("li[data-test-id='viewDefinitionButton']").click();
+		cy.get("li[data-test-id='viewDefinitionButtonEN']").click();
+
+		// Check if the definition is displayed
+		cy.get('p[data-test-id="definitionItemParagraph"]')
+			.its("length")
+			.should("be.gt", 0);
 	});
 });
