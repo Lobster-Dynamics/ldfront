@@ -120,15 +120,14 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                             dispatch(toggleModalDefinicion())
                             dispatch(setModalDefinicionDetails({ word: selectedText, language: "es" }))
                         }}
+                        data-test-id="viewDefinitionButtonSP"
                     > Español </li>
                     <li className="cursor-pointer hover:bg-blueFrida-300 px-4 py-2" onClick={() => {
                         
                         dispatch(toggleModalDefinicion())
                         dispatch(setModalDefinicionDetails({ word: selectedText, language: "en" }))
                     }}
-
-
-
+                    data-test-id="viewDefinitionButtonEN"
                     > Ingles </li>
                 </ul>
             )}

@@ -9,7 +9,7 @@ interface NavbarProps {
 
 export default function Navbar({ isAuth }: NavbarProps) {
 	return (
-		<div className="sticky inset-x-0 top-0 z-50 h-16 bg-white">
+		<div className="sticky inset-x-0 top-0 z-30 h-16 bg-white">
 			<header className="border-b border-gray-200 px-4">
 				<div className="flex h-16 items-center justify-between">
 					<div className="flex items-center md:gap-3 lg:flex-grow">
