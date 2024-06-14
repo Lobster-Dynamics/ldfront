@@ -16,6 +16,7 @@ import { useSearchParams } from 'next/navigation';
 import { ExplicacionFragmento } from '@/types/ModelTypes';
 import { loadSelectedTab, loadTabsData } from '@/utils/loadData';
 import PageLoader from '../PageLoader/PageLoader';
+import { KeyConceptModal } from '../graph/KeyConceptModal';
 
 const Visualizador = () => {
     const searchParams = useSearchParams();
@@ -335,6 +336,7 @@ const Visualizador = () => {
             <ModalAdd />
             <ModalDefinicion />
             <ModalExplicacionFragmento />
+            <KeyConceptModal/>
         </DndProvider>
     );
 };

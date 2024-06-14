@@ -187,6 +187,7 @@ export default function FileExplorer() {
 					getInputProps={getInputProps}
 					dropzoneisDragActive={dropzoneisDragActive}
 					directoryId={directoryId}
+                    isShared={shared}
 				/>
             </div>
 			<ModalAddFolder />
@@ -237,6 +238,7 @@ interface MainContentProps {
 	getInputProps: () => any;
 	dropzoneisDragActive: boolean;
 	directoryId: string;
+    isShared: boolean;
 }
 
 // Componente para el contenido principal
@@ -250,17 +252,19 @@ const MainContent = ({
 	getInputProps,
 	dropzoneisDragActive,
 	directoryId,
+    isShared
 }: MainContentProps) => (
 	<div className="flex h-full w-full flex-col px-4 md:w-4/6 md:px-6 lg:w-9/12 xl:w-10/12">
 		<DndProvider backend={HTML5Backend}>
             <div className="flex h-14 items-center justify-between">
-                <BreadCrumb
+                    {!isShared ? 
+                (<BreadCrumb
                     items={
                         selectedElement === "Compartidos"
                             ? shareDirectory?.path
                             : directory?.path
                     }
-                />
+                />) : (<div className="w-14"/>)}
                 <div className="flex gap-3">
                     <ViewModeButton
                         mode="list"
