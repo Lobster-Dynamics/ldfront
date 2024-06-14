@@ -30,10 +30,12 @@ export default function FileExplorer() {
 	const { auth } = useAuth();
 	const searchParams = useSearchParams();
 
+    const shared = searchParams?.get("shared") === "true";
+    
 	// Variables de estado
 	const [viewMode, setViewMode] = useState<"list" | "grid">(localStorage.getItem("viewMode") ? localStorage.getItem("viewMode") as "list" | "grid" : "grid");
 	const [selectedElement, setSelectedElement] =
-		useState<string>("Mis Archivos");
+		useState<string>(shared ? "Compartidos" : "Mis Archivos");
 	const [directory, setDirectory] = useState<DirectoryDetails | null>(null);
 	const [sidebardirectory, setSidebarDirectory] =
 		useState<DirectoryDetails | null>(null);
@@ -45,8 +47,6 @@ export default function FileExplorer() {
 	const directoryId = searchParams?.get("id") ?? auth?.rootDirectoryId ?? "";
 
 	const sidebardirectoryId = auth?.rootDirectoryId;
-
-	const shared = searchParams?.get("shared") === "true";
 
 	// Obtener datos
 	const { data: directoryUnparsed, isLoading: isLoadingDirectory } =
@@ -158,7 +158,7 @@ export default function FileExplorer() {
         if (name === "Compartidos") {
             router.push(`/file-explorer?shared=true`);
         }else{
-            router.push(`/file-explorer?share=false`);
+            router.push(`/file-explorer?shared=false`);
         }
         setSelectedElement(name);
     }
