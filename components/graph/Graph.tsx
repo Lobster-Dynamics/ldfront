@@ -4,6 +4,9 @@ import { GraphCanvas, InternalGraphNode } from "reagraph";
 import { KeyConcept, Relationship } from "@/types/ModelTypes";
 import { KeyConceptModal } from "./KeyConceptModal";
 import { RelationshipModal } from "./RelationshipModal";
+import { useDispatch } from "react-redux";
+import { toggleModalKeyConcept } from "@/redux/slices/modalSlice";
+import { setModalKeyConcept } from "@/redux/slices/modalSlice";
 
 export interface GraphProps  {
     key_concepts: KeyConcept[];
@@ -30,6 +33,9 @@ export default function GraphViz({
     key_concepts, 
     relationships
 }: GraphProps) {
+
+    const dispatch = useDispatch();
+
     const [graphVizState, setGraphVizState] = 
         useState<GraphVizState>(GraphVizState.VisualizingGraph);
     
@@ -84,6 +90,8 @@ export default function GraphViz({
                     const concept = conceptsMap.get(node.id);
                     if (concept !== undefined) {
                         setCurrentlySelectedKeyConcept(concept);
+                        dispatch(setModalKeyConcept({ keyConcept: concept}));
+                        dispatch(toggleModalKeyConcept());
                     }
 
                 }}
@@ -100,13 +108,6 @@ export default function GraphViz({
             {currentlySelectedKeyConcept &&
                 (
                     <KeyConceptModal
-                        active={graphVizState == GraphVizState.VisualizingNode}
-                        setActive={(some: boolean) => {
-                            if (!some) {
-                                setGraphVizState(GraphVizState.VisualizingGraph);
-                            }
-                        }}
-                        keyConcept={currentlySelectedKeyConcept}
                     />
                 )
             }

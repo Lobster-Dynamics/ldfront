@@ -63,6 +63,7 @@ export const InputAlert = async (title:string, preConfirmCallback: (...args: any
         cancelButtonText: cancelText,
         confirmButtonColor: "#8700BF",
         cancelButtonColor: "#E55E86",
+        reverseButtons: true,
         showLoaderOnConfirm: true,
         preConfirm: preConfirmCallback, 
         allowOutsideClick: () => !Swal.isLoading(),

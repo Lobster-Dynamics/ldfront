@@ -1,3 +1,4 @@
+import { KeyConcept } from "@/types/ModelTypes";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 //Se crea la slice
 
@@ -23,8 +24,20 @@ export const modalSlice = createSlice({
             isOpen: false,
             explication: ""
         },
+        modalKeyConcept: {
+            isOpen: false,
+            keyConcept: null as KeyConcept | null 
+        }
     },
     reducers: {
+        
+        toggleModalKeyConcept: (state) => {
+            state.modalKeyConcept.isOpen = !state.modalKeyConcept.isOpen;
+        },
+        setModalKeyConcept: (state, action: PayloadAction<{ keyConcept: KeyConcept | null }>) => {
+            state.modalKeyConcept.keyConcept = action.payload.keyConcept;
+        },
+
         toggleModalExplicacionFragmento: (state) => {
             state.modalExplicacionFragmento.isOpen = !state.modalExplicacionFragmento.isOpen;
         },
@@ -57,7 +70,7 @@ export const modalSlice = createSlice({
     }
 })
 
-export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar, toggleModalExplicacionFragmento, setModalExplicacionFragmento,setModalAñadirConceptoDetails } = modalSlice.actions;
+export const { setModalBorrarDetails,setModalDefinicionDetails,toggleModalDefinicion, toggleModalAñadirCarpeta, toggleModalAñadirConcepto, toggleModalBorrar, toggleModalExplicacionFragmento, setModalExplicacionFragmento,setModalAñadirConceptoDetails, toggleModalKeyConcept,setModalKeyConcept } = modalSlice.actions;
 
 export default modalSlice.reducer
 

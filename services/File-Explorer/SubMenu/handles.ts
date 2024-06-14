@@ -57,7 +57,7 @@ export const handleFileShare = async (
                 );
                 if (response) {
 
-                    AcceptAlert("Se ha compartido la carpeta !");
+                    AcceptAlert("Se ha compartido el documento!");
 
 
                 }

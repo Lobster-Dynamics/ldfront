@@ -58,6 +58,7 @@ export default function SubMenu({
                 cancelButtonColor: "#d33",
                 confirmButtonText: "¡Confirmar!",
                 cancelButtonText: "Cancelar",
+                reverseButtons: true,
                 showLoaderOnConfirm: true,
                 preConfirm: async () => {
                     try {
@@ -98,6 +99,7 @@ export default function SubMenu({
                 cancelButtonColor: "#d33",
                 confirmButtonText: "¡Confirmar!",
                 cancelButtonText: "Cancelar",
+                reverseButtons: true,
                 showLoaderOnConfirm: true,
                 preConfirm: async () => {
                     try {
@@ -143,6 +145,7 @@ export default function SubMenu({
                 confirmButtonText: "Renombrar",
                 cancelButtonText: "Cancelar",
                 showLoaderOnConfirm: true,
+                reverseButtons: true,
                 preConfirm: async (new_name) => {
                     try {
                         if (new_name.length < 2) {
@@ -195,6 +198,7 @@ El nombre debe tener al menos 2 caracteres
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Renombrar",
                 cancelButtonText: "Cancelar",
+                reverseButtons: true,
                 showLoaderOnConfirm: true,
                 preConfirm: async (new_name) => {
                     try {
