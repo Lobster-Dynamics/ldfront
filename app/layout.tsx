@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Anek_Odia, Inter } from "next/font/google";
 import "@/styles/globals.css";
 import ReduxProvider from "@/redux/ReduxProvider";
+import PrelineScript from "@/components/ui/PrelineScript";
 
 // const anek_odia = Anek_Odia({ subsets: ["latin"] });
 const anek_odia = Inter({ subsets: ["latin"] });
@@ -25,11 +26,12 @@ export default function RootLayout({
 		<html lang="en">
 			<ReduxProvider>
 				<body className={anek_odia.className}>
-					<main className="relative flex h-screen flex-col overflow-y-clip">
+					<main className="relative flex min-h-[calc(100dvh)] flex-col overflow-y-clip">
 						{children}
 					</main>
 				</body>
 			</ReduxProvider>
+            <PrelineScript />
 		</html>
 	);
 }

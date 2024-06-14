@@ -6,9 +6,9 @@ import { scaleLog } from '@visx/scale';
 import Wordcloud from '@visx/wordcloud/lib/Wordcloud';
 
 interface WordCloudProps {
-  uuid: string;
   width: number;
   height: number;
+  documentId: string;
 }
 
 export interface Word {
@@ -22,9 +22,9 @@ export interface WordData {
   value: number;
 }
 
-export default function WordCloud({ uuid, width, height }: WordCloudProps) {
+export default function WordCloud({ documentId , width, height }: WordCloudProps) {
   // Use SWR to fetch data from the endpoint
-  const { data, error } = useSWR<Word[]>(`/document/generate_word_cloud/${uuid}`, fetcher);
+  const { data, error } = useSWR<Word[]>(`/document/generate_word_cloud/${documentId}`, fetcher);
 
   // State for spiral type and rotation
   const [spiralType, setSpiralType] = useState<'archimedean' | 'rectangular'>('archimedean');
@@ -48,7 +48,6 @@ export default function WordCloud({ uuid, width, height }: WordCloudProps) {
     }
   });
 
-  console.log(words)
 
   const colors = ["#AC73D9", "#8700BF", "#7B20C3", "#AEB1F8", "#6568BB"];
 
@@ -62,7 +61,7 @@ export default function WordCloud({ uuid, width, height }: WordCloudProps) {
   const fixedValueGenerator = () => Math.random();
 
   return (
-    <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto">
+    <div className="flex h-full w-full py-4 items-center justify-center overflow-y-auto" data-test-id="wordcloudComponent">
       <Wordcloud
         words={words}
         width={width}

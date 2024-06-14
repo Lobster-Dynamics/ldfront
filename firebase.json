@@ -14,21 +14,29 @@
         "source": "**",
         "headers": [
           {
-            "key": "Content-Security-Policy",
-            "value": "default-src 'none'; script-src 'self'; style-src 'report-sample' 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'; font-src 'self'; frame-src 'self'; img-src 'self'; manifest-src 'self'; media-src 'self'; worker-src 'self'; form-action 'self'; frame-ancestors 'self';"
-          },
-          {
             "key": "Cache-Control",
             "value": "public, max-age=31536000"
           },
-          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
           {
             "key": "X-Frame-Options",
             "value": "DENY"
           },
-          { "key": "X-XSS-Protection", "value": "1; mode=block" },
-          { "key": "Referrer-Policy", "value": "no-referrer" },
-          { "key": "Feature-Policy", "value": "microphone 'self'" }
+          {
+            "key": "X-XSS-Protection",
+            "value": "1; mode=block"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          },
+          {
+            "key": "Feature-Policy",
+            "value": "microphone 'self'"
+          }
         ]
       }
     ]

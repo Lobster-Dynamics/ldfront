@@ -1,37 +1,58 @@
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import Modal from "@/components/ui/Modal";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleModalBorrar } from "@/redux/slices/modalSlice";
 import { RootState } from "@/redux/store";
+import { axiosConfig } from "@/config/axiosConfig";
+import axiosClient from "@/config/axiosClient";
+import { errorHandler } from "@/utils/errorHandler";
+import { mutate } from "swr";
 
 export default function ModalBorrar() {
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-	const { modalBorrar } = useSelector((state: RootState) => state.modal);
+    const { isOpen, id, documentId } = useSelector((state: RootState) => state.modal.modalBorrar);
 
-	return (
-		<Modal
-			active={modalBorrar}
-			setActive={() => dispatch(toggleModalBorrar())}
-            className="w-1/3 p-8"
-		>
-				<h1 className="text-start font-mono text-4xl leading-loose">
-					¿Desea eliminar &apos;Crops&apos; de los keywords?
-				</h1>{" "}
-				<div className="flex justify-end mt-8">
-					<div className="flex w-1/2 justify-between">
-						<button
-							className="font-mono text-2xl text-red-500"
-							onClick={() => {
-								dispatch(toggleModalBorrar());
-							}}
-						>
-							Cancelar
-						</button>
-						<button className="font-mono text-2xl text-purple-500">
-							Eliminar
-						</button>
-					</div>
-				</div>
-		</Modal>
-	);
+    const handleDelete = async () => {
+        try {
+            const config = axiosConfig(false);
+
+            if (!config) return;
+
+            await axiosClient.delete(`/document/delete_key_concept/${documentId}/${id}`, config);
+
+            mutate(`/document/get_document/${documentId}`);
+
+            dispatch(toggleModalBorrar());
+        } catch (error: any) {
+            errorHandler(error);
+        }
+    };
+
+    return (
+        <Modal
+            active={isOpen}
+            setActive={() => dispatch(toggleModalBorrar())}
+            className="w-[600px] p-6 bg-white rounded-lg shadow-lg"
+        >
+            <div className="flex items-start text-start text-2xl font-semibold text-gray-700 mb-4">
+                <h2>¿Está seguro de que desea eliminar este concepto?</h2>
+            </div>
+            <div className="mt-4 flex justify-end">
+                <button
+                    className="px-4 py-2 bg-red-500 text-white  rounded-lg hover:bg-red-600 transition duration-300"
+                    onClick={() => dispatch(toggleModalBorrar())}
+                >
+                    Cancelar
+                </button>
+                <button
+                    className="ml-4 px-4 py-2  bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-300"
+                    onClick={handleDelete}
+                >
+                    Eliminar
+                </button>
+            </div>
+        </Modal>
+    );
 }
+

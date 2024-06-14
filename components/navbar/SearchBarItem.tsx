@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { UUID } from "crypto";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -28,23 +27,26 @@ export default function SearchBarItem({
 			router.push(`/file-explorer?id=${id}`);
 		};
 
-		if (itemRef.current) {
+		let localRef = itemRef.current;
+		if (itemRef.current) localRef = itemRef.current;
+
+		if (localRef) {
 			if (extension === null)
-				itemRef.current.addEventListener("click", openDirectory);
-			else itemRef.current.addEventListener("click", openDocument);
+				localRef.addEventListener("click", openDirectory);
+			else localRef.addEventListener("click", openDocument);
 		}
 
 		return () => {
-			if (itemRef.current) {
+			if (localRef) {
 				if (extension === null)
-					itemRef.current.removeEventListener("click", openDirectory);
-				else itemRef.current.removeEventListener("click", openDocument);
+					localRef.removeEventListener("click", openDirectory);
+				else localRef.removeEventListener("click", openDocument);
 			}
 		};
 	}, [id, router, extension]);
 
 	return (
-		<div className="border-t border-black border-opacity-30">
+		<div className="border-t border-black border-opacity-30" data-test-id="searchBarItem">
 			<div
 				className="group flex justify-between rounded-lg p-2 outline-none transition hover:cursor-pointer hover:bg-purpleFrida-500 hover:bg-opacity-10 focus:bg-purpleFrida-500 focus:bg-opacity-10"
 				tabIndex={0}

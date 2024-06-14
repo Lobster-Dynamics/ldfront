@@ -9,7 +9,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function ModalDefinicion() {
     const { isOpen, word, language } = useSelector((state: RootState) => state.modal.modalDefinicion);
-    const url = `http://140.84.175.1:5000/meaning?word=${encodeURIComponent(word)}&lang=${encodeURIComponent(language)}`;
+    const url = `${process.env.NEXT_PUBLIC_DICTIONARY_URL}/meaning?word=${encodeURIComponent(word)}&lang=${encodeURIComponent(language)}`;
     const { data: dictionary, error } = useSWR<Dictionary>(url, fetcher);
     
     const dispatch = useDispatch();
@@ -20,9 +20,9 @@ export default function ModalDefinicion() {
         <Modal 
             active={isOpen} 
             setActive={() => dispatch(toggleModalDefinicion())} 
-            className="w-1/3 px-8 py-4"
+            className="relative max-h-96 w-1/2 min-w-96 max-w-[600px] overflow-y-auto px-8 py-4"
         >
-            <div className="grid grid-cols-2 mb-4">
+            <div className="sticky -top-4 -mt-4 mb-4 grid grid-cols-2 border-b bg-white pt-4">
                 <h1 className="text-start text-2xl leading-loose">Diccionario</h1>
                 <button
                     onClick={() => dispatch(toggleModalDefinicion())}
@@ -37,7 +37,7 @@ export default function ModalDefinicion() {
             {meanings.length > 0 ? (
                 <div className="ml-5 flex flex-col justify-start w-full text-start items-start space-y-2">
                     {meanings.slice(0, 5).map((meaning, index) => (
-                        <p key={index} className="text-mono text-sm font-medium">
+                        <p key={index} className="text-mono text-sm font-medium" data-test-id="definitionItemParagraph">
                             {meaning}
                         </p>
                     ))}

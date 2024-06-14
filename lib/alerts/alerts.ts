@@ -19,6 +19,14 @@ export const AceptAlert = async (message:string,type: SwalIcons = "success") => 
       });
 }
 
+export const AcceptAlert = async (message:string, text: string = "", type: SwalIcons = "success") => {
+    await Swal.fire({
+        icon: type,
+        title: message,
+        text: text,
+    });
+}
+
 // Modal de carga 
 
 export const LoadingAlert = async (message:string) => {
@@ -42,7 +50,7 @@ export const ConfirmAlert = async (message:string, confirmText:string = "Si", ca
 
 //Alerta que pide un input y realiza una accion dependiendo de eso
 
-export const InputAlert = async (title:string, preConfirmCallback: (...args: any[]) => Promise<any>, confirmMessage:string = "Se realizo correctamente", confirmTitle:string = "Exito",confirmText:string = "Si", cancelText:string = "No", type: SwalIcons = "question",) => {
+export const InputAlert = async (title:string, preConfirmCallback: (...args: any[]) => Promise<any>, confirmMessage:string = "Se realizo correctamente", confirmTitle:string = "Exito",confirmText:string = "Si", cancelText:string = "No", type: SwalIcons = "success",) => {
    
     await Swal.fire({
         title: title,
@@ -55,17 +63,18 @@ export const InputAlert = async (title:string, preConfirmCallback: (...args: any
         cancelButtonText: cancelText,
         confirmButtonColor: "#8700BF",
         cancelButtonColor: "#E55E86",
+        reverseButtons: true,
         showLoaderOnConfirm: true,
         preConfirm: preConfirmCallback, 
         allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                icon: type,
-                title: confirmTitle,
-                text: confirmMessage, 
-            })
-        }
+        //if (result.isConfirmed) {
+         //   Swal.fire({
+          //      icon: type,
+           //     title: confirmTitle,
+            //    text: confirmMessage, 
+           // })
+       // }
     })
 }
 

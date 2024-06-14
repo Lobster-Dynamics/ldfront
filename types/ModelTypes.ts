@@ -5,26 +5,26 @@ export interface Chatword {
 }
 
 export interface ChatDetails {
-	Message: string;
+    mes_id: string;
+	message: string;
 	role: string;
 }
 
-export interface Files {
-	files: File[];
-}
-
-export interface File {
-	name: string;
-	type: string;
-	extension: ".docx" | ".pdf" | ".pptx" | null;
-	uuid: UUID;
-	owner: string;
-	uploadDate: Date;
+export interface ChatHighlight {
+    content: string;
+    index: number;   
 }
 
 export interface WordDefinition {
 	Definition: string;
 	examples: string[];
+}
+
+
+export interface ExplicacionFragmento{
+    [key: string]: any;
+    titulo: string;
+    texto: string;
 }
 
 export interface UserAuth {
@@ -37,6 +37,8 @@ export interface UserAuth {
 	uid: string;
 }
 
+
+
 export interface DirectoryItemDetails {
 	extension: ".docx" | ".pdf" | ".pptx" | null;
 	id: UUID;
@@ -44,6 +46,30 @@ export interface DirectoryItemDetails {
 	name: string;
 	ownerId: string;
 	ownerName: string;
+    uploadDate: string;
+}
+
+export interface PathItem {
+    name: string;
+    id: UUID;
+}
+
+export interface DirectoryDetails {
+	id: UUID;
+	name: string;
+	ownerId: string;
+	ownerName: string;
+	items: DirectoryItemDetails[];
+	path: PathItem[];
+    shared: boolean;
+    uploadDate: string;
+}
+
+export interface Relationship {
+    id: string;
+    father_concept_id: string;
+    child_concept_id: string;
+    description: string;
 }
 
 export interface Document {
@@ -55,9 +81,10 @@ export interface Document {
     name: string;
     owner_id: string;
     parsed_llm_input: ParsedLLMInput; 
-    relationships: any[] | null; 
+    relationships: Relationship[]; 
     summary: Summary;
     users_with_access: any[]; 
+    document_url: string;
 }
 
 export interface BibliographicInfo {
@@ -93,28 +120,11 @@ export interface Section {
     title: string;
 }
 
-
-export interface DirectoryDetails {
-	id: UUID;
-	name: string;
-	ownerId: string;
-	ownerName: string;
-	items: DirectoryItemDetails[];
-	path: PathItem[];
-}
-
-export interface PathItem {
-    name: string;
-    id: UUID;
-}
-
 export interface Dictionary  {
-
     language: string; 
     meanings: string[];
     start: string;
     word: string;
-
 }
 
 export interface SearchItem {
